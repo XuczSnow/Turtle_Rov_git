@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>C_Style(ref. Google)_withNum.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="c%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83ref-google">C语言编程规范（ref. Google）</h1>
+<h2 id="1-%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98">1. 编码问题</h2>
+<p>一般来说，采用ASCII码是最通用的形式，包含中文时尽量在文件中采用较为通用的UTF-8编码，这是目前来看兼容性最强的方式，GBK编码在部分软件上显示异常或者编译异常。</p>
+<p>当然，根据你的习惯的编译器设置，如果都支持，请使用UTF-8编码。</p>
+<h2 id="2-%E4%B8%80%E4%BA%9B%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E4%BA%8B%E9%A1%B9">2. 一些需要注意的事项</h2>
+<h3 id="21-%E5%A4%B4%E6%96%87%E4%BB%B6">2.1. 头文件</h3>
+<ol>
+<li>
+<p>头文件应独立</p>
+<p>头文件应该可以被独立包含，定义插入文本的头文件应以<code>.inc</code>结尾。</p>
+</li>
+<li>
+<p>头文件保护</p>
+<p>所有头文件都应该使用#define 来防止头文件被多重包含, 命名格式当是:<code>&lt;PROJECT&gt;_&lt;PATH&gt;_&lt;FILE&gt;_H</code>（外部），<code>__&lt;PROJECT&gt;_&lt;PATH&gt;_&lt;FILE&gt;_H</code>（内部）（此处原著为<code>&lt;PROJECT&gt;_&lt;PATH&gt;_&lt;FILE&gt;_H_</code>，参照相关单片机库，修改为上述定义）。</p>
+</li>
+<li>
+<p>前置声明</p>
+<p>避免在<code>.c</code>文件中对函数进行前置声明。</p>
+</li>
+<li>
+<p>内联函数</p>
+<p>内联函数应在10行以内，并且不能由递归、循环及swtich。</p>
+</li>
+<li>
+<p><code>#include</code>路径及顺序</p>
+<p>应按照项目的目录树结构进行排列，并遵从以下的顺序：</p>
+<ol>
+<li>本文件的头文件</li>
+<li>C系统文件</li>
+<li>其他库的<code>.h</code>文件</li>
+<li>本项目内<code>.h</code>文件</li>
+<li>特定平台的条件编译放在最后</li>
+</ol>
+</li>
+</ol>
+<h3 id="22-%E7%9B%AE%E5%BD%95%E6%A0%91">2.2. 目录树</h3>
+<p>目录树的构建应该采用跟文件结构类似的形式，一般来说，个人比较喜欢参照STM32Cube生成的目录形式<code>&lt;CATEGORIE&gt;/&lt;PATH&gt;</code>，例如<code>Drivers/CMSIS</code>。</p>
+<h3 id="23-%E4%BD%9C%E7%94%A8%E5%9F%9F">2.3. 作用域</h3>
+<ol>
+<li>
+<p>静态变量</p>
+<p>鼓励在<code>.c</code>文件中定义静态变量（不需要外部引用），只允许POD(Plain Old Data):类型的静态变量，并且需要被明确的初始化（不允许使用函数返回值等初始化）。</p>
+</li>
+<li>
+<p>局部变量</p>
+<p>局部变量在使用时初始化，输入for、while的变量应在条件中（或内部）声明以限制其作用域，但是一些复杂的数据结构除外。</p>
+</li>
+<li>
+<p>全局变量和常量</p>
+</li>
+</ol>
+<h3 id="24-%E5%87%BD%E6%95%B0">2.4. 函数</h3>
+<ol>
+<li>
+<p>参数顺序</p>
+<p>一般来说，输入参数在先，后跟输出参数，这符合一般人的阅读逻辑。在单片机编程中会有很多操作对象（结构体），是一些参数的集合，可能会涉及到输入输出的混合，放于参数的开头。当然，首要的原则是符合阅读的顺序，而不是添加的顺序。</p>
+</li>
+<li>
+<p><code>const</code>关键字</p>
+<p>在函数的输入参数中增加const关键字修饰，以避免在函数编程的过程中被意外地修改，也可以明确地标识此参数为输入参数；但是，在部分编译器中，可能不会提示理会<code>const</code>关键字。</p>
+</li>
+<li>
+<p>简短的函数</p>
+<p>最好编写不超过40行的函数，函数仅完成单一的功能。</p>
+</li>
+</ol>
+<h3 id="25-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2">2.5. 类型转换</h3>
+<ol>
+<li>类型转换
+C语言类型的转化在不同的编译环境下不同，这是一个令人头痛的问题；仅在单片机中，当无符号类型与其他类型相遇时，会全部转化为无符号类型，所以尽量使用显式的（强制的）类型转换，并且在宏定义中的参数指明类型，例如<code>#define EXAMPLE 1u</code>。</li>
+</ol>
+<h3 id="26-%E5%A0%86%E6%A0%88%E5%88%86%E9%85%8D">2.6. 堆栈分配</h3>
+<ol>
+<li>
+<p>单片机堆栈分配</p>
+<p><em>单片机运行内存空间有限，堆栈分配往往是一个棘手的问题，在uC/OS-III操作手册中提及栈空间分配的问题，原文大意如下：</em></p>
+</li>
+<li>
+<p>输入输出</p>
+<p>在正式发布的程序中，避免使用<code>printf</code>,<code>scanf</code>这样的格式化输入输出函数，会增加堆栈程序的使用，容易产生溢出或在中断中使用造成异常，并且效率较低。
+建议的替代，使用单独的文本宏定义或者常量，可能会占用更多的时间</p>
+</li>
+</ol>
+<h3 id="27-%E5%89%8D%E7%BD%AE%E8%87%AA%E5%A2%9E%E8%87%AA%E5%87%8F">2.7. 前置自增自减</h3>
+<p>从编译结果来看，前置自增自减效率更高，在可能的情况下使用前置，毕竟大多数情况应用于循环，自增自减会被运行很多次。</p>
+<pre class="hljs"><code><div>    <span class="hljs-number">0x08021EC4</span> B580      PUSH          {r7,lr}
+    <span class="hljs-number">0x08021EC6</span> B090      SUB           sp,sp,#<span class="hljs-number">0x40</span>
+    <span class="hljs-number">0x08021EC8</span> <span class="hljs-number">2000</span>      MOVS          r0,#<span class="hljs-number">0x00</span>
+    <span class="hljs-number">0x08021ECA</span> <span class="hljs-number">900</span>A      STR           r0,[sp,#<span class="hljs-number">0x28</span>]
+    <span class="hljs-number">0x08021ECC</span> <span class="hljs-number">900F</span>      STR           r0,[sp,#<span class="hljs-number">0x3C</span>]
+    <span class="hljs-number">146</span>:   i++; 
+    <span class="hljs-number">0x08021ECE</span> <span class="hljs-number">980</span>E      LDR           r0,[sp,#<span class="hljs-number">0x38</span>]
+    <span class="hljs-number">0x08021ED0</span> <span class="hljs-number">3001</span>      ADDS          r0,r0,#<span class="hljs-number">0x01</span>
+    <span class="hljs-number">0x08021ED2</span> <span class="hljs-number">900</span>E      STR           r0,[sp,#<span class="hljs-number">0x38</span>]
+    <span class="hljs-number">147</span>:   ++i; 
+</div></code></pre>
+<h3 id="28-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">2.8. 数据类型</h3>
+<p>尽量使用C99中定义的整形定义，详情参见<code>stdint.h</code>，例如<code>uint8_t</code>。</p>
+<h3 id="29-%E5%AE%8F">2.9. 宏</h3>
+<p>尽量使用内联函数、枚举量、常量来代替宏，除非一些常见的使用方式</p>
+<h3 id="210-sizeof">2.10. sizeof</h3>
+<p>尽可能用sizeof(varname) 代替sizeof(type)</p>
+<h2 id="3-%E5%91%BD%E5%90%8D%E7%BA%A6%E5%AE%9A">3. 命名约定</h2>
+<h3 id="31-%E9%80%9A%E7%94%A8%E8%A7%84%E5%88%99">3.1. 通用规则</h3>
+<p>要有描述性，少用缩写，除非一些定义或约定俗成，一般来说为<code>&lt;PROJECT&gt;_&lt;DESCRIPTION&gt;</code>，并使用<code>_</code>分割，不推荐匈牙利命名法，过于复杂。</p>
+<h3 id="32-%E6%96%87%E4%BB%B6%E5%91%BD%E5%90%8D">3.2. 文件命名</h3>
+<p>全小写，并使用<code>_</code>分割单词。</p>
+<h3 id="33-%E7%B1%BB%E5%9E%8B%E5%91%BD%E5%90%8D">3.3. 类型命名</h3>
+<p>首字母大写并不包含下划线，适用于结构体名、枚举名、类型定义；在C语言中，有时会需要同时用到结构体名和结构体类型名，可以在结构体类型名后加<code>_Type</code>作为区分。</p>
+<h3 id="34-%E5%8F%98%E9%87%8F%E5%8F%8A%E5%B8%B8%E9%87%8F%E5%91%BD%E5%90%8D">3.4. 变量及常量命名</h3>
+<p>变量名及结构体变量名，采用小写字母加<code>_</code>分割语义块；一些特殊关键字修饰的常量采用相应的小写字幕开头修饰。</p>
+<pre class="hljs"><code><div>例如，<span class="hljs-keyword">const</span> 采用<span class="hljs-string">'k_'</span>开头，<span class="hljs-keyword">register</span> 采用<span class="hljs-string">'r_'</span>开头，<span class="hljs-keyword">static</span> 采用<span class="hljs-string">'s_'</span>开头，<span class="hljs-keyword">volatile</span> 采用<span class="hljs-string">'v_'</span>开头，指针类型采用<span class="hljs-string">'p_'</span>开头
+</div></code></pre>
+<h3 id="35-%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D">3.5. 函数命名</h3>
+<p>函数采用大小写混合加<code>_</code>分割语义块。</p>
+<h3 id="36-%E6%9E%9A%E4%B8%BE%E5%8F%8A%E5%AE%8F%E5%91%BD%E5%90%8D">3.6. 枚举及宏命名</h3>
+<p>枚举及宏采用全大写及<code>_</code>分割语义块。</p>
+<h2 id="4-%E6%B3%A8%E9%87%8A">4. 注释</h2>
+<h3 id="41-%E6%B3%A8%E9%87%8A%E9%A3%8E%E6%A0%BC">4.1. 注释风格</h3>
+<p>建议采用<code>/* */</code>来进行注释，并进行分段；大段代码的注释，采用<code>#if 0</code>及<code>#endif</code>并注明原因。</p>
+<p>对于显而易见的内容不要啰啰嗦嗦，保持合适的风格即可。</p>
+<h3 id="42-%E6%96%87%E4%BB%B6%E6%B3%A8%E9%87%8A">4.2. 文件注释</h3>
+<p>在每个文件开头注明一些信息，比如法律公告、作者信息、文件内容介绍</p>
+<h3 id="43-%E5%87%BD%E6%95%B0%E6%B3%A8%E9%87%8A">4.3. 函数注释</h3>
+<ol>
+<li>
+<p>函数声明注释</p>
+<p>函数注释只需要描述函数，而不需要说明如何实现，一般包含以下一些内容：</p>
+<ul>
+<li>函数的输入输出、返回值描述</li>
+<li>是否存在使用上的隐患</li>
+<li>其他一些需要注意的事项</li>
+</ul>
+</li>
+<li>
+<p>函数实现注释</p>
+<p>对函数实现中、巧妙的, 晦涩的, 有趣的, 重要的地方增加解释性的注释即可。</p>
+</li>
+</ol>
+<h3 id="44-%E5%8F%98%E9%87%8F%E6%B3%A8%E9%87%8A">4.4. 变量注释</h3>
+<p>全局变量或者结构体成员往往需要解释说明含义及用途，至于之前或者之后，根据个人习惯。</p>
+<h3 id="45-%E6%B3%A8%E9%87%8A%E7%BC%96%E5%86%99%E5%8E%9F%E5%88%99">4.5. 注释编写原则</h3>
+<p>写好注释，清晰易懂。</p>
+<h3 id="46-todo%E6%B3%A8%E9%87%8A">4.6. TODO注释</h3>
+<p>对那些临时的, 短期的解决方案, 或已经够好但仍不完美的代码使用TODO 注释。</p>
+<h2 id="5-%E6%A0%BC%E5%BC%8F">5. 格式</h2>
+<h3 id="51-%E8%A1%8C%E9%95%BF%E5%BA%A6">5.1. 行长度</h3>
+<p>每一行字符数不超过 80，根据实际情况进行调整，但不宜太长，原则是一个屏幕可以看完。</p>
+<h3 id="52-%E7%BC%A9%E8%BF%9B">5.2. 缩进</h3>
+<p>使用空格进行缩进（将Tab转化为空格），根据习惯使用2或4个空格。</p>
+<h3 id="53-%E5%87%BD%E6%95%B0%E7%9A%84%E5%A3%B0%E6%98%8E%E4%B8%8E%E8%B0%83%E7%94%A8">5.3. 函数的声明与调用</h3>
+<ol>
+<li>
+<p>函数声明或定义格式：</p>
+<ul>
+<li>使用好的参数名</li>
+<li>如果返回类型和函数名在一行放不下, 分行，并且不要缩进</li>
+<li>左圆括号总是和函数名在同一行，之间永远没有空格</li>
+<li>圆括号与参数间没有空格</li>
+<li>左大括号总在最后一个参数同一行的末尾处, 不另起新行</li>
+<li>右大括号总是单独位于函数最后一行, 或者与左大括号同一行</li>
+<li>右圆括号和左大括号间总是有一个空格</li>
+<li>所有形参应尽可能对齐，如果放不下酌情换行，中间换行保持对其，第一个函数换行保持4个空格的缩进</li>
+<li>如果本身有一定的结构，遵循其本身的结构</li>
+</ul>
+</li>
+<li>
+<p>函数调用格式：</p>
+<ul>
+<li>与声明或定义的格式相同</li>
+<li>函数参数复杂时，直接创建临时变量传递参数</li>
+</ul>
+</li>
+</ol>
+<h3 id="54-%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5">5.4. 条件语句</h3>
+<p>不在圆括号内使用空格，另外：</p>
+<ul>
+<li>所有情况下if 和左圆括号间都有个空格. 右圆括号和左大括号之间也要有个空格</li>
+<li>如果能增强可读性, 简短的条件语句允许写在同一行. 只有当语句简单并且没有使用else 子句时使用，如果语句有else 分支则不允许</li>
+<li>单行语句不需要使用大括号，但如果语句中某个if-else 分支使用了大括号的话, 其它分支也必须使用</li>
+</ul>
+<h3 id="55-%E5%BE%AA%E7%8E%AF%E5%92%8Cswitch%E8%AF%AD%E5%8F%A5">5.5. 循环和switch语句</h3>
+<p>switch 语句可以使用大括号分段, 以表明cases 之间不是连在一起的，switch 应该总是包含一个default 匹配，以避免错误或者warning。</p>
+<p>在单语句循环里, 括号可用可不用. 空循环体应使用{} 或continue，例如<code>while (condition) continue;</code></p>
+<h3 id="56-%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E8%A1%A8%E8%BE%BE%E5%BC%8F">5.6. 指针和引用表达式</h3>
+<p>句点或箭头前后不要有空格。指针/地址操作符(*, &amp;) 之后不能有空格。例如：</p>
+<pre class="hljs"><code><div>x = *p;
+p = &amp;x;
+x = r.y;
+x = r-&gt;y;
+</div></code></pre>
+<p>类似于<code>int *p,i</code>的语句。不加空格以避免被认为是两个指针，实际来说是一个指向<code>int</code>类型的指针和一个<code>int</code>类型的变量。</p>
+<h3 id="57-%E5%B8%83%E5%B0%94%E8%A1%A8%E8%BE%BE%E5%BC%8F">5.7. 布尔表达式</h3>
+<p>如果一个布尔表达式超过标准行宽, 断行方式要统一，逻辑操作符可以位于行尾，类似于我们学习的数学表达式分行的方式。可以考虑插入额外的圆括号，增加可读性。</p>
+<h3 id="58-%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC">5.8. 函数返回值</h3>
+<p>不要增加额外的圆括号。</p>
+<h3 id="59-%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4">5.9. 预处理指令</h3>
+<p>置于行首，不要缩进。</p>
+<h3 id="510-%E6%B0%B4%E5%B9%B3%E7%95%99%E7%99%BD%E4%B8%8E%E5%9E%82%E7%9B%B4%E7%95%99%E7%99%BD">5.10. 水平留白与垂直留白</h3>
+<p>恰当但不要多余，并于现有规则一致。</p>
+<h2 id="6-%E5%85%B6%E4%BB%96">6. 其他</h2>
+<ol>
+<li>在IDE中，将warning视作error处理。</li>
+</ol>
+
+</body>
+</html>
