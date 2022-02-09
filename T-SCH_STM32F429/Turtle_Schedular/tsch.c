@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    tsch_task.c
+  * @file    tsch.c
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 任务处理文件，主要包含任务处理函数
+  * @brief   Turtle Scheduler TSch文件
   *
   @verbatim
 
@@ -34,29 +34,32 @@
 
   ******************************************************************************
   */
-
-#include "tsch_task.h"
+#include "tsch.h"
 
 /**
-  * @brief  任务创建函数
+  * @brief  用户空闲任务函数
   *
-  * @param  sch         调度器处理块，用于将任务添加至调度器
-  * @param  task        任务处理块
-  * @param  taskptr     任务处理函数
-  * @param  wait_msg    任务调度信号量，无信号量阻塞时，输入TSCH_MSG_NULL
-  * 
-  * @retval TSchResState见定义
+  * @note   如用户需要在空闲任务中加入自行处理的数据，可以重载此函数
   */
-TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSchTaskPtr taskptr, TSchMsg_Type *wait_msg){
-  TSchResState_Type res;
-  task->task_ptr = taskptr;
-  if (wait_msg == TSCH_MSG_NULL){
-    task->msg_wait = TSCH_MSG_NULL;
-    task->task_state = TASK_CREAT;
-  }else{
-    task->msg_wait = wait_msg;
-    task->task_state = TASK_WAIT;
-  }
-  res = TSch_SchAddTask(sch, task);
-  return res;
+__weak void TSch_IdleTaskUsr(void){
+    return;
+}
+
+/**
+  * @brief  系统空闲任务
+  */
+static void __TSch_IdleTask(void){
+    TSch_IdleTaskUsr();
+    return;
+}
+
+/**
+  * @brief  时间调度器启动函数
+  *
+  * @note   初始化完成后，使用此函数，任务调度器将接管系统
+  */
+void TSch_Start(void){
+    while(1){
+        __TSch_IdleTask();
+    }
 }

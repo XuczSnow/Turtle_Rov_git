@@ -328,7 +328,7 @@
             <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
-            <v6Lang>5</v6Lang>
+            <v6Lang>3</v6Lang>
             <v6LangP>3</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F429xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\Turtle_Schedular</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -506,6 +506,81 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>TSch/Core</GroupName>
+          <Files>
+            <File>
+              <FileName>tsch.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Turtle_Schedular\tsch.h</FilePath>
+            </File>
+            <File>
+              <FileName>tsch_global.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Turtle_Schedular\tsch_global.h</FilePath>
+            </File>
+            <File>
+              <FileName>tsch_msg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Turtle_Schedular\tsch_msg.h</FilePath>
+            </File>
+            <File>
+              <FileName>tsch_sch.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Turtle_Schedular\tsch_sch.h</FilePath>
+            </File>
+            <File>
+              <FileName>tsch_task.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Turtle_Schedular\tsch_task.h</FilePath>
+            </File>
+            <File>
+              <FileName>tsch_tmr.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Turtle_Schedular\tsch_tmr.h</FilePath>
+            </File>
+            <File>
+              <FileName>tsch_type_def.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Turtle_Schedular\tsch_type_def.h</FilePath>
+            </File>
+            <File>
+              <FileName>tsch_usr_conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Turtle_Schedular\tsch_usr_conf.h</FilePath>
+            </File>
+            <File>
+              <FileName>tsch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Turtle_Schedular\tsch.c</FilePath>
+            </File>
+            <File>
+              <FileName>tsch_msg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Turtle_Schedular\tsch_msg.c</FilePath>
+            </File>
+            <File>
+              <FileName>tsch_sch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Turtle_Schedular\tsch_sch.c</FilePath>
+            </File>
+            <File>
+              <FileName>tsch_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Turtle_Schedular\tsch_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>tsch_tmr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Turtle_Schedular\tsch_tmr.c</FilePath>
+            </File>
+            <File>
+              <FileName>tsch_bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Turtle_Schedular\tsch_bsp.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -524,5 +599,14 @@
     </components>
     <files/>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>T-SCH_STM32F429</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>

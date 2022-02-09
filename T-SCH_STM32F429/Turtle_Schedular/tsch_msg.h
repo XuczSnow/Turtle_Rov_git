@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    tsch_task.c
+  * @file    tsch_msg.h
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 任务处理文件，主要包含任务处理函数
+  * @brief   Turtle Scheduler 消息栈及消息队列头文件
   *
   @verbatim
 
@@ -34,29 +34,20 @@
 
   ******************************************************************************
   */
+#ifndef TSCH_MSG_H
+#define TSCH_MSG_H
 
-#include "tsch_task.h"
+#include "tsch_global.h"
 
-/**
-  * @brief  任务创建函数
-  *
-  * @param  sch         调度器处理块，用于将任务添加至调度器
-  * @param  task        任务处理块
-  * @param  taskptr     任务处理函数
-  * @param  wait_msg    任务调度信号量，无信号量阻塞时，输入TSCH_MSG_NULL
-  * 
-  * @retval TSchResState见定义
-  */
-TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSchTaskPtr taskptr, TSchMsg_Type *wait_msg){
-  TSchResState_Type res;
-  task->task_ptr = taskptr;
-  if (wait_msg == TSCH_MSG_NULL){
-    task->msg_wait = TSCH_MSG_NULL;
-    task->task_state = TASK_CREAT;
-  }else{
-    task->msg_wait = wait_msg;
-    task->task_state = TASK_WAIT;
-  }
-  res = TSch_SchAddTask(sch, task);
-  return res;
-}
+/*************************************宏定义声明**********************************/
+
+#define   TSCH_MSG_NULL       NULL      /*任务无需消息阻塞时使用*/
+
+/**************************************函数声明**********************************/
+
+TSchResState_Type TSch_MsgAdd(TSchMsg_Type *msg, TSchMsgMode_Type mode, TSchMsgEle_Type *buf, uint16_t length);
+TSchResState_Type TSch_MsgGet(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint16_t len);
+TSchResState_Type TSch_MsgPub(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint16_t len);
+
+#endif
+/*************************************头文件结束**********************************/

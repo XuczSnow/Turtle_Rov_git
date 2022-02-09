@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    tsch_task.c
+  * @file    tsch_usr_conf.h
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 任务处理文件，主要包含任务处理函数
+  * @brief   Turtle Scheduler 用户配置头文件
   *
   @verbatim
 
@@ -35,28 +35,9 @@
   ******************************************************************************
   */
 
-#include "tsch_task.h"
+#ifndef TSCH_USR_CONF_H
+#define TSCH_USR_CONF_H
 
-/**
-  * @brief  任务创建函数
-  *
-  * @param  sch         调度器处理块，用于将任务添加至调度器
-  * @param  task        任务处理块
-  * @param  taskptr     任务处理函数
-  * @param  wait_msg    任务调度信号量，无信号量阻塞时，输入TSCH_MSG_NULL
-  * 
-  * @retval TSchResState见定义
-  */
-TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSchTaskPtr taskptr, TSchMsg_Type *wait_msg){
-  TSchResState_Type res;
-  task->task_ptr = taskptr;
-  if (wait_msg == TSCH_MSG_NULL){
-    task->msg_wait = TSCH_MSG_NULL;
-    task->task_state = TASK_CREAT;
-  }else{
-    task->msg_wait = wait_msg;
-    task->task_state = TASK_WAIT;
-  }
-  res = TSch_SchAddTask(sch, task);
-  return res;
-}
+#include "tsch_global.h"
+
+#endif
