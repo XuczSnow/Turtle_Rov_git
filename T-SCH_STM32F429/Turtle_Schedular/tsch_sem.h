@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    tsch_usr_conf.h
+  * @file    tsch_sem.h
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 用户配置头文件
+  * @brief   Turtle Scheduler 信号量处理头文件
   *
   @verbatim
 
@@ -34,12 +34,13 @@
 
   ******************************************************************************
   */
-
-#ifndef TSCH_USR_CONF_H
-#define TSCH_USR_CONF_H
+#ifndef TSCH_SEM_H
+#define TSCH_SEM_H
 
 #include "tsch_global.h"
 
-#define     USR_SEM_MAX     32            /*最大信号量定义*/
+TSchResState_Type TSch_SemSet(TSchSem_Type *sem, uint8_t num);
+TSchResState_Type TSch_SemAdd(TSchSem_Type *sem, uint8_t num);
+TSchResState_Type TSch_SemGet(TSchSem_Type *sem);
 
 #endif

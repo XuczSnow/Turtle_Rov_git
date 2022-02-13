@@ -44,6 +44,8 @@
 
 typedef enum      TSchResState    TSchResState_Type;
 
+typedef struct    TSchSem         TSchSem_Type;
+
 typedef uint8_t   TSchMsgEle_Type;
 typedef enum      TSchMsgMode     TSchMsgMode_Type;  
 typedef struct    TSchMsg         TSchMsg_Type;
@@ -68,6 +70,15 @@ enum TSchResState{
   TSCH_FULL     = 0x00000003,         /*操作对象满，主要用于串口调度器和消息*/
   TSCH_EMPTY    = 0x00000004,         /*操作对象空，主要用于消息*/
 };
+
+/*信号量相关定义*/
+struct TSchSem{
+  /*信号量相关定义*/
+  uint8_t         sem_cnt;
+  /*时间戳相关定义*/
+  TSchTmr_Type    tmr[USR_SEM_MAX];
+};
+
 
 /*消息相关定义*/
 enum TSchMsgMode{
