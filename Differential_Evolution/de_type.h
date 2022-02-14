@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    tsch_sch.h
+  * @file    de_type.h
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 任务调度器处理头文件
+  * @brief   经典差分进化算法数据定义
   *
   @verbatim
 
@@ -34,16 +34,38 @@
 
   ******************************************************************************
   */
-#ifndef TSCH_SCH_H
-#define TSCH_SCH_H
+#ifndef CLASSICAL_DE_TYPE_H
+#define CLASSICAL_DE_TYPE_H
 
-#include "tsch_global.h"
+#include "de_usr_conf.h"
 
-/**************************************函数声明**********************************/
+typedef enum    DeMode        DeMode_Type;
+typedef struct  Individual    Individual_Type;
+typedef struct  DeAlgorithm   DeAlgorithm_Type;
+typedef float   (*DeFitFunc_Ptr)(float *vector, float *input, DeMode_Type mode);
+typedef float   (*DeEndFunc_Ptr)(float *input);
 
-TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task, TSchTmr_Type task_period);
-TSchResState_Type TSch_SchRun(TScheduler_Type *sch);
-TSchResState_Type TSch_SchAdtTime(TScheduler_Type *sch);
+enum DeMode{
+  MODE_CLASSDE  = 0x10030000,
+  MODE_ADTDE    = 0x10030001,
+  MODE_DMRDT    = 0x10030002,
+};
+
+struct Individual{
+  float vector[NVAR];
+  float fitness;
+};
+
+struct DeAlgorithm{
+  Individual_Type pop[NPOP];
+  DeFitFunc_Ptr   DeFitFunc;
+  DeEndFunc_Ptr   DeEndFunc;
+  float de_f;
+  float de_cr;
+  float global_fitness;
+  float global_solution[NVAR];
+  float pop_min[NPOP];
+  float pop_max[NPOP];
+};
 
 #endif
-/*************************************头文件结束**********************************/

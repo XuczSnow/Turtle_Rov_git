@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    tsch_sch.h
+  * @file    de_fitness.c
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 任务调度器处理头文件
+  * @brief   差分进化算法适应度函数实现头文件
   *
   @verbatim
 
@@ -34,16 +34,12 @@
 
   ******************************************************************************
   */
-#ifndef TSCH_SCH_H
-#define TSCH_SCH_H
+#ifndef DE_FITNESS_H
+#define DE_FITNESS_H
 
-#include "tsch_global.h"
+#include "de_type.h"
 
-/**************************************函数声明**********************************/
-
-TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task, TSchTmr_Type task_period);
-TSchResState_Type TSch_SchRun(TScheduler_Type *sch);
-TSchResState_Type TSch_SchAdtTime(TScheduler_Type *sch);
+float de_fitness(float *vector, float *input, DeMode_Type mode);
+float de_endline(float *input);
 
 #endif
-/*************************************头文件结束**********************************/

@@ -42,10 +42,11 @@
   *
   * @param  sch     调度器处理块
   * @param  task    任务处理块
+  * @param  period  调度器执行周期
   * 
   * @retval TSchResState见定义
   */
-TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task){
+TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task, TSchTmr_Type period){
   TSchTask_Type *ptask = sch->task_list;
   if (ptask == NULL && sch->task_num == 0){
     ptask = task;
@@ -59,6 +60,8 @@ TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task){
     ++(sch->task_num);
     return TSCH_OK;
   }
+  /*设置调度器时间*/
+  TSch_UserSetPeriod(sch, period);
   return TSCH_INVAILD;
 }
 
@@ -85,7 +88,7 @@ TSchResState_Type TSch_SchRun(TScheduler_Type *sch){
     }
     case TIM_SCH:
     case ADT_TIM_SCH:{
-      if (sch->task_current->task_next == NULL)
+      if (sch->task_current == NULL || sch->task_current->task_next == NULL)
         sch->task_current = sch->task_list;
       else
         sch->task_current = sch->task_current->task_next;
@@ -93,7 +96,8 @@ TSchResState_Type TSch_SchRun(TScheduler_Type *sch){
       break;
     }
     case EXTI_SCH:{
-      while (sch->task_current->task_next == NULL){
+      sch->task_current = sch->task_list;
+      while (sch->task_current == NULL || sch->task_current->task_next == NULL){
         if (sch->task_current->msg_wait == sch->sch_waitmsg){
           run_flag = 1;
           break;
@@ -129,7 +133,7 @@ TSchResState_Type TSch_SchRun(TScheduler_Type *sch){
   * 
   * @note   需要用户在BSP文件中自行实现
   */
-__weak void TSch_UserSetPeriod(uint16_t period){
+__weak void TSch_UserSetPeriod(TScheduler *sch, uint16_t period){
 
   return;
 }

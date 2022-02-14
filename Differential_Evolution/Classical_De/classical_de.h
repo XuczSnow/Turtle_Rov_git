@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    tsch_sch.h
+  * @file    classical_de.c
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 任务调度器处理头文件
+  * @brief   经典差分进化算法实现头文件
   *
   @verbatim
 
@@ -34,16 +34,14 @@
 
   ******************************************************************************
   */
-#ifndef TSCH_SCH_H
-#define TSCH_SCH_H
+#ifndef CLASSICAL_DE_H
+#define CLASSICAL_DE_H
 
-#include "tsch_global.h"
+#include "../de_type.h"
 
-/**************************************函数声明**********************************/
+#define USR_MODE MODE_CLASSDE
 
-TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task, TSchTmr_Type task_period);
-TSchResState_Type TSch_SchRun(TScheduler_Type *sch);
-TSchResState_Type TSch_SchAdtTime(TScheduler_Type *sch);
+void DeInit(DeAlgorithm_Type *De, float f, float cr, float *min, float *max, DeFitFunc_Ptr FitFunc);
+void DeRun(struct DeAlgorithm *De, float *input);
 
 #endif
-/*************************************头文件结束**********************************/

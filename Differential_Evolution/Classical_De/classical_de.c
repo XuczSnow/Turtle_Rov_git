@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    xucz_de.c
+  * @file    classical_de.c
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   差分进化算法实现
+  * @brief   经典差分进化算法实现
   *
   @verbatim
 
@@ -35,17 +35,16 @@
   ******************************************************************************
   */
 
-#include "xucz_de.h"
+#include "classical_de.h"
 
 #include "stdio.h"
 #include "stdlib.h"
 #include "time.h"
 
-#include "xucz_de_type.h"
-
 static DeAlgorithm_Type De;
 
-void DeInit(DeAlgorithm_Type *De, float f, float cr, float *min, float *max, DeFitFunc_Ptr FitFunc){
+void DeInit(DeAlgorithm_Type *De, float f, float cr, float *min, float *max,\
+            DeFitFunc_Ptr FitFunc, DeEndFunc_Ptr EndFunc){
   De->de_f = f;
   De->de_cr = cr;
   for (int i=0;i<NVAR;i++){
@@ -53,19 +52,20 @@ void DeInit(DeAlgorithm_Type *De, float f, float cr, float *min, float *max, DeF
     De->pop_max[i] = max[i];
   }
   De->DeFitFunc = FitFunc;
+  De->DeEndFunc = EndFunc;
 }
 
 static Individual_Type Mutate[NPOP];
 static Individual_Type Cross[NPOP];
 
-void DeRun(struct DeAlgorithm *De){
+void DeRun(struct DeAlgorithm *De, float *input){
   /*种群初始化*/
   for (int i=0;i<NPOP;i++){
     for (int j=0;j<NVAR;j++){
       float randx = (float)rand()/RAND_MAX;
       De->pop[i].vector[j] = (1-randx)*(De->pop_min[j]) + randx*(De->pop_max[j]);
     }
-    De->pop[i].fitness = De->DeFitFunc(De->pop[i].vector);
+    De->pop[i].fitness = De->DeFitFunc(De->pop[i].vector, input, USR_MODE);
   }
   for(int i=0;i<NVAR;i++){
     De->global_solution[i] = De->pop[0].vector[i];
@@ -98,7 +98,7 @@ void DeRun(struct DeAlgorithm *De){
         else
           Cross[i].vector[j] = De->pop[i].vector[j];
       }
-      Cross[i].fitness = De->DeFitFunc(Cross[i].vector);
+      Cross[i].fitness = De->DeFitFunc(Cross[i].vector, input, USR_MODE);
     }
 
     /*选择操作*/
@@ -112,18 +112,20 @@ void DeRun(struct DeAlgorithm *De){
         }
       }
     }
-
     /*一次迭代结束*/
     printf("第 %d 轮迭代，全局适应性为 %f \r\n", it, De->global_fitness);
+    if (De->global_fitness < De->DeEndFunc(input)) return;
   }
   printf("迭代结束，全局适应度为 %f \r\n 计算结果为：", De->global_fitness);
   for (int i=0;i<NVAR;i++) printf("%f,", De->global_solution[i]);
 }
 
+#if 0
 float FitnessFunc(){
   return 0;
 }
 
+/*调用示例*/
 int main(){
   float min[NVAR] = {120};
   float max[NVAR] = {120};
@@ -141,3 +143,4 @@ int main(){
 
   return 0;
 }
+#endif

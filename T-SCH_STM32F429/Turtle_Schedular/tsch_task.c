@@ -43,12 +43,16 @@
   * @param  sch         调度器处理块，用于将任务添加至调度器
   * @param  task        任务处理块
   * @param  taskptr     任务处理函数
+  * @param  period      任务执行周期
   * @param  wait_msg    任务调度信号量，无信号量阻塞时，输入TSCH_MSG_NULL
   * 
   * @retval TSchResState见定义
   */
-TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSchTaskPtr taskptr, TSchMsg_Type *wait_msg){
-  TSchResState_Type res;
+TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSchTaskPtr taskptr,\
+                                 TSchTmr_Type period, TSchMsg_Type *wait_msg){
+  TSchResState_Type   res = TSCH_OK;
+  TSchTask_Type      *ptask = NULL;
+  uint8_t             task_cnt = 0;
   task->task_ptr = taskptr;
   if (wait_msg == TSCH_MSG_NULL){
     task->msg_wait = TSCH_MSG_NULL;
@@ -57,6 +61,9 @@ TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSch
     task->msg_wait = wait_msg;
     task->task_state = TASK_WAIT;
   }
-  res = TSch_SchAddTask(sch, task);
+  ptask = sch->task_list;
+  while (ptask == NULL || ptask->task_next == NULL) ++task_cnt;
+  
+  res = TSch_SchAddTask(sch, task, period/task_cnt);
   return res;
 }

@@ -109,14 +109,15 @@ enum TSchMode{
 
 struct TScheduler{
   /*调度器相关定义*/
-  uint8_t           *tsch_name;
   TSchMode_Type      tsch_mode;
   /*任务相关定义*/
   uint8_t            task_num;
   TSchTask_Type     *task_list;
   TSchTask_Type     *task_current;
-  /*消息相关定义*/
+  /*消息相关定义，仅在消息唤醒调度器中有效*/
   TSchMsg_Type      *sch_waitmsg;
+  /*时间戳定义，仅在周期运行任务中有效*/
+  TSchTmr_Type       sch_peroid;
 };
 
 /*任务相关定义*/

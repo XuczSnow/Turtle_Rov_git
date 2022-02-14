@@ -42,7 +42,8 @@
 
 /**************************************函数声明**********************************/
 
-TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSchTaskPtr taskptr, TSchMsg_Type *wait_msg);
+TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSchTaskPtr taskptr,\
+                                 TSchTmr_Type period, TSchMsg_Type *wait_msg);
 
 #endif
 /*************************************头文件结束**********************************/
