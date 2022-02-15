@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    classical_de.c
+  * @file    adaptive_de.c
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   经典差分进化算法实现头文件
+  * @brief   自适应差分进化算法实现头文件
   *
   @verbatim
 
@@ -38,8 +38,6 @@
 #define CLASSICAL_DE_H
 
 #include "../de_type.h"
-
-#define USR_MODE MODE_DMRDT
 
 void DeInit(DeAlgorithm_Type *De, float f, float cr, float *min, float *max, DeFitFunc_Ptr FitFunc);
 void DeRun(struct DeAlgorithm *De, float *input);

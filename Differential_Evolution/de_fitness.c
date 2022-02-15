@@ -1,4 +1,4 @@
-/**
+﻿/**
   ******************************************************************************
   * @file    de_fitness.c
   * @author  XuczSnow, OUC/Fab U+
@@ -66,19 +66,21 @@ const float M[6][8]   ={{-0.034,  0.034, -0.034,   0.034,  -0.2,     0.2,   -0.2
 
 const float w2 = 0;
 const float M_Norm = 2;
-static float ex_vector[OUT_DEMENSION] = {0.0};
+static float ex_vector[OUT_DEMENSION] = { 0.0 };
 
-float de_fitness(float *vector, float *input, DeMode_Type mode){
+float vec_temp[OUT_DEMENSION] = { 0.0 };
+
+float De_Fitness(float *vector, float *input, DeMode_Type mode){
   float fit = 0.0;
   float min_temp[IN_DEMENSION]  = {0.0};
-  float vec_temp[OUT_DEMENSION] = {0.0};
 
+  for (int i = 0; i < OUT_DEMENSION; i++) vec_temp[i] = 0;
   /*降维后转化为输出向量*/
   if ((mode&MODE_DMRDT) == MODE_DMRDT){
-    /*f1=M2(c-M2·f2)*/
+    /*f1=M2(c-M1·f2)*/
     float temp[IN_DEMENSION] = {0.0};
     for (uint8_t i=0;i<IN_DEMENSION;i++){
-      temp[i] = M1[i][0]*vector[0]+M1[i][0]*vector[1];
+      temp[i] = M1[i][0]*vector[0]+M1[i][1]*vector[1];
     }
     for (uint8_t i=0;i<IN_DEMENSION;i++){
       temp[i] = input[i]-temp[i];
@@ -88,7 +90,7 @@ float de_fitness(float *vector, float *input, DeMode_Type mode){
     for (uint8_t i=0;i<OUT_DEMENSION;i++){
       if (i==0 || i==4) continue;
       for (uint8_t j=0;j<IN_DEMENSION;j++){
-        vec_temp[i] = M2[i][j]*temp[j];
+        vec_temp[i] += M2[i][j]*temp[j];
       }
     }
   }else{
@@ -110,7 +112,7 @@ float de_fitness(float *vector, float *input, DeMode_Type mode){
   return fit;
 }
 
-float de_endline(float *input){
+float De_Endline(float *input){
   float ep = 0.0;
   for (uint8_t i=0;i<IN_DEMENSION;i++){
     ep += input[i]*input[i];

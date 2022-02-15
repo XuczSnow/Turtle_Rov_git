@@ -39,7 +39,9 @@
 
 #include "de_type.h"
 
-float de_fitness(float *vector, float *input, DeMode_Type mode);
-float de_endline(float *input);
+extern float vec_temp[OUT_DEMENSION];
+
+float De_Fitness(float *vector, float *input, DeMode_Type mode);
+float De_Endline(float *input);
 
 #endif

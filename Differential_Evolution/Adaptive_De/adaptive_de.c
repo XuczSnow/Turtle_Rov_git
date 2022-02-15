@@ -1,8 +1,8 @@
 ﻿/**
   ******************************************************************************
-  * @file    classical_de.c
+  * @file    adaptive_de.c
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   经典差分进化算法实现
+  * @brief   自适应差分进化算法实现
   *
   @verbatim
 
@@ -60,6 +60,9 @@ static Individual_Type Mutate[NPOP];
 static Individual_Type Cross[NPOP];
 
 void DeRun(struct DeAlgorithm *De, float *input){
+  float prev_fitness = 0;
+  float de_f = 0;
+  float de_cr = 0;
   /*种群初始化*/
   for (int i=0;i<NPOP;i++){
     for (int j=0;j<NVAR;j++){
@@ -75,6 +78,17 @@ void DeRun(struct DeAlgorithm *De, float *input){
 
   /*开始迭代计算*/
   for (int it=1;it<=ITER;it++){
+
+    /*自适应参数变异*/
+    int randf = (float)rand()/RAND_MAX;
+    if (randf < (1-(it/ITER)*(it/ITER))){
+      float randx = (float)rand()/RAND_MAX;
+      de_f = De->de_f + (-De->de_f) + randx;
+      randx = (float)rand()/RAND_MAX;
+      de_cr = De->de_cr + (-De->de_cr) + randx;
+    }else{
+      de_f = De->de_f, de_cr = De->de_cr;
+    }
 
     /*变异操作*/
     for (int i=0;i<NPOP;i++){
@@ -108,6 +122,9 @@ void DeRun(struct DeAlgorithm *De, float *input){
         De->pop[i].fitness = Cross[i].fitness;
         for (int j=0;j<NVAR;j++) De->pop[i].vector[j] = Cross[i].vector[j];
         if (De->pop[i].fitness < De->global_fitness){
+          /*自适应参数选择*/
+          if ((De->global_fitness - De->pop[i].fitness) > (De->global_fitness - prev_fitness))
+            De->de_f = de_f, De->de_cr = de_cr;
           De->global_fitness = De->pop[i].fitness;
           for (int j=0;j<NVAR;j++) De->global_solution[j] = De->pop[i].vector[j];
         }
@@ -116,6 +133,7 @@ void DeRun(struct DeAlgorithm *De, float *input){
     /*一次迭代结束*/
     //printf("This is %d iteration, globalfitness is %f\n ", it, De->global_fitness);
     De->log_fitness[it-1] = De->global_fitness;
+    prev_fitness = De->global_fitness;
     if (De->global_fitness < De->DeEndFunc(input)){
       De->log_iter = it;
       return;

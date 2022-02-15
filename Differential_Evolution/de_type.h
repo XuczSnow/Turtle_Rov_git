@@ -46,7 +46,7 @@ typedef float   (*DeFitFunc_Ptr)(float *vector, float *input, DeMode_Type mode);
 typedef float   (*DeEndFunc_Ptr)(float *input);
 
 enum DeMode{
-  MODE_CLASSDE  = 0x10030000,
+  MODE_CLSDE    = 0x10030000,
   MODE_ADTDE    = 0x10030001,
   MODE_DMRDT    = 0x10030002,
 };
@@ -66,6 +66,9 @@ struct DeAlgorithm{
   float global_solution[NVAR];
   float pop_min[NPOP];
   float pop_max[NPOP];
+  /*一些需要记录的缓存*/
+  float log_fitness[ITER];
+  int   log_iter;
 };
 
 #endif
