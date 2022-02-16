@@ -40,6 +40,9 @@
 
 #include "tsch_global.h"
 
+extern TSchTask_Type     __TaskIdle;
+extern TScheduler_Type   __TSchIdle;
+
 /**************************************函数声明**********************************/
 
 void TSch_Start(void);

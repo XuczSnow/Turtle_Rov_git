@@ -41,9 +41,9 @@
 
 /**************************************函数声明**********************************/
 
+TSchResState_Type TSch_SchCreat(TScheduler_Type *sch, TSchMode_Type mode);
 TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task, TSchTmr_Type task_period);
 TSchResState_Type TSch_SchRun(TScheduler_Type *sch);
-TSchResState_Type TSch_SchAdtTime(TScheduler_Type *sch);
 
 #endif
 /*************************************头文件结束**********************************/

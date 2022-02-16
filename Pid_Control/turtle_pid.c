@@ -7,7 +7,6 @@
 void Turtle_PidInit(TurtlePid_Type *pid, float Kp, float Ki, float Kd, float T, \
                     float lam, float u, float min, float max, TurtlePidMode_Type mode,\
                     TurtlePidFlag_Type flag){
-  /*(TODO)未加引入有效性验证 — 2022.02.14 XuczSnow*/
   pid->pid_Mode = mode, pid->pid_Flag = flag;
   pid->out_min = min, pid->out_max = max;
   pid->pid_Kp = Kp, pid->pid_Ki = Ki, pid->pid_Kd = Kd, pid->pid_T = T;

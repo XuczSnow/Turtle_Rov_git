@@ -52,6 +52,7 @@ typedef struct    TSchMsg         TSchMsg_Type;
 
 typedef enum      TSchMode        TSchMode_Type;
 typedef struct    TScheduler      TScheduler_Type;
+typedef void      (*TSchExtiPtr)(void);
 
 typedef enum      TSchTaskState   TSchTaskState_Type;
 typedef struct    TSchTask        TSchTask_Type;
@@ -69,6 +70,7 @@ enum TSchResState{
   TSCH_INVAILD  = 0x00000002,         /*操作对象无效*/
   TSCH_FULL     = 0x00000003,         /*操作对象满，主要用于串口调度器和消息*/
   TSCH_EMPTY    = 0x00000004,         /*操作对象空，主要用于消息*/
+  TSCH_SKIP     = 0x00000005,         /*跳过此次操作，调度器会根据调度情况，跳过某次调度*/
 };
 
 /*信号量相关定义*/
@@ -101,39 +103,47 @@ struct TSchMsg{
 
 /*调度器相关定义*/
 enum TSchMode{
-  UART_SCH      = 0x00010000,         //串口中断调度器
-  TIM_SCH       =	0x00010001,         //定时器调度器
-  EXTI_SCH      = 0x00010002,         //外部中断调度器
-  ADT_TIM_SCH   = 0x00010003,         //自适应时间调度器
+  UART_SCH      = 0x00010001,         //串口中断调度器
+  TIM_SCH       =	0x00010002,         //定时器调度器
+  MSG_SCH       = 0x00010003,         //消息唤醒调度器
+  SYN_SCH       = 0x00010004,         //同步唤醒调度器
+  ADT_TIM_SCH   = 0x00010005,         //自适应时间调度器
+  IDLE_SCH      = 0x00010010,         //空闲任务调度器
 };
 
 struct TScheduler{
+  uint8_t            __tsch_id;       /*调度器内部ID*/
   /*调度器相关定义*/
   TSchMode_Type      tsch_mode;
+  uint32_t           tsch_cnt;        /*调度器运行次数*/
   /*任务相关定义*/
   uint8_t            task_num;
   TSchTask_Type     *task_list;
   TSchTask_Type     *task_current;
   /*消息相关定义，仅在消息唤醒调度器中有效*/
-  TSchMsg_Type      *sch_waitmsg;
-  /*时间戳定义，仅在周期运行任务中有效*/
-  TSchTmr_Type       sch_peroid;
+  TSchMsg_Type      *tsch_waitmsg;
+  /*周期任务相关设置，仅在周期调度器中有效*/
+  TSchTmr_Type       tsch_period;
 };
 
 /*任务相关定义*/
 enum TSchTaskState{
-  TASK_CREAT    = 0x00020000,
-  TASK_RUN      = 0x00020001,           //任务运行状态
-  TASK_READY    = 0x00020002,           //任务就绪状态
-  TASK_WAIT     = 0x00020003,           //任务等待信号量
+  TASK_CREAT    = 0x00020001,           /*任务创建*/
+  TASK_RUN      = 0x00020002,           /*任务运行*/
+  TASK_READY    = 0x00020003,           /*任务就绪*/
+  TASK_WAIT     = 0x00020004,           /*任务等待唤醒*/
+  TASK_BLOCK    = 0x00020005,           /*任务阻塞(暂未使用)*/
 }; 
 
 struct TSchTask{
+  uint8_t             __task_id;        /*任务内部ID*/
   /*任务相关定义*/
   TSchTaskPtr         task_ptr;
   TSchTask_Type      *task_prev;
   TSchTask_Type      *task_next;
   TSchTaskState_Type  task_state;
+  uint8_t             task_prio;
+  TSchTmr_Type        task_period;
   /*时间统计相关定义*/
   TSchTmr_Type        tmr_start;
   TSchTmr_Type        tmr_last;
@@ -141,15 +151,18 @@ struct TSchTask{
   TSchTmr_Type        tmr_min;
   TSchTmr_Type        tmr_max;
   TSchTmr_Type        tmr_avg;
+  uint16_t            task_cnt;         /*任务运行计数*/
   /*消息量相关定义*/
   TSchMsg_Type       *msg_wait;
+  /*同步唤醒中断服务函数*/
+  TSchExtiPtr         syn_funptr;
 };
 
 /*时间戳相关定义*/
 enum TSchTmrMode{
-  TMR_SYSTICK   = 0x00030000,           /*使用系统SYSTICK定时器作为调度器时间基准*/
-  TMR_TIM       = 0x00030001,           /*使用定时器作为时间基准*/
-  TMR_EXTI      = 0x00030002,           /*使用外部中断时钟源作为基准*/
+  TMR_SYSTICK   = 0x00030001,           /*使用系统SYSTICK定时器作为调度器时间基准*/
+  TMR_TIM       = 0x00030002,           /*使用定时器作为时间基准*/
+  TMR_EXTI      = 0x00030003,           /*使用外部中断时钟源作为基准*/
 };
 
 struct TSchTick{

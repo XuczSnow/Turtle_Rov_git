@@ -43,7 +43,8 @@
 /**************************************函数声明**********************************/
 
 TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSchTaskPtr taskptr,\
-                                 TSchTmr_Type period, TSchMsg_Type *wait_msg);
+                                 TSchTmr_Type period, uint8_t prio, TSchMsg_Type *wait_msg,\
+                                 TSchExtiPtr syn_ptr);
 
 #endif
 /*************************************头文件结束**********************************/

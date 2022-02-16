@@ -41,6 +41,6 @@
 
 TSchResState_Type TSch_SemSet(TSchSem_Type *sem, uint8_t num);
 TSchResState_Type TSch_SemAdd(TSchSem_Type *sem, uint8_t num);
-TSchResState_Type TSch_SemGet(TSchSem_Type *sem);
+TSchResState_Type TSch_SemGet(TSchSem_Type *sem, TSchTmr_Type *tmr);
 
 #endif

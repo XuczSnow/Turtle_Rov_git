@@ -3,6 +3,7 @@
   * @file    tsch.c
   * @author  XuczSnow, OUC/Fab U+
   * @brief   Turtle Scheduler TSch文件
+  * @version 1.0.0
   *
   @verbatim
 
@@ -36,21 +37,25 @@
   */
 #include "tsch.h"
 
+TSchTask_Type     __TaskIdle;
+TScheduler_Type   __TSchIdle;
+
 /**
   * @brief  用户空闲任务函数
   *
   * @note   如用户需要在空闲任务中加入自行处理的数据，可以重载此函数
   */
 __weak void TSch_IdleTaskUsr(void){
-    return;
+  return;
 }
 
 /**
   * @brief  系统空闲任务
   */
-static void __TSch_IdleTask(void){
-    TSch_IdleTaskUsr();
-    return;
+static void __TSch_IdleTask(void *p_arg){
+  (void *)p_arg;
+  TSch_IdleTaskUsr();
+  return;
 }
 
 /**
@@ -59,7 +64,9 @@ static void __TSch_IdleTask(void){
   * @note   初始化完成后，使用此函数，任务调度器将接管系统
   */
 void TSch_Start(void){
-    while(1){
-        __TSch_IdleTask();
-    }
+  TSch_SchCreat(&__TSchIdle,IDLE_SCH);
+  TSch_TaskCreat(&__TSchIdle, &__TaskIdle, __TSch_IdleTask, 0, 0, TSCH_MSG_NULL, NULL);
+  while(1){
+    TSch_SchRun(&__TSchIdle);
+  }
 }

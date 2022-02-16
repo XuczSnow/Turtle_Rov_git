@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "tsch_global.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

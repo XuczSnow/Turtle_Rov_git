@@ -37,6 +37,8 @@
 
 #include "tsch_tmr.h"
 
+#define TASK_MAX_CNT    255u
+
 static TSchTick_Type sTSchTick;         /*定义时间戳处理块，用于时间戳信息保存，禁止外部调用*/
 
 /**
@@ -51,6 +53,8 @@ void TSch_TmrIRQHandler(void){
     ++(sTSchTick.tmr_carry);
   }
 }
+
+/*(TODO)是不是可以考虑直接读取定时器的值来获取时间基准 - XuczSnow 2022.02.16*/
 
 /**
   * @brief  任务调度器时间戳初始化
@@ -109,6 +113,8 @@ TSchResState_Type TSch_TmrSet(TSchTmr_Type tmr){
   return TSCH_OK;
 }
 
+static uint8_t __tsch_task_cpu[TASK_MAX_CNT];
+
 /**
   * @brief  任务时间处理函数
   *
@@ -125,6 +131,32 @@ TSchResState_Type TSch_TmrTask(TSchTask_Type *task, TSchTmr_Type start, TSchTmr_
   temp = last - start;
   if (temp > task->tmr_max) task->tmr_max = temp;
   else if (temp < task->tmr_min) task->tmr_min = temp;
-  task->tmr_avg += (TSchTmr_Type)(TMR_AVG_K*(float)(task->tmr_avg));
+  task->tmr_avg = (TSchTmr_Type)(TMR_AVG_K*(float)(task->tmr_avg));
+
+  /*计算CPU利用率并存储*/
+  uint64_t task_temp = task->task_cnt*task->tmr_avg;
+  uint64_t tmr_temp  = sTSchTick.tmr + sTSchTick.tmr_carry*TSchTmr_MAX;
+  __tsch_task_cpu[task->__task_id] = (uint8_t)(100*task_temp/tmr_temp);
+
+  return TSCH_OK;
+}
+
+const uint8_t __adt_tim_pr = 10;
+
+/**
+  * @brief  任务调度器时间自适应算法实现函数
+  *
+  * @param  sch     调度器处理块
+  * 
+  * @retval TSchResState见定义
+  */
+TSchResState_Type TSch_TmrAdtTime(TScheduler_Type *sch){
+  TSchTask_Type *ptask;
+  uint8_t temp = 0;
+  temp = __tsch_task_cpu[__TaskIdle.__task_id];
+  ptask = sch->task_list;
+  while (ptask == NULL || ptask->task_next == NULL){
+    ptask = ptask->task_next;
+  }
   return TSCH_OK;
 }
