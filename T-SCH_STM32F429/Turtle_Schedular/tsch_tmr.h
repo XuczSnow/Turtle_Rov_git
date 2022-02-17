@@ -40,10 +40,12 @@
 #include "tsch_global.h"
 
 /*************************************宏定义声明**********************************/
+#define TMR_ADT_R           10u
+#define TMR_SDT_K           50u
 
 #define TMR_AVG_K           20u
 #define TMR_TIMEOUT         10000u
-#define TSchTmr_MAX         UINT32_MAX
+#define TMR_CARRYMAX        UINT32_MAX
 
 /**************************************函数声明**********************************/
 

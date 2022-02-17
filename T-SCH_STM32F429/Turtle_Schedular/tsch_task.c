@@ -3,7 +3,7 @@
   * @file    tsch_task.c
   * @author  XuczSnow, OUC/Fab U+
   * @brief   Turtle Scheduler 任务处理文件，主要包含任务处理函数
-  *
+  * 
   @verbatim
 
   @endverbatim
@@ -35,6 +35,8 @@
   ******************************************************************************
   */
 
+/*(TODO)后期需要增加任务参数调整的功能 - XuczSnow 2022.02.17*/
+
 #include "tsch_task.h"
 
 static uint8_t __tsch_task_cnt = 0;
@@ -45,7 +47,9 @@ static uint8_t __tsch_task_cnt = 0;
   * @param  task        任务处理块
   * @param  taskptr     任务处理函数
   * @param  period      任务执行周期
-  * @param  wait_msg    任务调度信号量，无信号量阻塞时，输入TSCH_MSG_NULL
+  * @param  prio        任务优先级
+  * @param  wait_msg    任务调度信号量，无信号量阻塞时，输入MSG_NULL
+  * @param  syn_ptr     任务同步唤醒函数
   * 
   * @retval TSchResState见定义
   */
@@ -59,13 +63,14 @@ TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSch
   if (taskptr == NULL) return TSCH_INVAILD;
   task->task_ptr = taskptr;
 
-  if (prio>15) return TSCH_INVAILD;
+  if (prio > 14) return TSCH_INVAILD;
   task->task_prio = prio;
 
-  if (wait_msg != TSCH_MSG_NULL && syn_ptr != NULL){
+  if (wait_msg != MSG_NULL && syn_ptr == NULL){
     return TSCH_INVAILD;
-  }else if (wait_msg != TSCH_MSG_NULL){
+  }else if (wait_msg != MSG_NULL){
     task->msg_wait = wait_msg;
+    task->syn_funptr = syn_ptr;
     task->task_state = TASK_WAIT;
   }else if (syn_ptr != NULL){
     task->syn_funptr = syn_ptr;
@@ -81,7 +86,7 @@ TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSch
 //任务唤醒函数
 TSchResState_Type TSch_TaskWeak(TSchTask_Type *task){
   if (task->syn_funptr == NULL) return TSCH_INVAILD;
-  task->syn_funptr();
+  task->syn_funptr(task->task_prio);
   return TSCH_OK;
 }
 

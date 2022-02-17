@@ -46,6 +46,7 @@ TScheduler_Type   __TSchIdle;
   * @note   如用户需要在空闲任务中加入自行处理的数据，可以重载此函数
   */
 __weak void TSch_IdleTaskUsr(void){
+  
   return;
 }
 
@@ -53,7 +54,6 @@ __weak void TSch_IdleTaskUsr(void){
   * @brief  系统空闲任务
   */
 static void __TSch_IdleTask(void *p_arg){
-  (void *)p_arg;
   TSch_IdleTaskUsr();
   return;
 }
@@ -64,8 +64,8 @@ static void __TSch_IdleTask(void *p_arg){
   * @note   初始化完成后，使用此函数，任务调度器将接管系统
   */
 void TSch_Start(void){
-  TSch_SchCreat(&__TSchIdle,IDLE_SCH);
-  TSch_TaskCreat(&__TSchIdle, &__TaskIdle, __TSch_IdleTask, 0, 0, TSCH_MSG_NULL, NULL);
+  TSch_SchCreat(&__TSchIdle, IDLE_SCH, NULL);
+  TSch_TaskCreat(&__TSchIdle, &__TaskIdle, __TSch_IdleTask, 0, 0, MSG_NULL, NULL);
   while(1){
     TSch_SchRun(&__TSchIdle);
   }

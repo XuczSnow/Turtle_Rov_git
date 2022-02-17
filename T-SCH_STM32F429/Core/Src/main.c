@@ -18,6 +18,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
+#include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -42,6 +45,27 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+TScheduler_Type   Tim6_Sch;
+TSchTask_Type     EH_Tim6Task1;
+
+TScheduler_Type   Tim7_Sch;
+TSchTask_Type     H_Tim7Task1;
+TSchTask_Type     H_Tim7Task2;
+TSchTask_Type     M_Tim7Task3;
+TSchTask_Type     M_Tim7Task4;
+
+TScheduler_Type   Tim11_Sch;
+TSchTask_Type     L_Tim11Task1;
+
+TScheduler_Type   High_Msg;
+TSchTask_Type     H_MsgTask1;
+
+TScheduler_Type   Mid_Sch;
+TSchTask_Type     M_MsgTask2;
+
+TScheduler_Type   Syn_Sch;
+TSchTask_Type     EH_SynTask;
+
 
 /* USER CODE END PV */
 
@@ -84,6 +108,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
+  MX_TIM6_Init();
+  MX_TIM7_Init();
+  MX_TIM11_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */

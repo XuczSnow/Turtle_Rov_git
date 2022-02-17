@@ -37,13 +37,15 @@
 
 #include "tsch_global.h"
 
-/*软件中断发布函数具体实现*/
-void TSch_ExtiPub(void){
-    return;
+/*调度器周期设置函数具体实现*/
+void TSch_UserSetPeriod(TScheduler_Type *sch, uint16_t period){
+
+  return;
 }
 
-/*任务周期设置函数具体实现*/
-void TSch_UserSetPeriod(uint16_t period){
+
+/*调度器优先级设置函数具体实现*/
+void TSch_UserSetPriority(TScheduler_Type *sch, uint16_t priority){
 
   return;
 }

@@ -52,7 +52,7 @@ typedef struct    TSchMsg         TSchMsg_Type;
 
 typedef enum      TSchMode        TSchMode_Type;
 typedef struct    TScheduler      TScheduler_Type;
-typedef void      (*TSchExtiPtr)(void);
+typedef void      (*TSchExtiPtr)(uint8_t prio);
 
 typedef enum      TSchTaskState   TSchTaskState_Type;
 typedef struct    TSchTask        TSchTask_Type;
@@ -97,6 +97,8 @@ struct TSchMsg{
   uint16_t          msg_length;
   TSchMsgMode_Type  msg_mode;
   TSchMsgEle_Type  *msg;
+  /*任务唤醒相关定义*/
+  TSchTask_Type    *task_wait;
   /*时间戳相关定义*/
   TSchTmr_Type      tmr_last;
 };
@@ -115,15 +117,15 @@ struct TScheduler{
   uint8_t            __tsch_id;       /*调度器内部ID*/
   /*调度器相关定义*/
   TSchMode_Type      tsch_mode;
-  uint32_t           tsch_cnt;        /*调度器运行次数*/
+  uint16_t           tsch_ccnt;       /*调度器运行次数进位值*/
+  uint16_t           tsch_cnt;        /*调度器运行次数*/
   /*任务相关定义*/
   uint8_t            task_num;
   TSchTask_Type     *task_list;
   TSchTask_Type     *task_current;
-  /*消息相关定义，仅在消息唤醒调度器中有效*/
-  TSchMsg_Type      *tsch_waitmsg;
   /*周期任务相关设置，仅在周期调度器中有效*/
   TSchTmr_Type       tsch_period;
+  TSchTask_Type    **tsch_list;
 };
 
 /*任务相关定义*/
@@ -151,6 +153,7 @@ struct TSchTask{
   TSchTmr_Type        tmr_min;
   TSchTmr_Type        tmr_max;
   TSchTmr_Type        tmr_avg;
+  uint16_t            task_ccnt;        /*任务运行次数进位值*/
   uint16_t            task_cnt;         /*任务运行计数*/
   /*消息量相关定义*/
   TSchMsg_Type       *msg_wait;

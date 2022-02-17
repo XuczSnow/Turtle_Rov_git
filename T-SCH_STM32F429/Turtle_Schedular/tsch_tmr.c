@@ -48,7 +48,7 @@ static TSchTick_Type sTSchTick;         /*定义时间戳处理块，用于时�
   */
 void TSch_TmrIRQHandler(void){
   ++(sTSchTick.tmr);
-  if (sTSchTick.tmr == TSchTmr_MAX){
+  if (sTSchTick.tmr == TMR_CARRYMAX){
     sTSchTick.tmr = 0;
     ++(sTSchTick.tmr_carry);
   }
@@ -135,7 +135,7 @@ TSchResState_Type TSch_TmrTask(TSchTask_Type *task, TSchTmr_Type start, TSchTmr_
 
   /*计算CPU利用率并存储*/
   uint64_t task_temp = task->task_cnt*task->tmr_avg;
-  uint64_t tmr_temp  = sTSchTick.tmr + sTSchTick.tmr_carry*TSchTmr_MAX;
+  uint64_t tmr_temp  = sTSchTick.tmr + sTSchTick.tmr_carry*TMR_CARRYMAX;
   __tsch_task_cpu[task->__task_id] = (uint8_t)(100*task_temp/tmr_temp);
 
   return TSCH_OK;
@@ -151,12 +151,28 @@ const uint8_t __adt_tim_pr = 10;
   * @retval TSchResState见定义
   */
 TSchResState_Type TSch_TmrAdtTime(TScheduler_Type *sch){
-  TSchTask_Type *ptask;
-  uint8_t temp = 0;
-  temp = __tsch_task_cpu[__TaskIdle.__task_id];
+  TSchTask_Type *ptask = NULL;
+  TSchTmr_Type   temp = 0;
+  float   pt = 0;
+  float   pr = 0;
+  float   pidle = 0;
+  float   num = 0;
+
+  pidle = (float)__tsch_task_cpu[__TaskIdle.__task_id];
+  pt    = (float)__tsch_task_cpu[ptask->__task_id];
+  pr    = (float)TMR_ADT_R;
+  num   = (float)sch->task_num;
   ptask = sch->task_list;
-  while (ptask == NULL || ptask->task_next == NULL){
+  if (ptask == NULL) return TSCH_EMPTY;
+  
+  pt = (num*pt + pidle - pr)/num*pr;
+  temp = (TSchTmr_Type)(pt*ptask->task_period);
+  temp = (temp/TMR_AVG_K + 1)*TMR_AVG_K;                    /*调整为TMR_AVG_K的倍数，方式最大公约数计算过小*/
+
+  while (ptask != NULL || ptask->task_next != NULL){
+    ptask->task_period = temp;
     ptask = ptask->task_next;
   }
+  sch->tsch_period = temp/num;
   return TSCH_OK;
 }

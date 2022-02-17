@@ -36,6 +36,8 @@
   */
 #include "tsch_msg.h"
 
+TSchMsg_Type    *__tsch_msg_current;
+
 /**
   * @brief  任务消息创建
   *
@@ -96,16 +98,6 @@ TSchResState_Type TSch_MsgGet(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint1
 }
 
 /**
-  * @brief  软中断发布
-  * 
-  * @note   任务唤醒软中断实现，需要消息发布唤醒任务时在bsp文件中进行实现
-  */
-__weak void TSch_ExtiPub(void){
-  return;
-}
-
-
-/**
   * @brief  任务消息发布
   *
   * @param  msg     消息量处理块
@@ -143,6 +135,10 @@ TSchResState_Type TSch_MsgPub(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint1
     }
   }
   msg->tmr_last = TSch_TmrGet();
-  TSch_ExtiPub();
+  if (msg->task_wait != NULL){
+    __tsch_msg_current = msg;
+    if (msg->task_wait->syn_funptr !=NULL)
+      msg->task_wait->syn_funptr(msg->task_wait->task_prio);
+  }
   return TSCH_OK;
 }

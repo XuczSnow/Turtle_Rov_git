@@ -40,6 +40,9 @@
 
 #include "tsch_global.h"
 
-#define     USR_SEM_MAX     32            /*最大信号量定义*/
+#define     USR_SEM_MAX           32u           /*最大信号量定义*/
+
+#define     USR_SCH_LIST_LEN      64u           /*任务就绪列表长度*/
+#define     USR_TASK_CNT_MAX      10000u        /*任务计数长度*/
 
 #endif

@@ -41,7 +41,8 @@
 
 /**************************************函数声明**********************************/
 
-TSchResState_Type TSch_SchCreat(TScheduler_Type *sch, TSchMode_Type mode);
+TSchResState_Type TSch_SchCreat(TScheduler_Type *sch, TSchMode_Type mode, TSchTask_Type **list);
+inline TSchTmr_Type __Tsch_Gcd(TSchTmr_Type num1, TSchTmr_Type num2);
 TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task, TSchTmr_Type task_period);
 TSchResState_Type TSch_SchRun(TScheduler_Type *sch);
 
