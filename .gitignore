@@ -1,3 +1,12 @@
-/T-SCH_STM32F429/MDK-ARM/T-SCH_STM32F429/
+
+# 忽略KEIL缓存
+/Turtle_Rov_0/MDK-ARM/Control_STM32/
+/Turtle_Rov_Baby/T-SCH_STM32F429/MDK-ARM/T-SCH_STM32F429/
+/uCOS_STM32F429/MDK-ARM/uCOS_STM32F429/
+
+#忽略一些测试的工程
 /Just_a_Test/
-/uCOS_STM32F429/
+
+#忽略一些备份的文件
+/Turtle_Rov_0/Rov_Turtle/Function/原始程序/
+/Turtle_Rov_0/Rov_Turtle/letter-shell-master.zip
