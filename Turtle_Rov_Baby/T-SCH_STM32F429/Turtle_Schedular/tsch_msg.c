@@ -76,14 +76,14 @@ TSchResState_Type TSch_MsgGet(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint1
 
   switch (msg->msg_mode){
     case MSG_STACK:{
-      for (uint16_t i=0;i<len;i++){
+      for (uint16_t i=0;i<len;++i){
         element[i] = msg->msg[head--];
         if (head == 0) return TSCH_EMPTY;
       }
       break;
     }
     case MSG_QUEUE:{
-      for (uint16_t i=0;i<len;i++){
+      for (uint16_t i=0;i<len;++i){
         element[i] = msg->msg[head--];
         if (head == 0) head = length;
         if (head == tail) return TSCH_EMPTY;
@@ -116,14 +116,14 @@ TSchResState_Type TSch_MsgPub(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint1
 
   switch(msg->msg_mode){
     case MSG_STACK:{
-      for (uint16_t i=0;i<len;i++){
+      for (uint16_t i=0;i<len;++i){
         if (head == length-1) return TSCH_FULL;
         msg->msg[++head] = element[i];
       }
       break;
     }
     case MSG_QUEUE:{
-       for (uint16_t i=0;i<len;i++){
+       for (uint16_t i=0;i<len;++i){
         if (head == tail-1) return TSCH_FULL;
         if (head == length) head = 0;
         msg->msg[++head] = element[i];

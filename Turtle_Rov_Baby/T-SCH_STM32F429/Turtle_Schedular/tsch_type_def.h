@@ -51,6 +51,7 @@ typedef enum      TSchMsgMode     TSchMsgMode_Type;
 typedef struct    TSchMsg         TSchMsg_Type;
 
 typedef enum      TSchMode        TSchMode_Type;
+typedef struct    TSchTList       TSchTList_Type;
 typedef struct    TScheduler      TScheduler_Type;
 typedef void      (*TSchExtiPtr)(uint8_t prio);
 
@@ -70,7 +71,8 @@ enum TSchResState{
   TSCH_INVAILD  = 0x00000002,         /*操作对象无效*/
   TSCH_FULL     = 0x00000003,         /*操作对象满，主要用于串口调度器和消息*/
   TSCH_EMPTY    = 0x00000004,         /*操作对象空，主要用于消息*/
-  TSCH_SKIP     = 0x00000005,         /*跳过此次操作，调度器会根据调度情况，跳过某次调度*/
+  TSCH_CAERR    = 0x00000005,         /*任务调度器计算失败，请检查输入参数*/
+  TSCH_SKIP     = 0x00001000,         /*跳过此次操作，调度器会根据调度情况，跳过某次调度*/
 };
 
 /*信号量相关定义*/
@@ -113,6 +115,11 @@ enum TSchMode{
   IDLE_SCH      = 0x00010010,         //空闲任务调度器
 };
 
+struct TSchTList{
+  uint8_t           task_num;
+  TSchTask_Type    *task;
+};
+
 struct TScheduler{
   uint8_t            __tsch_id;       /*调度器内部ID*/
   /*调度器相关定义*/
@@ -124,8 +131,12 @@ struct TScheduler{
   TSchTask_Type     *task_list;
   TSchTask_Type     *task_current;
   /*周期任务相关设置，仅在周期调度器中有效*/
+  uint8_t            task_dlnum;
+  uint32_t           task_rdlist_len;
+  TSchTList_Type   **task_rdlist;
+  TSchTmr_Type       tsch_pmin;
+  TSchTmr_Type       tsch_pmax;
   TSchTmr_Type       tsch_period;
-  TSchTask_Type    **tsch_list;
 };
 
 /*任务相关定义*/

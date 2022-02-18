@@ -13,7 +13,7 @@ void Turtle_PidInit(TurtlePid_Type *pid, float Kp, float Ki, float Kd, float T, 
   if (mode == MODE_FOPID){
     pid->fopid_lam = lam, pid->fopid_u = u;
     /*初始化Fopid参数*/
-    for (uint8_t i=0;i<USR_FO_N;i++){
+    for (uint8_t i=0;i<USR_FO_N;++i){
       if (i=0){
         pid->err_wl[i] = 1;
         pid->err_wu[i] = 1;
@@ -29,15 +29,11 @@ void Turtle_PidInit(TurtlePid_Type *pid, float Kp, float Ki, float Kd, float T, 
   return;
 }
 
-void Turtle_PidFresh(){
-
-}
-
 void Turtle_Fopid(TurtlePid_Type *fopid){
   float ki_temp = 0;
   float kd_temp = 0;
 
-  for (uint8_t i=USR_FO_N;i>=0;--i) fopid->err[i+1] = fopid->err[i];
+  for (uint8_t i=USR_FO_N;i>0;--i) fopid->err[i] = fopid->err[i-1];
   fopid->err[0] = fopid->pid_setpoint - fopid->pid_actualpoint;
   for (uint8_t i=0;i<USR_FO_N;++i){
     ki_temp += (fopid->err_wl[i])*(fopid->err[i]);
@@ -49,14 +45,10 @@ void Turtle_Fopid(TurtlePid_Type *fopid){
 }
 
 void TurTle_Pid(TurtlePid_Type *pid){
-  for (uint8_t i=USR_FO_N;i>=0;--i) pid->err[i+1] = pid->err[i];
+  for (uint8_t i=USR_FO_N;i>0;--i) pid->err[i] = pid->err[i-1];
   pid->err[0] = pid->pid_setpoint = pid->pid_actualpoint;
   pid->err_sum += pid->err[0];
   pid->pid_output = pid->pid_Kp*pid->err[0]+\
                     pid->pid_Ki*pid->pid_T*pid->err_sum+\
                     pid->pid_Kd/pid->pid_T*(pid->err[0]-pid->err[1]);
-}
-
-void Turtle_CtrlRun(){
-  
 }

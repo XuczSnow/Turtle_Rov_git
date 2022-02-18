@@ -52,7 +52,7 @@ TSchResState_Type TSch_SemSet(TSchSem_Type *sem, uint8_t num){
   TSchTmr_Type  tmr;
   sem->sem_cnt = num;
   tmr = TSch_TmrGet();
-  for (int i=0;i<num;i++) sem->tmr[i] = tmr;
+  for (int i=0;i<num;++i) sem->tmr[i] = tmr;
   return TSCH_OK;
 }
 
@@ -72,7 +72,7 @@ TSchResState_Type TSch_SemAdd(TSchSem_Type *sem, uint8_t num){
   temp_cnt = sem->sem_cnt;
   sem->sem_cnt += num;
   tmr = TSch_TmrGet();
-  for (int i=0;i<num;i++) sem->tmr[temp_cnt+i] = tmr;
+  for (int i=0;i<num;++i) sem->tmr[temp_cnt+i] = tmr;
   return TSCH_OK;
 }
 
@@ -88,8 +88,9 @@ TSchResState_Type TSch_SemAdd(TSchSem_Type *sem, uint8_t num){
   */
 TSchResState_Type TSch_SemGet(TSchSem_Type *sem, TSchTmr_Type *tmr){
   if (sem->sem_cnt == 0) return TSCH_EMPTY;
-  for (int i=0;i<sem->sem_cnt;++i)  sem->tmr[i-1] = sem->tmr[i];
-  sem->sem_cnt --;
-  sem->tmr[sem->sem_cnt] = 0;
+  *tmr = sem->tmr[0];
+  for (int i=1;i<sem->sem_cnt;++i)  sem->tmr[i-1] = sem->tmr[i];
+  --(sem->sem_cnt);
+  sem->tmr[sem->sem_cnt-1] = 0;
   return TSCH_OK;
 }
