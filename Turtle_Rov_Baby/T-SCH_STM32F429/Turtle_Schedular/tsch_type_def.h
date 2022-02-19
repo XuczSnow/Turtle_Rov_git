@@ -132,6 +132,7 @@ struct TScheduler{
   TSchTask_Type     *task_current;
   /*周期任务相关设置，仅在周期调度器中有效*/
   uint8_t            task_dlnum;
+  uint8_t            task_dlcnt;
   uint32_t           task_rdlist_len;
   TSchTList_Type   **task_rdlist;
   TSchTmr_Type       tsch_pmin;

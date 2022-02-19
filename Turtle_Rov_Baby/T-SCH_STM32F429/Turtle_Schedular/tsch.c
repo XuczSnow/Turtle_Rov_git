@@ -45,7 +45,17 @@ TScheduler_Type   __TSchIdle;
   *
   * @note   如用户需要在空闲任务中加入自行处理的数据，可以重载此函数
   */
-__weak void TSch_IdleTaskUsr(void){
+__weak void TSch_UserIdleTask(void){
+  
+  return;
+}
+
+/**
+  * @brief  用户空闲任务函数
+  *
+  * @note   如用户需要在空闲任务中加入自行处理的数据，可以重载此函数
+  */
+__weak void TSch_UserFatal(void){
   
   return;
 }
@@ -54,7 +64,7 @@ __weak void TSch_IdleTaskUsr(void){
   * @brief  系统空闲任务
   */
 static void __TSch_IdleTask(void *p_arg){
-  TSch_IdleTaskUsr();
+  TSch_UserIdleTask();
   return;
 }
 
@@ -68,5 +78,11 @@ void TSch_Start(void){
   TSch_TaskCreat(&__TSchIdle, &__TaskIdle, __TSch_IdleTask, 0, 0, MSG_NULL, NULL);
   while(1){
     TSch_SchRun(&__TSchIdle);
+  }
+}
+
+void Tsch_FatalError(void){
+  while (1){
+    TSch_UserFatal();
   }
 }
