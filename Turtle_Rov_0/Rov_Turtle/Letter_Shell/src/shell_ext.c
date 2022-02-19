@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file shell_ext.c
  * @author Letter (NevermindZZT@gmail.com)
  * @brief shell extensions
@@ -21,10 +21,9 @@ extern ShellCommand* shellSeekCommand(Shell *shell,
 extern int shellGetVarValue(Shell *shell, ShellCommand *command);
 
 /**
- * @brief 判断数字进制
+ * @brief 鍒ゆ柇鏁板瓧杩涘埗
  * 
- * @param string 参数字符串
- * @return ShellNumType 进制
+ * @param string 鍙傛暟瀛楃涓? * @return ShellNumType 杩涘埗
  */
 static ShellNumType shellExtNumType(char *string)
 {
@@ -58,10 +57,9 @@ static ShellNumType shellExtNumType(char *string)
 
 
 /**
- * @brief 字符转数字
- * 
- * @param code 字符
- * @return char 数字
+ * @brief 瀛楃杞暟瀛? * 
+ * @param code 瀛楃
+ * @return char 鏁板瓧
  */
 static char shellExtToNum(char code)
 {
@@ -85,10 +83,9 @@ static char shellExtToNum(char code)
 
 
 /**
- * @brief 解析字符参数
+ * @brief 瑙ｆ瀽瀛楃鍙傛暟
  * 
- * @param string 字符串参数
- * @return char 解析出的字符
+ * @param string 瀛楃涓插弬鏁? * @return char 瑙ｆ瀽鍑虹殑瀛楃
  */
 static char shellExtParseChar(char *string)
 {
@@ -128,11 +125,8 @@ static char shellExtParseChar(char *string)
 
 
 /**
- * @brief 解析字符串参数
- * 
- * @param string 字符串参数
- * @return char* 解析出的字符串
- */
+ * @brief 瑙ｆ瀽瀛楃涓插弬鏁? * 
+ * @param string 瀛楃涓插弬鏁? * @return char* 瑙ｆ瀽鍑虹殑瀛楃涓? */
 static char* shellExtParseString(char *string)
 {
     char *p = string;
@@ -167,10 +161,9 @@ static char* shellExtParseString(char *string)
 
 
 /**
- * @brief 解析数字参数
+ * @brief 瑙ｆ瀽鏁板瓧鍙傛暟
  * 
- * @param string 字符串参数
- * @return unsigned int 解析出的数字
+ * @param string 瀛楃涓插弬鏁? * @return unsigned int 瑙ｆ瀽鍑虹殑鏁板瓧
  */
 static unsigned int shellExtParseNumber(char *string)
 {
@@ -238,12 +231,11 @@ static unsigned int shellExtParseNumber(char *string)
 
 
 /**
- * @brief 解析变量参数
+ * @brief 瑙ｆ瀽鍙橀噺鍙傛暟
  * 
- * @param shell shell对象
- * @param var 变量
- * @return unsigned int 变量值
- */
+ * @param shell shell瀵硅薄
+ * @param var 鍙橀噺
+ * @return unsigned int 鍙橀噺链? */
 static unsigned int shellExtParseVar(Shell *shell, char *var)
 {
     ShellCommand *command = shellSeekCommand(shell,
@@ -262,11 +254,11 @@ static unsigned int shellExtParseVar(Shell *shell, char *var)
 
 
 /**
- * @brief 解析参数
+ * @brief 瑙ｆ瀽鍙傛暟
  * 
- * @param shell shell对象
- * @param string 参数
- * @return unsigned int 解析结果
+ * @param shell shell瀵硅薄
+ * @param string 鍙傛暟
+ * @return unsigned int 瑙ｆ瀽缁撴灉
  */
 unsigned int shellExtParsePara(Shell *shell, char *string)
 {
@@ -291,14 +283,13 @@ unsigned int shellExtParsePara(Shell *shell, char *string)
 
 
 /**
- * @brief 执行命令
+ * @brief 镓ц锻戒护
  * 
- * @param shell shell对象
- * @param command 命令
- * @param argc 参数个数
- * @param argv 参数
- * @return int 返回值
- */
+ * @param shell shell瀵硅薄
+ * @param command 锻戒护
+ * @param argc 鍙傛暟涓暟
+ * @param argv 鍙傛暟
+ * @return int 杩斿洖链? */
 int shellExtRun(Shell *shell, ShellCommand *command, int argc, char *argv[])
 {
     unsigned int params[SHELL_PARAMETER_MAX_NUMBER] = {0};

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file log.c
  * @author Letter (nevermindzzt@gmail.com)
  * @brief log
@@ -28,9 +28,9 @@ Log *logList[LOG_MAX_NUMBER] = {0};
 static char logBuffer[LOG_BUFFER_SIZE];
 
 /**
- * @brief 注册log对象
+ * @brief 娉ㄥ唽log瀵硅薄
  * 
- * @param log log对象
+ * @param log log瀵硅薄
  */
 void logRegister(Log *log, Shell *shell)
 {
@@ -53,9 +53,9 @@ void logRegister(Log *log, Shell *shell)
 
 
 /**
- * @brief 注销log对象
+ * @brief 娉ㄩ攒log瀵硅薄
  * 
- * @param log log对象
+ * @param log log瀵硅薄
  */
 void logUnRegister(Log *log)
 {
@@ -71,10 +71,10 @@ void logUnRegister(Log *log)
 
 
 /**
- * @brief 设置log日志级别
+ * @brief 璁剧疆log镞ュ织绾у埆
  * 
- * @param log log对象
- * @param level 日志级别
+ * @param log log瀵硅薄
+ * @param level 镞ュ织绾у埆
  */
 void logSetLevel(Log *log, LogLevel level)
 {
@@ -86,12 +86,12 @@ logSetLevel, logSetLevel, set log level);
 
 
 /**
- * @brief log写buffer
+ * @brief log鍐檅uffer
  * 
- * @param log log对象
- * @param level 日志级别
+ * @param log log瀵硅薄
+ * @param level 镞ュ织绾у埆
  * @param buffer buffer
- * @param len buffer长度
+ * @param len buffer闀垮害
  */
 static void logWriteBuffer(Log *log, LogLevel level, char *buffer, short len)
 {
@@ -114,12 +114,11 @@ static void logWriteBuffer(Log *log, LogLevel level, char *buffer, short len)
 }
 
 /**
- * @brief log格式化写入数据
- * 
- * @param log log对象
- * @param level log级别
- * @param fmt 格式
- * @param ... 参数
+ * @brief log镙煎纺鍖栧啓鍏ユ暟鎹? * 
+ * @param log log瀵硅薄
+ * @param level log绾у埆
+ * @param fmt 镙煎纺
+ * @param ... 鍙傛暟
  */
 void logWrite(Log *log, LogLevel level, char *fmt, ...)
 {
@@ -135,12 +134,12 @@ void logWrite(Log *log, LogLevel level, char *fmt, ...)
 
 
 /**
- * @brief 16进制输出
+ * @brief 16杩涘埗杈揿嚭
  * 
- * @param log log对象
- * @param level 日志级别
- * @param base 内存基址
- * @param length 长度
+ * @param log log瀵硅薄
+ * @param level 镞ュ织绾у埆
+ * @param base 鍐呭瓨鍩哄潃
+ * @param length 闀垮害
  */
 void logHexDump(Log *log, LogLevel level, void *base, unsigned int length)
 {

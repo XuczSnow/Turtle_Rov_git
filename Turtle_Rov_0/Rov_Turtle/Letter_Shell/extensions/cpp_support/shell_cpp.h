@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file shell_cpp.h
  * @author Letter (nevermindzzt@gmail.com)
  * @brief shell cpp support
@@ -17,59 +17,57 @@ extern "C" {
 #include "shell.h"
 
 /**
- * @brief shell command cpp 支持 cmd 定义
+ * @brief shell command cpp 鏀寔 cmd 瀹氢箟
  */
 typedef struct shell_command_cpp_cmd
 {
-    int attr;                                                   /**< 属性 */
-    const char *name;                                           /**< 命令名 */
-    int (*function)();                                          /**< 命令执行函数 */
-    const char *desc;                                           /**< 命令描述 */
+    int attr;                                                   /**< 灞炴€?*/
+    const char *name;                                           /**< 锻戒护鍚?*/
+    int (*function)();                                          /**< 锻戒护镓ц鍑芥暟 */
+    const char *desc;                                           /**< 锻戒护鎻忚堪 */
 } ShellCommandCppCmd;
 
 /**
- * @brief shell command cpp 支持 var 定义
+ * @brief shell command cpp 鏀寔 var 瀹氢箟
  */
 typedef struct shell_command_cpp_var
 {
-    int attr;                                                   /**< 属性 */
-    const char *name;                                           /**< 变量名 */
-    void *value;                                                /**< 变量值 */
-    const char *desc;                                           /**< 变量描述 */
+    int attr;                                                   /**< 灞炴€?*/
+    const char *name;                                           /**< 鍙橀噺鍚?*/
+    void *value;                                                /**< 鍙橀噺链?*/
+    const char *desc;                                           /**< 鍙橀噺鎻忚堪 */
 } ShellCommandCppVar;
 
 /**
- * @brief shell command cpp 支持 user 定义
+ * @brief shell command cpp 鏀寔 user 瀹氢箟
  */
 typedef struct shell_command_cpp_user
 {
-    int attr;                                                   /**< 属性 */
-    const char *name;                                           /**< 用户名 */
-    const char *password;                                       /**< 用户密码 */
-    const char *desc;                                           /**< 用户描述 */
+    int attr;                                                   /**< 灞炴€?*/
+    const char *name;                                           /**< 鐢ㄦ埛鍚?*/
+    const char *password;                                       /**< 鐢ㄦ埛瀵嗙爜 */
+    const char *desc;                                           /**< 鐢ㄦ埛鎻忚堪 */
 } ShellCommandCppUser;
 
 /**
- * @brief shell command cpp 支持 key 定义
+ * @brief shell command cpp 鏀寔 key 瀹氢箟
  */
 typedef struct shell_command_cpp_key
 {
-    int attr;                                                   /**< 属性 */
-    int value;                                                  /**< 按键键值 */
-    void (*function)(Shell *);                                  /**< 按键执行函数 */
-    const char *desc;                                           /**< 按键描述 */
+    int attr;                                                   /**< 灞炴€?*/
+    int value;                                                  /**< 鎸夐敭阌€?*/
+    void (*function)(Shell *);                                  /**< 鎸夐敭镓ц鍑芥暟 */
+    const char *desc;                                           /**< 鎸夐敭鎻忚堪 */
 } ShellCommandCppKey;
 
 #if SHELL_USING_CMD_EXPORT == 1
 
     #undef SHELL_EXPORT_CMD
     /**
-     * @brief shell 命令定义
+     * @brief shell 锻戒护瀹氢箟
      * 
-     * @param _attr 命令属性
-     * @param _name 命令名
-     * @param _func 命令函数
-     * @param _desc 命令描述
+     * @param _attr 锻戒护灞炴€?     * @param _name 锻戒护鍚?     * @param _func 锻戒护鍑芥暟
+     * @param _desc 锻戒护鎻忚堪
      */
     #define SHELL_EXPORT_CMD(_attr, _name, _func, _desc) \
             const char shellCmd##_name[] = #_name; \
@@ -85,12 +83,9 @@ typedef struct shell_command_cpp_key
 
     #undef SHELL_EXPORT_VAR
     /**
-     * @brief shell 变量定义
+     * @brief shell 鍙橀噺瀹氢箟
      * 
-     * @param _attr 变量属性
-     * @param _name 变量名
-     * @param _value 变量值
-     * @param _desc 变量描述
+     * @param _attr 鍙橀噺灞炴€?     * @param _name 鍙橀噺鍚?     * @param _value 鍙橀噺链?     * @param _desc 鍙橀噺鎻忚堪
      */
     #define SHELL_EXPORT_VAR(_attr, _name, _value, _desc) \
             const char shellCmd##_name[] = #_name; \
@@ -106,12 +101,10 @@ typedef struct shell_command_cpp_key
 
     #undef SHELL_EXPORT_USER
     /**
-     * @brief shell 用户定义
+     * @brief shell 鐢ㄦ埛瀹氢箟
      * 
-     * @param _attr 用户属性
-     * @param _name 用户名
-     * @param _password 用户密码
-     * @param _desc 用户描述
+     * @param _attr 鐢ㄦ埛灞炴€?     * @param _name 鐢ㄦ埛鍚?     * @param _password 鐢ㄦ埛瀵嗙爜
+     * @param _desc 鐢ㄦ埛鎻忚堪
      */
     #define SHELL_EXPORT_USER(_attr, _name, _password, _desc) \
             const char shellCmd##_name[] = #_name; \
@@ -128,12 +121,10 @@ typedef struct shell_command_cpp_key
 
     #undef SHELL_EXPORT_KEY
     /**
-     * @brief shell 按键定义
+     * @brief shell 鎸夐敭瀹氢箟
      * 
-     * @param _attr 按键属性
-     * @param _value 按键键值
-     * @param _func 按键函数
-     * @param _desc 按键描述
+     * @param _attr 鎸夐敭灞炴€?     * @param _value 鎸夐敭阌€?     * @param _func 鎸夐敭鍑芥暟
+     * @param _desc 鎸夐敭鎻忚堪
      */
     #define SHELL_EXPORT_KEY(_attr, _value, _func, _desc) \
             const char shellDesc##_value[] = #_desc; \

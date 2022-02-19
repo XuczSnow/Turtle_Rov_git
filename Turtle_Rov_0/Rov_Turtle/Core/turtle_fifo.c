@@ -1,8 +1,8 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_fifo.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV µÄFIFOÏà¹Øº¯Êı
+  * @brief   Turtle ç³»åˆ— ROV çš„FIFOç›¸å…³å‡½æ•°
   *
   ******************************************************************************
   * @attention
@@ -19,16 +19,16 @@ FifoQueueTypedef Terminal_RxQueue;
 //Queue Init
 void QueueInit(FifoQueueTypedef *Queue)
 {
-    Queue->front = Queue->rear;//³õÊ¼»¯Ê±¶ÓÁĞÍ·¶ÓÁĞÊ×ÏàÁ¬
-    Queue->count = 0;   //¶ÓÁĞ¼ÆÊıÎª0
+    Queue->front = Queue->rear;//åˆå§‹åŒ–æ—¶é˜Ÿåˆ—å¤´é˜Ÿåˆ—é¦–ç›¸è¿
+    Queue->count = 0;   //é˜Ÿåˆ—è®¡æ•°ä¸º0
 }
 
 // Queue In
-uint8_t QueueIn(FifoQueueTypedef *Queue,ElemType sdat) //Êı¾İ½øÈë¶ÓÁĞ
+uint8_t QueueIn(FifoQueueTypedef *Queue,ElemType sdat) //æ•°æ®è¿›å…¥é˜Ÿåˆ—
 {
     if((Queue->front == Queue->rear) && (Queue->count == QueueSize))
-    {												 //ÅĞ¶ÏÈç¹û¶ÓÁĞÂúÁË
-        return QueueFull;    //·µ»Ø¶ÓÁĞÂúµÄ±êÖ¾
+    {												 //åˆ¤æ–­å¦‚æœé˜Ÿåˆ—æ»¡äº†
+        return QueueFull;    //è¿”å›é˜Ÿåˆ—æ»¡çš„æ ‡å¿—
     }else
     {
         Queue->dat[Queue->rear] = sdat;

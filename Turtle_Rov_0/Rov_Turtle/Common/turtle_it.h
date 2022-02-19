@@ -1,8 +1,8 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_it.h
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV ÖĞ¶Ï¹ÜÀí³ÌĞòÍ·ÎÄ¼ş
+  * @brief   Turtle ç³»åˆ— ROV ä¸­æ–­ç®¡ç†ç¨‹åºå¤´æ–‡ä»¶
   ******************************************************************************
   * @attention
   *
@@ -16,7 +16,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "turtle_g.h"
 
-//ÁÙÊ±±äÁ¿£¬Ê¹ÄÜ×ËÌ¬¿ØÖÆ
+//ä¸´æ—¶å˜é‡ï¼Œä½¿èƒ½å§¿æ€æ§åˆ¶
 extern uint8_t at_en;
 extern uint8_t auto_cycle;
 void USER_UART_IdleCpltCallback(UART_HandleTypeDef *huart, UART_IDTypeDef uartNUM);

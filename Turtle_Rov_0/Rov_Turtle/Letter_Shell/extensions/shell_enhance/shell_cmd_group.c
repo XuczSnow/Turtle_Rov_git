@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file shell_cmd_group.c
  * @author Letter(nevermindzzt@gmail.com)
  * @brief shell command group support
@@ -17,14 +17,12 @@ unsigned int shellRunCommand(Shell *shell, ShellCommand *command);
 static void shellCmdGroupHelp(Shell *shell, char *name, ShellCommand *group);
 
 /**
- * @brief shell命令组运行
+ * @brief shell锻戒护缁勮繍琛? * 
+ * @param group 锻戒护鏁扮粍
+ * @param argc 鍙傛暟鏁伴噺
+ * @param argv 鍙傛暟
  * 
- * @param group 命令数组
- * @param argc 参数数量
- * @param argv 参数
- * 
- * @return unsigned int 执行命令返回值
- */
+ * @return unsigned int 镓ц锻戒护杩斿洖链? */
 unsigned int shellCmdGroupRun(ShellCommand *group, int argc, char *argv[])
 {
     ShellCommand *item = group;
@@ -58,11 +56,10 @@ unsigned int shellCmdGroupRun(ShellCommand *group, int argc, char *argv[])
 }
 
 /**
- * @brief shell 命令组帮助
- * 
- * @param shell shell对象
- * @param name 命令组名
- * @param group 命令数组
+ * @brief shell 锻戒护缁勫府锷? * 
+ * @param shell shell瀵硅薄
+ * @param name 锻戒护缁勫悕
+ * @param group 锻戒护鏁扮粍
  */
 static void shellCmdGroupHelp(Shell *shell, char *name, ShellCommand *group)
 {

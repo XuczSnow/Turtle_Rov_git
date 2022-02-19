@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file shell_cmd_list.c
  * @author Letter (NevermindZZT@gmail.com)
  * @brief shell cmd list
@@ -36,8 +36,7 @@ SHELL_AGENCY_FUNC(shellRun, shellGetCurrent(), (const char *)p1);
 
 
 /**
- * @brief shell命令表
- * 
+ * @brief shell锻戒护琛? * 
  */
 const ShellCommand shellCommandList[] = 
 {
@@ -94,8 +93,7 @@ const ShellCommand shellCommandList[] =
 
 
 /**
- * @brief shell命令表大小
- * 
+ * @brief shell锻戒护琛ㄥぇ灏? * 
  */
 const unsigned short shellCommandCount 
     = sizeof(shellCommandList) / sizeof(ShellCommand);

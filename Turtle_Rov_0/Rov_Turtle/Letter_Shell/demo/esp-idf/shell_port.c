@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file shell_port.c
  * @author Letter (NevermindZZT@gmail.com)
  * @brief 
@@ -21,9 +21,8 @@ Shell shell;
 char shellBuffer[512];
 
 /**
- * @brief 用户shell写
- * 
- * @param data 数据
+ * @brief 鐢ㄦ埛shell鍐? * 
+ * @param data 鏁版嵁
  */
 void userShellWrite(char data)
 {
@@ -32,11 +31,9 @@ void userShellWrite(char data)
 
 
 /**
- * @brief 用户shell读
- * 
- * @param data 数据
- * @return char 状态
- */
+ * @brief 鐢ㄦ埛shell璇? * 
+ * @param data 鏁版嵁
+ * @return char 钟舵€? */
 signed char userShellRead(char *data)
 {
     return (uart_read_bytes(SHELL_UART, (uint8_t *)data, 1, portMAX_DELAY) == 1)
@@ -45,8 +42,7 @@ signed char userShellRead(char *data)
 
 
 /**
- * @brief 用户shell初始化
- * 
+ * @brief 鐢ㄦ埛shell鍒濆鍖? * 
  */
 void userShellInit(void)
 {

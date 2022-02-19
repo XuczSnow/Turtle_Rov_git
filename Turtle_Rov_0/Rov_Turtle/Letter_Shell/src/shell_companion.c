@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file shell_companion.c
  * @author Letter (nevermindzzt@gmail.com)
  * @brief shell companion object support
@@ -12,12 +12,12 @@
  
 #if SHELL_USING_COMPANION == 1
 /**
- * @brief shell添加伴生对象
+ * @brief shell娣诲姞浼寸敓瀵硅薄
  * 
- * @param shell shell对象
- * @param id 伴生对象ID
- * @param object 伴生对象
- * @return signed char 0 添加成功 -1 添加失败
+ * @param shell shell瀵硅薄
+ * @param id 浼寸敓瀵硅薄ID
+ * @param object 浼寸敓瀵硅薄
+ * @return signed char 0 娣诲姞鎴愬姛 -1 娣诲姞澶辫触
  */
 signed char shellCompanionAdd(Shell *shell, int id, void *object)
 {
@@ -32,12 +32,11 @@ signed char shellCompanionAdd(Shell *shell, int id, void *object)
 }
 
 /**
- * @brief shell删除伴生对象
+ * @brief shell鍒犻櫎浼寸敓瀵硅薄
  * 
- * @param shell shell对象
- * @param id 伴生对象ID
- * @return signed char 0 删除成功 -1 无匹配对象
- */
+ * @param shell shell瀵硅薄
+ * @param id 浼寸敓瀵硅薄ID
+ * @return signed char 0 鍒犻櫎鎴愬姛 -1 镞犲尮閰嶅璞? */
 signed char shellCompanionDel(Shell *shell, int id)
 {
     ShellCompanionObj *companions = shell->info.companions;
@@ -64,11 +63,11 @@ signed char shellCompanionDel(Shell *shell, int id)
 }
 
 /**
- * @brief shell获取伴生对象
+ * @brief shell銮峰彇浼寸敓瀵硅薄
  * 
- * @param shell shell对象
- * @param id 伴生对象ID
- * @return void* 伴生对象，无匹配对象时返回NULL
+ * @param shell shell瀵硅薄
+ * @param id 浼寸敓瀵硅薄ID
+ * @return void* 浼寸敓瀵硅薄锛屾棤鍖归厤瀵硅薄镞惰繑锲濶ULL
  */
 void *shellCompanionGet(Shell *shell, int id)
 {

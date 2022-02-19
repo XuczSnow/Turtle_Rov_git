@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    turtle_it.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV ÖĞ¶Ï¹ÜÀí³ÌĞò
+  * @brief   Turtle ç³»åˆ— ROV ä¸­æ–­ç®¡ç†ç¨‹åº
   *
   ******************************************************************************
   * @attention
@@ -15,12 +15,12 @@
 #include "turtle_g.h"
 
 
-/** @defgroup ´®¿ÚÖĞ¶Ï´¦Àíº¯Êı
+/** @defgroup ä¸²å£ä¸­æ–­å¤„ç†å‡½æ•°
   * @{
   */
 UART_DataTypeDef huart[5];
 
-//ÁÙÊ±±äÁ¿£¬Ê¹ÄÜ×ËÌ¬¿ØÖÆ
+//ä¸´æ—¶å˜é‡ï¼Œä½¿èƒ½å§¿æ€æ§åˆ¶
 uint8_t at_en = 0;
 
 void USER_UART_IdleCpltCallback(UART_HandleTypeDef *huart_arg, UART_IDTypeDef uart_id)
@@ -44,7 +44,7 @@ void USER_UART_IdleCpltCallback(UART_HandleTypeDef *huart_arg, UART_IDTypeDef ua
 		}
 		huart[uart_id].rxFlag = 1;
 		
-		//´®¿ÚÖĞ¶Ï¹¦ÄÜ´¦Àíº¯Êı
+		//ä¸²å£ä¸­æ–­åŠŸèƒ½å¤„ç†å‡½æ•°
 		if(huart_arg->Instance == HOST_UART.Instance)
 		{
 			if (huart[uart_id].rxBuf[0] != 0xEB)
@@ -54,7 +54,7 @@ void USER_UART_IdleCpltCallback(UART_HandleTypeDef *huart_arg, UART_IDTypeDef ua
 			}
 			else
 			{
-				//Ö÷»ú³ÌĞò´¦Àí
+				//ä¸»æœºç¨‹åºå¤„ç†
 				Turtle_HostData(huart[HOST_UART_ID].rxBuf);
 				host[1].err_cnt = 0;
 			}
@@ -63,31 +63,31 @@ void USER_UART_IdleCpltCallback(UART_HandleTypeDef *huart_arg, UART_IDTypeDef ua
 		}
 		else if (huart_arg->Instance == DPH_UART.Instance)
 		{
-			//Éî¶È´«¸ĞÆ÷´¦Àí
+			//æ·±åº¦ä¼ æ„Ÿå™¨å¤„ç†
 			Turtle_Press_DataPro(huart[DPH_UART_ID].rxBuf);
 			huart[DPH_UART_ID].rxFlag = 0;
 		}
 		else if (huart_arg->Instance == PROP_UART.Instance)
 		{
-			//ÍÆ½øÆ÷Êı¾İ´¦Àí
+			//æ¨è¿›å™¨æ•°æ®å¤„ç†
 			Turtle_Prop_DataPro(huart[PROP_UART_ID].rxBuf);
 			huart[PROP_UART_ID].rxFlag = 0;
 		}
 		else if (huart_arg->Instance == GYRO_UART.Instance)
 		{
 #if G_ANGLE == G_GYRO
-			//ÍÓÂİÒÇÊı¾İ´¦Àí
+			//é™€èºä»ªæ•°æ®å¤„ç†
 			CopeSerial2Data(huart[GYRO_UART_ID].rxBuf);
 #elif G_ANGLE == G_COMP
-			//µç×ÓÂŞÅÌÊı¾İ´¦Àí
+			//ç”µå­ç½—ç›˜æ•°æ®å¤„ç†
 			Compass_Info(huart[COMP_UART_ID].rxBuf);
 #endif
 			huart[GYRO_UART_ID].rxFlag = 0;
 		}
 		else if (huart_arg->Instance == TEMP_UART.Instance)
 		{
-			//ÎÂ¶È´«¸ĞÆ÷Êı¾İ´¦Àí
-			//(´Ë´¦Îª¿Õ)
+			//æ¸©åº¦ä¼ æ„Ÿå™¨æ•°æ®å¤„ç†
+			//(æ­¤å¤„ä¸ºç©º)
 		}
 	}
 }
@@ -98,7 +98,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 		HAL_GPIO_WritePin(P485_EN_GPIO_Port,P485_EN_Pin,GPIO_PIN_RESET);
 }
 
-/** @defgroup ¶¨Ê±Æ÷ÖĞ¶Ï´¦Àíº¯Êı
+/** @defgroup å®šæ—¶å™¨ä¸­æ–­å¤„ç†å‡½æ•°
   * @{
   */
 
@@ -108,7 +108,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if (htim->Instance == PROPC_TIM.Instance)
 	{
-		//ÍÆ½øÆ÷¿ØÖÆ
+		//æ¨è¿›å™¨æ§åˆ¶
 		Turtle_Prop_Update();
 	}
 	else if (htim->Instance == ACTRL_TIM.Instance)
@@ -120,14 +120,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		if (actrl_cnt % 10 == 0)
 		{
 			actrl_cnt = 0;
-			//ÔË¶¯¿ØÖÆ
+			//è¿åŠ¨æ§åˆ¶
 			host[1].err_cnt ++;
 			
 			uint8_t* p_buf;
-			//ÉÏÎ»»úÍ¨Ñ¶´íÎó´¦Àí
+			//ä¸Šä½æœºé€šè®¯é”™è¯¯å¤„ç†
 			if (host[1].err_cnt >= 100)
 			{
-				//¼üÖµÇåÁã
+				//é”®å€¼æ¸…é›¶
 				p_buf = host[1].joy_stick;
 					for(uint8_t i=0;i<20;i++)
 						p_buf[i] = 0x00;
@@ -143,31 +143,25 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			}
 			
 			if (host[1].joy_stick[KID_RSTICK] == 0x00 && host[1].joy_stick[KID_LSTICK] == 0x00)
-				//ÊÖ¶¯¿ØÖÆ
+				//æ‰‹åŠ¨æ§åˆ¶
 				Turtle_HostMove();
 			else if (host[1].joy_stick[KID_RSTICK] == 0x01 && host[1].joy_stick[KID_LSTICK] == 0x01)
-				//ÊÖ¶¯µ÷ÊÔ
+				//æ‰‹åŠ¨è°ƒè¯•
 				;
 			else if (host[1].joy_stick[KID_RSTICK] == 0x02 && host[1].joy_stick[KID_LSTICK] == 0x02)
-				//Ö±½Ó¿ØÖÆÍÆ½øÆ÷
+				//ç›´æ¥æ§åˆ¶æ¨è¿›å™¨
 				Turtle_HostCtrlProp();
 			else
 				;
 			
-			//ÀÌº£²Î
-				//Ö±½Ó¿ØÖÆºóÁ½¸öË®Æ½ÍÆ½øÆ÷
-			
-				//´¹Ïò²¹³¥
-			
-			
 			if (actrl_cnt % auto_cycle == 0)
 			{
-				//×Ô¶¯¿ØÖÆ
+				//è‡ªåŠ¨æ§åˆ¶
 				Turtle_AutoCtrl_Refresh();
 				for(uint8_t i=0;i<4;i++)
 					Turtle_AutoCtrl(&hAuto[i]);
-				for(uint8_t i=0;i<4;i++)
-					Turtle_SI(&hSI[i]);
+//				for(uint8_t i=0;i<4;i++)
+//					Turtle_SI(&hSI[i]);
 			}
 			
 			Turtle_Prop_GatePro();
@@ -175,11 +169,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 	else if (htim->Instance == LSTASK_TIM.Instance)
 	{
-		//µÍËÙÈÎÎñµ÷¶È¿ØÖÆÆ÷
+		//ä½é€Ÿä»»åŠ¡è°ƒåº¦æ§åˆ¶å™¨
 		Turtle_Timer_LSTask();
 	}
 	else if (htim->Instance == HSTASK_TIM.Instance)
 	{
-		//¸ßËÙÈÎÎñµ÷¶È¿ØÖÆÆ÷
+		//é«˜é€Ÿä»»åŠ¡è°ƒåº¦æ§åˆ¶å™¨
 	}
 }

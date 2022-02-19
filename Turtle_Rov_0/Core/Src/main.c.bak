@@ -1,4 +1,4 @@
-ï»¿/* USER CODE BEGIN Header */
+/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : main.c
@@ -18,9 +18,9 @@
   */
 	
 	/*
-	ä¸€ã€æ—¶é—´æµ‹é‡è¯´æ˜
-			1.é€šé“1æµ‹é‡ä¸ªä»»åŠ¡è¿è¡Œæ—¶é—´
-			2.é€šé“2æµ‹é‡é€»è¾‘æ§åˆ¶è¿è¡Œæ—¶é—´
+	Ò»¡¢Ê±¼ä²âÁ¿ËµÃ÷
+			1.Í¨µÀ1²âÁ¿¸öÈÎÎñÔËĞĞÊ±¼ä
+			2.Í¨µÀ2²âÁ¿Âß¼­¿ØÖÆÔËĞĞÊ±¼ä
 	*/
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
@@ -155,7 +155,7 @@ int main(void)
 		JumpToBootloader();
 	}
 	
-	//ç­‰å¾…ç½‘ç»œå‡†å¤‡å¥½
+	//µÈ´ıÍøÂç×¼±¸ºÃ
 	HAL_Delay(8000);
 	
 	Shell_PutStr(DISPLAY_CLR,sizeof(DISPLAY_CLR));
@@ -177,11 +177,11 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		//è®¾å¤‡æ§åˆ¶
-#if 0  //æ—§çš„æ“ä½œæ–¹å¼
+		//Éè±¸¿ØÖÆ
+#if 0  //¾ÉµÄ²Ù×÷·½Ê½
 		if (host[1].joy_stick[KID_RB])
 		{
-			//æ§åˆ¶å‰ç¯äº®åº¦
+			//¿ØÖÆÇ°µÆÁÁ¶È
 			if (host[1].joy_stick[KID_RIGHT] == 0x01 && key_led_cnt>0x40)
 			{
 				hRov.led_lumin1 ++;
@@ -207,7 +207,7 @@ int main(void)
 				key_led_cnt ++;
 			}
 			
-			//æ§åˆ¶æŒ¡ä½
+			//¿ØÖÆµ²Î»
 			static uint8_t gear_cnt = 1;
 			if (host[1].joy_stick[KID_UP] == 0x01)
 			{
@@ -241,7 +241,7 @@ int main(void)
 		}
 		else if (host[1].joy_stick[KID_RT] < 0x70)
 		{
-			//æ§åˆ¶åç¯äº®åº¦
+			//¿ØÖÆºóµÆÁÁ¶È
 //			if (host[1].joy_stick[KID_RIGHT] == 0x01)
 //				hRov.led_lumin2 ++;
 //			else if (host[1].joy_stick[KID_LEFT] == 0x01)
@@ -250,7 +250,7 @@ int main(void)
 		}
 		else if (host[1].joy_stick[KID_LB])
 		{
-			//äº‘å°åŠå‰æ‘„åƒæœºè°ƒèŠ‚
+			//ÔÆÌ¨¼°Ç°ÉãÏñ»úµ÷½Ú
 			hRov.yt_angle = Turtle_YT_GetAngle();
 			if (host[1].joy_stick[KID_UP] == 0x01)
 				Turtle_YT_MoveC(YT_UP);
@@ -268,7 +268,7 @@ int main(void)
 		}
 		else if (host[1].joy_stick[KID_LT] > 0x90)
 		{
-			//åæ‘„åƒæœºè°ƒèŠ‚ï¼ˆæ­¤å¤„æš‚æ—¶ä¸ºç©ºï¼‰
+			//ºóÉãÏñ»úµ÷½Ú£¨´Ë´¦ÔİÊ±Îª¿Õ£©
 		}
 		else if (host[1].joy_stick[KID_START])
 		{
@@ -288,7 +288,7 @@ int main(void)
 		}
 		else
 		{
-			//äº‘å°åœæ­¢åŠå…¶ä»–éœ€è¦å¤ä½çš„è®¾å¤‡
+			//ÔÆÌ¨Í£Ö¹¼°ÆäËûĞèÒª¸´Î»µÄÉè±¸
 			Turtle_YT_MoveC(YT_MID);
 			if (cam_run_state == CAM_BUSY)
 				cam_run_state = CAM_STOP;
@@ -296,7 +296,7 @@ int main(void)
 			key_gear_cnt ++;
 		}
 #else
-		//æ§åˆ¶å‰ç¯äº®åº¦
+		//¿ØÖÆÇ°µÆÁÁ¶È
 		if (host[1].joy_stick[KID_RIGHT] == 0x01 && key_led_cnt>0x40)
 		{
 			hRov.led_lumin1 ++;
@@ -326,7 +326,7 @@ int main(void)
 			key_led_cnt ++;
 		}
 		
-		//æ§åˆ¶æŒ¡ä½
+		//¿ØÖÆµ²Î»
 		static uint8_t gear_cnt = 1;
 		if (host[1].joy_stick[KID_RSTICK] == 0x01)
 		{
@@ -356,7 +356,7 @@ int main(void)
 		}
 
 
-		//äº‘å°åŠå‰æ‘„åƒæœºè°ƒèŠ‚
+		//ÔÆÌ¨¼°Ç°ÉãÏñ»úµ÷½Ú
 		hRov.yt_angle = Turtle_YT_GetAngle();
 		if (host[1].joy_stick[KID_UP] == 0x01)
 		{
@@ -401,11 +401,11 @@ int main(void)
 //		}
 #endif
 
-		//ä½é€Ÿä»»åŠ¡è°ƒåº¦
+		//µÍËÙÈÎÎñµ÷¶È
 		switch (lstask_cnt)
 		{
 			case 0:
-				//æ¨è¿›å™¨è¿è¡ŒçŠ¶æ€æ£€æµ‹
+				//ÍÆ½øÆ÷ÔËĞĞ×´Ì¬¼ì²â
 				Turtle_Prop_RunCheck();
 #if PROP_FBD_EN == G_TURE
 				Turtle_Prop_ErrPro();
@@ -414,7 +414,7 @@ int main(void)
 				lstask_cnt ++;
 				break;
 			case 2:
-				//æ¸©æ¹¿åº¦ä¼ æ„Ÿå™¨
+				//ÎÂÊª¶È´«¸ĞÆ÷
 				hSHT30.error = SHT3X_ReadMeasurementBuffer(&hSHT30.temperature, &hSHT30.humidity);
 				if (hSHT30.temperature > TEMP_YC_GATE)
 					hRov.run_state |= ROV_CTEMP_YC;
@@ -424,10 +424,10 @@ int main(void)
 				lstask_cnt ++;
 				break;
 			case 4:
-				//æ¼æ°´æ£€æµ‹
+				//Â©Ë®¼ì²â
 				hRov.lsjc_state[0] = Turtle_LSJC(LSJC_CH1);
 				hRov.lsjc_state[1] = Turtle_LSJC(LSJC_CH2);
-				//æ¼æ°´æ£€æµ‹åç»­å¤„ç†
+				//Â©Ë®¼ì²âºóĞø´¦Àí
 				if (hRov.lsjc_state[0] == LSJC_LS)
 					hRov.run_state |= ROV_BBOARD_LS;
 				else
@@ -442,9 +442,9 @@ int main(void)
 				lstask_cnt ++;
 				break;
 			case 6:
-				//ç”µæºæ¨¡å—æ¸©åº¦æŸ¥è¯¢
+				//µçÔ´Ä£¿éÎÂ¶È²éÑ¯
 				Temp_Check();
-				//ç”µæºæ¨¡å—æ¸©åº¦å¤„ç†
+				//µçÔ´Ä£¿éÎÂ¶È´¦Àí
 				if (huart[TEMP_UART_ID].rxFlag == 1)
 				{
 					int16_buf = Temp_DataPro(huart[TEMP_UART_ID].rxBuf);
@@ -485,7 +485,7 @@ int main(void)
 			lstask_flag = 0;
 		}
 				
-		//Shell ä»»åŠ¡
+		//Shell ÈÎÎñ
 		shellTask(&shell);
 		
 		//HAL_IWDG_Refresh(&hiwdg);

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file shell_fs.h
  * @author Letter (nevermindzzt@gmail.com)
  * @brief shell file system support
@@ -21,8 +21,7 @@
 #define     SHELL_FS_LIST_FILE_BUFFER_MAX   4096
 
 /**
- * @brief shell文件系统支持结构体
- * 
+ * @brief shell鏂囦欢绯荤粺鏀寔缁撴瀯浣? * 
  */
 typedef struct shell_fs
 {

@@ -1,8 +1,8 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_camp_hcm365b.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV µç×ÓÂŞÅÌÇı¶¯³ÌĞò
+  * @brief   Turtle ç³»åˆ— ROV ç”µå­ç½—ç›˜é©±åŠ¨ç¨‹åº
   *
   ******************************************************************************
   * @attention
@@ -16,8 +16,8 @@
 
 uint8_t  BCD2DEC(uint8_t date)
 {
-	return date - 6 * (date >> 4);//Ê®½øÖÆºÍ16½øÖÆ½øÎ»²îÎª6°ÑbcdÂë¶à½øÎ»´ÎÊı³ËÒÔ6£¬ÔÙÓÃÔ­À´Êı¼õÈ¥¶à½øÎ»Êı
-}                               //date >> 4Îª¶à½øÎ»´ÎÊı
+	return date - 6 * (date >> 4);//åè¿›åˆ¶å’Œ16è¿›åˆ¶è¿›ä½å·®ä¸º6æŠŠbcdç å¤šè¿›ä½æ¬¡æ•°ä¹˜ä»¥6ï¼Œå†ç”¨åŸæ¥æ•°å‡å»å¤šè¿›ä½æ•°
+}                               //date >> 4ä¸ºå¤šè¿›ä½æ¬¡æ•°
 
 
 void Compass_GetAdd(void)
@@ -39,12 +39,12 @@ void Compass_GetAdd(void)
 //		HAL_Delay(10);
 //	}
 	hRov.comp_id = 0x00;
-	//¶ÁÈ¡µØÖ·³É¹¦ºó£¬×Ô¶¯ÉèÖÃ»Ø¸´ÆµÂÊ
+	//è¯»å–åœ°å€æˆåŠŸåï¼Œè‡ªåŠ¨è®¾ç½®å›å¤é¢‘ç‡
 	huart[COMP_UART_ID].txBuf[0] = 0x68;
 	huart[COMP_UART_ID].txBuf[1] = 0x05;
 	huart[COMP_UART_ID].txBuf[2] = hRov.comp_id;
 	huart[COMP_UART_ID].txBuf[3] = 0x0C;
-	huart[COMP_UART_ID].txBuf[4] = 0x02;											//ÉèÖÃ»Ø¸´ÆµÂÊ15Hz
+	huart[COMP_UART_ID].txBuf[4] = 0x02;											//è®¾ç½®å›å¤é¢‘ç‡15Hz
 	huart[COMP_UART_ID].txBuf[5] = 0x00;
 	for (i=1;i<5;i++)
 		huart[COMP_UART_ID].txBuf[5] += huart[COMP_UART_ID].txBuf[i];

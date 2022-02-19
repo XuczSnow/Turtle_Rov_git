@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file shell_fs.c
  * @author Letter (nevermindzzt@gmail.com)
  * @brief shell file system support
@@ -13,9 +13,9 @@
 #include "stdio.h"
 
 /**
- * @brief 改变当前路径(shell调用)
+ * @brief 鏀瑰彉褰揿墠璺缎(shell璋幂敤)
  * 
- * @param dir 路径
+ * @param dir 璺缎
  */
 void shellCD(char *dir)
 {
@@ -35,7 +35,7 @@ SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_FUNC)|SHELL_CMD_DISABLE_RE
 cd, shellCD, change dir);
 
 /**
- * @brief 列出文件(shell调用)
+ * @brief 鍒楀嚭鏂囦欢(shell璋幂敤)
  * 
  */
 void shellLS(void)
@@ -60,12 +60,11 @@ SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_FUNC)|SHELL_CMD_DISABLE_RE
 ls, shellLS, list all files);
 
 /**
- * @brief 初始化shell文件系统支持
+ * @brief 鍒濆鍖杝hell鏂囦欢绯荤粺鏀寔
  * 
- * @param shellFs shell文件系统对象
- * @param pathBuffer shell路径缓冲
- * @param pathLen 路径缓冲区大小
- */
+ * @param shellFs shell鏂囦欢绯荤粺瀵硅薄
+ * @param pathBuffer shell璺缎缂揿啿
+ * @param pathLen 璺缎缂揿啿鍖哄ぇ灏? */
 void shellFsInit(ShellFs *shellFs, char *pathBuffer, size_t pathLen)
 {
     shellFs->info.path = pathBuffer;

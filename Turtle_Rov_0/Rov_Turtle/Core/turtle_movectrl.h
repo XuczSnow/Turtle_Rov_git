@@ -1,8 +1,8 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_movectrl.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV ÔË¶¯¿ØÖÆ³ÌĞò
+  * @brief   Turtle ç³»åˆ— ROV è¿åŠ¨æ§åˆ¶ç¨‹åº
   *
   ******************************************************************************
   * @attention
@@ -17,7 +17,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "turtle_g.h"
 
-#define DEPTH_K 0.7			//Éî¶ÈÏµÊı¿ØÖÆ£¬È«ËÙ³Ë´ËÏµÊı
+#define DEPTH_K 0.7			//æ·±åº¦ç³»æ•°æ§åˆ¶ï¼Œå…¨é€Ÿä¹˜æ­¤ç³»æ•°
 
 void Turtle_Prop_UpDown(uint8_t key);
 void Turtle_Prop_FwBack(uint8_t key);

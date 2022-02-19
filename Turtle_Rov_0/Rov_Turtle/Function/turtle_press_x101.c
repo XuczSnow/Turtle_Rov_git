@@ -1,8 +1,8 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_press_x101.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV Ñ¹Á¦´«¸ĞÆ÷¶ÁÈ¡³ÌĞò
+  * @brief   Turtle ç³»åˆ— ROV å‹åŠ›ä¼ æ„Ÿå™¨è¯»å–ç¨‹åº
   *
   ******************************************************************************
   * @attention
@@ -43,7 +43,7 @@ void Turtle_Press_Init(void)
 	hPress.init_press = press_buf/5;
 }
 
-//µÍÍ¨ÂË²¨ÏµÊı
+//ä½é€šæ»¤æ³¢ç³»æ•°
 float lpt_k = 0.5;
 
 void Turtle_Press_DataPro(uint8_t *press_rt)
@@ -83,7 +83,7 @@ void Turtle_Press_DataPro(uint8_t *press_rt)
 				else
 					hPress.conv_depth[0] = 0;
 				
-				hPress.conv_speed[0] = (float)(hPress.conv_depth[0] - hPress.conv_depth[1])*(1.0-lpt_k) + hPress.conv_speed[1]*lpt_k;  //µ¥Î» mm/s
+				hPress.conv_speed[0] = (float)(hPress.conv_depth[0] - hPress.conv_depth[1])*(1.0-lpt_k) + hPress.conv_speed[1]*lpt_k;  //å•ä½ mm/s
 				
 				for(uint8_t i=0;i<9;i++)
 				{

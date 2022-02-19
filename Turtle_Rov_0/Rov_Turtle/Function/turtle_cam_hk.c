@@ -1,8 +1,8 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_cam_hk.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV ÉãÏñ»ú¹ÜÀí³ÌĞò
+  * @brief   Turtle ç³»åˆ— ROV æ‘„åƒæœºç®¡ç†ç¨‹åº
   *
   ******************************************************************************
   * @attention
@@ -32,7 +32,7 @@ void Turtle_Cam_SetFocus(uint8_t dr)
 	HAL_UART_Transmit(&CAM_UART,huart[CAM_UART_ID].txBuf,huart[CAM_UART_ID].txBufCount,0xFFF);
 }
 
-/****************×Ö·ûµş¼Ó³ÌĞò****************/
+/****************å­—ç¬¦å åŠ ç¨‹åº****************/
 
 #define OSD_ID 0x81
 

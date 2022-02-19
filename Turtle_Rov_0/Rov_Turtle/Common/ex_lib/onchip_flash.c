@@ -1,14 +1,14 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    onchip_flash.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   CSDN Æ¬ÉÏflash¹ÜÀí³ÌĞòÒÆÖ²
+  * @brief   CSDN ç‰‡ä¸Šflashç®¡ç†ç¨‹åºç§»æ¤
   *
   ******************************************************************************
   * @attention
-  *	FLASHĞ´º¯ÊıÖĞ£¬ĞŞ¸Ä×îºóÒ»Ò³Ê±£¬»á³öÏÖÎŞ·¨¶ÁÈ¡µÄÇé¿ö£¬ĞŞ¸Ä¶Áº¯ÊıÖĞ
+  *	FLASHå†™å‡½æ•°ä¸­ï¼Œä¿®æ”¹æœ€åä¸€é¡µæ—¶ï¼Œä¼šå‡ºç°æ— æ³•è¯»å–çš„æƒ…å†µï¼Œä¿®æ”¹è¯»å‡½æ•°ä¸­
 	*		if (!Buffer || Address < STM32FLASH_BASE || ((Address + Size) >= STM32FLASH_END))
-	*	Îª£º
+	*	ä¸ºï¼š
 	*		if (!Buffer || Address < STM32FLASH_BASE || ((Address + Size) > STM32FLASH_END))
   *
   ******************************************************************************
@@ -26,7 +26,7 @@
 static uint16_t FlashBuffer[STM32FLASH_PAGE_SIZE >> 1];
 static uint32_t FLASH_WriteNotCheck(uint32_t Address, const uint16_t *Buffer, uint32_t NumToWrite);
 
-/// ³õÊ¼»¯FLASH
+/// åˆå§‹åŒ–FLASH
 void FLASH_Init(void)
 {
 	HAL_FLASH_Unlock();
@@ -35,11 +35,11 @@ void FLASH_Init(void)
 }
 
 /**
- * ¶ÁFLASH
- * @param  Address µØÖ·
- * @param  Buffer  ´æ·Å¶ÁÈ¡µÄÊı¾İ
- * @param  Size    Òª¶ÁÈ¡µÄÊı¾İ´óĞ¡£¬µ¥Î»×Ö½Ú
- * @return         ¶Á³ö³É¹¦µÄ×Ö½ÚÊı
+ * è¯»FLASH
+ * @param  Address åœ°å€
+ * @param  Buffer  å­˜æ”¾è¯»å–çš„æ•°æ®
+ * @param  Size    è¦è¯»å–çš„æ•°æ®å¤§å°ï¼Œå•ä½å­—èŠ‚
+ * @return         è¯»å‡ºæˆåŠŸçš„å­—èŠ‚æ•°
  */
 uint32_t FLASH_Read(uint32_t Address, void *Buffer, uint32_t Size)
 {
@@ -68,57 +68,57 @@ uint32_t FLASH_Read(uint32_t Address, void *Buffer, uint32_t Size)
 }
 
 /**
- * Ğ´FLASH
- * @param  Address    Ğ´ÈëÆğÊ¼µØÖ·£¬£¡£¡£¡ÒªÇó2×Ö½Ú¶ÔÆë£¡£¡£¡
- * @param  Buffer     ´ıĞ´ÈëµÄÊı¾İ£¬£¡£¡£¡ÒªÇó2×Ö½Ú¶ÔÆë£¡£¡£¡
- * @param  NumToWrite ÒªĞ´ÈëµÄÊı¾İÁ¿£¬µ¥Î»£º°ë×Ö£¬£¡£¡£¡ÒªÇó2×Ö½Ú¶ÔÆë£¡£¡£¡
- * @return            Êµ¼ÊĞ´ÈëµÄÊı¾İÁ¿£¬µ¥Î»£º×Ö½Ú
+ * å†™FLASH
+ * @param  Address    å†™å…¥èµ·å§‹åœ°å€ï¼Œï¼ï¼ï¼è¦æ±‚2å­—èŠ‚å¯¹é½ï¼ï¼ï¼
+ * @param  Buffer     å¾…å†™å…¥çš„æ•°æ®ï¼Œï¼ï¼ï¼è¦æ±‚2å­—èŠ‚å¯¹é½ï¼ï¼ï¼
+ * @param  NumToWrite è¦å†™å…¥çš„æ•°æ®é‡ï¼Œå•ä½ï¼šåŠå­—ï¼Œï¼ï¼ï¼è¦æ±‚2å­—èŠ‚å¯¹é½ï¼ï¼ï¼
+ * @return            å®é™…å†™å…¥çš„æ•°æ®é‡ï¼Œå•ä½ï¼šå­—èŠ‚
  */
 uint32_t FLASH_Write(uint32_t Address, const uint16_t *Buffer, uint32_t NumToWrite)
 {
 	uint32_t i = 0;
-	uint32_t pagepos = 0;         // Ò³Î»ÖÃ
-	uint32_t pageoff = 0;         // Ò³ÄÚÆ«ÒÆµØÖ·
-	uint32_t pagefre = 0;         // Ò³ÄÚ¿ÕÓà¿Õ¼ä
-	uint32_t offset = 0;          // AddressÔÚFLASHÖĞµÄÆ«ÒÆ
-	uint32_t nwrite = NumToWrite/2; // ¼ÇÂ¼Ê£ÓàÒªĞ´ÈëµÄÊı¾İÁ¿
+	uint32_t pagepos = 0;         // é¡µä½ç½®
+	uint32_t pageoff = 0;         // é¡µå†…åç§»åœ°å€
+	uint32_t pagefre = 0;         // é¡µå†…ç©ºä½™ç©ºé—´
+	uint32_t offset = 0;          // Addressåœ¨FLASHä¸­çš„åç§»
+	uint32_t nwrite = NumToWrite/2; // è®°å½•å‰©ä½™è¦å†™å…¥çš„æ•°æ®é‡
 
-	/* ·Ç·¨µØÖ· */
+	/* éæ³•åœ°å€ */
 	if (Address < STM32FLASH_BASE || Address > (STM32FLASH_END - 2) || NumToWrite == 0 || Buffer == NULL)
 		return 0;
 
-	/* ½âËøFLASH */
+	/* è§£é”FLASH */
 	HAL_FLASH_Unlock();
 
-	/* ¼ÆËãÆ«ÒÆµØÖ· */
+	/* è®¡ç®—åç§»åœ°å€ */
 	offset = Address - STM32FLASH_BASE;
 
-	/* ¼ÆËãµ±Ç°Ò³Î»ÖÃ */
+	/* è®¡ç®—å½“å‰é¡µä½ç½® */
 	pagepos = offset / STM32FLASH_PAGE_SIZE;
 
-	/* ¼ÆËãÒªĞ´Êı¾İµÄÆğÊ¼µØÖ·ÔÚµ±Ç°Ò³ÄÚµÄÆ«ÒÆµØÖ· */
+	/* è®¡ç®—è¦å†™æ•°æ®çš„èµ·å§‹åœ°å€åœ¨å½“å‰é¡µå†…çš„åç§»åœ°å€ */
 	pageoff = ((offset % STM32FLASH_PAGE_SIZE) >> 1);
 
-	/* ¼ÆËãµ±Ç°Ò³ÄÚ¿ÕÓà¿Õ¼ä */
+	/* è®¡ç®—å½“å‰é¡µå†…ç©ºä½™ç©ºé—´ */
 	pagefre = ((STM32FLASH_PAGE_SIZE >> 1) - pageoff);
 
-	/* ÒªĞ´ÈëµÄÊı¾İÁ¿µÍÓÚµ±Ç°Ò³¿ÕÓàÁ¿ */
+	/* è¦å†™å…¥çš„æ•°æ®é‡ä½äºå½“å‰é¡µç©ºä½™é‡ */
 	if (nwrite <= pagefre)
 		pagefre = nwrite;
 
 	while (nwrite != 0)
 	{
-		/* ¼ì²éÊÇ·ñ³¬Ò³ */
+		/* æ£€æŸ¥æ˜¯å¦è¶…é¡µ */
 		if (pagepos >= STM32FLASH_PAGE_NUM)
 			break;
 
-		/* ¶ÁÈ¡Ò»Ò³ */
+		/* è¯»å–ä¸€é¡µ */
 		i = FLASH_Read(STM32FLASH_BASE + pagepos * STM32FLASH_PAGE_SIZE, FlashBuffer, STM32FLASH_PAGE_SIZE);
 
-		/* ¼ì²éÊÇ·ñĞèÒª²Á³ı */
+		/* æ£€æŸ¥æ˜¯å¦éœ€è¦æ“¦é™¤ */
 		for (i = 0; i < pagefre; i++)
 		{
-			if (*(FlashBuffer + pageoff + i) != 0xFFFF) /* FLASH²Á³öºóÄ¬ÈÏÄÚÈİÈ«Îª0xFF */
+			if (*(FlashBuffer + pageoff + i) != 0xFFFF) /* FLASHæ“¦å‡ºåé»˜è®¤å†…å®¹å…¨ä¸º0xFF */
 				break;
 		}
 
@@ -129,7 +129,7 @@ uint32_t FLASH_Write(uint32_t Address, const uint16_t *Buffer, uint32_t NumToWri
 			uint32_t PageError = 0;
 			FLASH_EraseInitTypeDef pEraseInit;
 
-			/* ²Á³ıÒ»Ò³ */
+			/* æ“¦é™¤ä¸€é¡µ */
 			pEraseInit.TypeErase = FLASH_TYPEERASE_PAGES;
 			pEraseInit.PageAddress = STM32FLASH_BASE + pagepos * STM32FLASH_PAGE_SIZE;
 			pEraseInit.Banks = FLASH_BANK_1;
@@ -137,13 +137,13 @@ uint32_t FLASH_Write(uint32_t Address, const uint16_t *Buffer, uint32_t NumToWri
 			if (HAL_FLASHEx_Erase(&pEraseInit, &PageError) != HAL_OK)
 				break;
 
-			/* ¸´ÖÆµ½»º´æ */
+			/* å¤åˆ¶åˆ°ç¼“å­˜ */
 			for (index = 0; index < pagefre; index++)
 			{
 				*(FlashBuffer + pageoff + index) = *(Buffer + index);
 			}
 
-			/* Ğ´»ØFLASH */
+			/* å†™å›FLASH */
 			count = FLASH_WriteNotCheck(STM32FLASH_BASE + pagepos * STM32FLASH_PAGE_SIZE, FlashBuffer, STM32FLASH_PAGE_SIZE >> 1);
 			if (count != (STM32FLASH_PAGE_SIZE >> 1))
 			{
@@ -153,7 +153,7 @@ uint32_t FLASH_Write(uint32_t Address, const uint16_t *Buffer, uint32_t NumToWri
 		}
 		else
 		{
-			/* ÎŞĞè²Á³ı£¬Ö±½ÓĞ´ */
+			/* æ— éœ€æ“¦é™¤ï¼Œç›´æ¥å†™ */
 			uint32_t count = FLASH_WriteNotCheck(Address, Buffer, pagefre);
 			if (count != pagefre)
 			{
@@ -162,18 +162,18 @@ uint32_t FLASH_Write(uint32_t Address, const uint16_t *Buffer, uint32_t NumToWri
 			}
 		}
 
-		Buffer += pagefre;         /* ¶ÁÈ¡µØÖ·µİÔö         */
-		Address += (pagefre << 1); /* Ğ´ÈëµØÖ·µİÔö         */
-		nwrite -= pagefre;         /* ¸üĞÂÊ£ÓàÎ´Ğ´ÈëÊı¾İÁ¿ */
+		Buffer += pagefre;         /* è¯»å–åœ°å€é€’å¢         */
+		Address += (pagefre << 1); /* å†™å…¥åœ°å€é€’å¢         */
+		nwrite -= pagefre;         /* æ›´æ–°å‰©ä½™æœªå†™å…¥æ•°æ®é‡ */
 
-		pagepos++;     /* ÏÂÒ»Ò³           */
-		pageoff = 0;   /* Ò³ÄÚÆ«ÒÆµØÖ·ÖÃÁã  */
+		pagepos++;     /* ä¸‹ä¸€é¡µ           */
+		pageoff = 0;   /* é¡µå†…åç§»åœ°å€ç½®é›¶  */
 
-		/* ¸ù¾İÊ£ÓàÁ¿¼ÆËãÏÂ´ÎĞ´ÈëÊı¾İÁ¿ */
+		/* æ ¹æ®å‰©ä½™é‡è®¡ç®—ä¸‹æ¬¡å†™å…¥æ•°æ®é‡ */
 		pagefre = nwrite >= (STM32FLASH_PAGE_SIZE >> 1) ? (STM32FLASH_PAGE_SIZE >> 1) : nwrite;
 	}
 
-	/* ¼ÓËøFLASH */
+	/* åŠ é”FLASH */
 	HAL_FLASH_Lock();
 
 	return ((NumToWrite - nwrite) << 1);

@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;   ../Drivers/STM32F1xx_HAL_Driver/Inc;   ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;   ../Drivers/CMSIS/Device/ST/STM32F1xx/Include;   ../Drivers/CMSIS/Include;   ..\Rov_Turtle\Common;   ..\Rov_Turtle\Common\ex_lib;   ..\Rov_Turtle\Core;   ..\Rov_Turtle\Function;   ..\Rov_Turtle\Thirty_Part;   ..\Rov_Turtle\Letter_Shell\src;   ..\Rov_Turtle\Letter_Shell\usr;   ..\Rov_Turtle\Letter_Shell\extensions\log;   ..\Rov_Turtle\Letter_Shell\extensions\shell_enhance</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\Rov_Turtle\Common;..\Rov_Turtle\Common\ex_lib;..\Rov_Turtle\Core;..\Rov_Turtle\Function;..\Pid_Control;..\Rov_Turtle\Letter_Shell\src;..\Rov_Turtle\Letter_Shell\usr;..\Rov_Turtle\Letter_Shell\extensions\log;..\Rov_Turtle\Letter_Shell\extensions\shell_enhance</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -539,16 +539,6 @@
           <GroupName>Rov_Turtle/Core</GroupName>
           <Files>
             <File>
-              <FileName>turtle_autoctrl.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Rov_Turtle\Core\turtle_autoctrl.c</FilePath>
-            </File>
-            <File>
-              <FileName>turtle_autoctrl.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Rov_Turtle\Core\turtle_autoctrl.h</FilePath>
-            </File>
-            <File>
               <FileName>turtle_dbg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Rov_Turtle\Core\turtle_dbg.c</FilePath>
@@ -716,17 +706,32 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Rov_Turtle/ThirtyPart</GroupName>
+          <GroupName>Rov_Turtle/Test</GroupName>
           <Files>
             <File>
-              <FileName>de.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Rov_Turtle\Thirty_Part\de.c</FilePath>
+              <FileName>turtle_pid.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Pid_Control\turtle_pid.h</FilePath>
             </File>
             <File>
-              <FileName>de.h</FileName>
+              <FileName>turtle_pid_type.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Rov_Turtle\Thirty_Part\de.h</FilePath>
+              <FilePath>..\Pid_Control\turtle_pid_type.h</FilePath>
+            </File>
+            <File>
+              <FileName>turtle_pid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Pid_Control\turtle_pid.c</FilePath>
+            </File>
+            <File>
+              <FileName>turtle_autoctrl.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Pid_Control\turtle_autoctrl.h</FilePath>
+            </File>
+            <File>
+              <FileName>turtle_autoctrl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Pid_Control\turtle_autoctrl.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,8 +1,8 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_dbg.h
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV µ÷ÊÔÏà¹Øº¯ÊıÍ·ÎÄ¼ş
+  * @brief   Turtle ç³»åˆ— ROV è°ƒè¯•ç›¸å…³å‡½æ•°å¤´æ–‡ä»¶
   *
   ******************************************************************************
   * @attention
@@ -22,9 +22,9 @@
 #define DBGTS_CH3 3u
 #define DBGTS_CH4 4u
 
-/* ¿ª¹ØÈ«¾ÖÖĞ¶ÏµÄºê */
-#define ENABLE_INT()	__set_PRIMASK(0)	/* Ê¹ÄÜÈ«¾ÖÖĞ¶Ï */
-#define DISABLE_INT()	__set_PRIMASK(1)	/* ½ûÖ¹È«¾ÖÖĞ¶Ï */
+/* å¼€å…³å…¨å±€ä¸­æ–­çš„å® */
+#define ENABLE_INT()	__set_PRIMASK(0)	/* ä½¿èƒ½å…¨å±€ä¸­æ–­ */
+#define DISABLE_INT()	__set_PRIMASK(1)	/* ç¦æ­¢å…¨å±€ä¸­æ–­ */
 
 void Turtle_DBG_TimeStart(uint8_t ch, uint8_t sub);
 void Turtle_DBG_TimeStop(uint8_t ch, uint8_t sub);

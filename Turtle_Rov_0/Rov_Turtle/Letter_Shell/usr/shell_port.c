@@ -1,13 +1,12 @@
-/**
+﻿/**
   ******************************************************************************
   * @file    shell_port.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Letter SHELL 官方方例程中 shell_port.c 文件移植
+  * @brief   Letter SHELL 瀹樻柟鏂逛緥绋嬩腑 shell_port.c 鏂囦欢绉绘
   *
   ******************************************************************************
   * @attention
-  *	使用HAL库
-  * 
+  *	浣跨敤HAL搴?  * 
   ******************************************************************************
   */
 
@@ -31,13 +30,11 @@ char shellBuffer[512];
 char readBuffer[32];
 
 /**
- * @brief 用户shell写
+ * @brief 鐢ㄦ埛shell鍐? * 
+ * @param data 鏁版嵁
+ * @param len 鏁版嵁闀垮害
  * 
- * @param data 数据
- * @param len 数据长度
- * 
- * @return short 实际写入的数据长度
- */
+ * @return short 瀹为台鍐椤叆镄勬暟鎹昵搴? */
 short userShellWrite(char *data, unsigned short len)
 {
     HAL_UART_Transmit(&HOST_UART,(uint8_t *)data,len,0xff);
@@ -46,12 +43,11 @@ short userShellWrite(char *data, unsigned short len)
 
 
 /**
- * @brief 用户shell读
+ * @brief 鐢ㄦ埛shell璇? * 
+ * @param data 鏁版嵁
+ * @param len 鏁版嵁闀垮害
  * 
- * @param data 数据
- * @param len 数据长度
- * 
- * @return short 实际读取到的数据长度
+ * @return short 瀹为台璇诲彇鍒扮殑鏁版嵁闀垮害
  */
 short userShellRead(char *data, unsigned short len)
 {
@@ -67,7 +63,7 @@ short userShellRead(char *data, unsigned short len)
 }
 
 /**
- * @brief 用户shell上锁
+ * @brief 鐢ㄦ埛shell涓婇挛
  * 
  * @param shell shell
  * 
@@ -79,7 +75,7 @@ int userShellLock(Shell *shell)
 }
 
 /**
- * @brief 用户shell解锁
+ * @brief 鐢ㄦ埛shell瑙ｉ挛
  * 
  * @param shell shell
  * 
@@ -103,8 +99,7 @@ int func(int argc, char *argv[])
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), func, func, test);
 
 /**
- * @brief 用户shell初始化
- * 
+ * @brief 鐢ㄦ埛shell鍒濆鍖? * 
  */
 void userShellInit(void)
 {

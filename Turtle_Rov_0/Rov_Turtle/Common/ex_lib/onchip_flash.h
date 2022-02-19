@@ -1,12 +1,12 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    onchip_flash.h
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   CSDN Æ¬ÉÏflash¹ÜÀí³ÌĞòÒÆÖ²
+  * @brief   CSDN ç‰‡ä¸Šflashç®¡ç†ç¨‹åºç§»æ¤
   *
   ******************************************************************************
   * @attention
-  *	ĞŞ¸ÄÆ¬ÉÏFlash´óĞ¡
+  *	ä¿®æ”¹ç‰‡ä¸ŠFlashå¤§å°
   *
   ******************************************************************************
   */
@@ -24,27 +24,27 @@
 
 #include "main.h"
 
-/*======================================= ÒÆÖ²ĞŞ¸ÄÇø =======================================*/
+/*======================================= ç§»æ¤ä¿®æ”¹åŒº =======================================*/
 
-/* FLASH´óĞ¡£º512K */
+/* FLASHå¤§å°ï¼š512K */
 #define STM32FLASH_SIZE  0x00080000UL
 
-/*======================================= Ë½ÓĞÊı¾İÇø =======================================*/
+/*======================================= ç§æœ‰æ•°æ®åŒº =======================================*/
 
-/* FLASHÆğÊ¼µØÖ· */
+/* FLASHèµ·å§‹åœ°å€ */
 #define STM32FLASH_BASE  FLASH_BASE
 
-/* FLASH½áÊøµØÖ· */
+/* FLASHç»“æŸåœ°å€ */
 #define STM32FLASH_END   (STM32FLASH_BASE | STM32FLASH_SIZE)
 
-/* FLASHÒ³´óĞ¡ */
+/* FLASHé¡µå¤§å° */
 #define STM32FLASH_PAGE_SIZE FLASH_PAGE_SIZE
 
-/* FLASH×ÜÒ³Êı */
+/* FLASHæ€»é¡µæ•° */
 #define STM32FLASH_PAGE_NUM  (STM32FLASH_SIZE / STM32FLASH_PAGE_SIZE)
 
 
-/// µ¼³öº¯ÊıÉùÃ÷
+/// å¯¼å‡ºå‡½æ•°å£°æ˜
 void FLASH_Init(void);
 uint32_t FLASH_Read(uint32_t Address, void *Buffer, uint32_t Size);
 uint32_t FLASH_Write(uint32_t Address, const uint16_t *Buffer, uint32_t NumToWrite);

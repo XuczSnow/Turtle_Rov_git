@@ -1,8 +1,8 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_parameters.h
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV µÄ²ÎÊı´æ´¢Í·ÎÄ¼ş
+  * @brief   Turtle ç³»åˆ— ROV çš„å‚æ•°å­˜å‚¨å¤´æ–‡ä»¶
   *
   ******************************************************************************
   * @attention
@@ -22,10 +22,10 @@
 
 #define JUMP_BOOTLOADER_ADD			0x0807FFE0
 
-//Ğ£ÑéÎÄ±¾ ¡°Turtle Rov by Xucz¡±
+//æ ¡éªŒæ–‡æœ¬ â€œTurtle Rov by Xuczâ€
 #define VERIFICATION_ADD				0x0807FFF0
 
-//ÏµÍ³¹Ì¼ş°æ±¾ĞÅÏ¢
+//ç³»ç»Ÿå›ºä»¶ç‰ˆæœ¬ä¿¡æ¯
 extern const char Hardware_Ver[0x20];
 extern const char Firmware_Ver[0x20];
 extern const char Compiler_Date[0x20];

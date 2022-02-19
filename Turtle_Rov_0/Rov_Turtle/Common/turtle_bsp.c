@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    turtle_bsp.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV BSP ¹ÜÀí³ÌĞò
+  * @brief   Turtle ç³»åˆ— ROV BSP ç®¡ç†ç¨‹åº
   *
   ******************************************************************************
   * @attention
@@ -14,14 +14,14 @@
 /* Includes ------------------------------------------------------------------*/
 #include "turtle_g.h"
 
-/** @defgroup ´®¿ÚÖĞ¶Ï´¦Àíº¯Êı
+/** @defgroup ä¸²å£ä¸­æ–­å¤„ç†å‡½æ•°
   * @{
   */
 
 
 void Turtle_Bsp_Init(void)
 {
-	//PWM³õÊ¼»¯²¿·Ö
+	//PWMåˆå§‹åŒ–éƒ¨åˆ†
 	HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_4);
 	HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_2);
@@ -34,7 +34,7 @@ void Turtle_Bsp_Init(void)
 	HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
 	HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
 	
-	//LED×´Ì¬³õÊ¼»¯
+	//LEDçŠ¶æ€åˆå§‹åŒ–
 	for(uint8_t i=0;i<3;i++)
 	{
                                
@@ -48,18 +48,18 @@ void Turtle_Bsp_Init(void)
 	
 	Turtle_FlashCheckInit();
 	
-	//ÔÆÌ¨³õÊ¼»¯
+	//äº‘å°åˆå§‹åŒ–
 	Turtle_YT_InitAngle();
 	hRov.yt_angle = 0;
 	
-	//ÍÆ½øÆ÷³õÊ¼»¯
+	//æ¨è¿›å™¨åˆå§‹åŒ–
 	Turtle_Prop_Init();
 	
-	//×Ô¶¯¿ØÖÆ³õÊ¼»¯
+	//è‡ªåŠ¨æ§åˆ¶åˆå§‹åŒ–
 	Turtle_AutoCtrl_Init();
-	Turtle_SI_Init();
+	//Turtle_SI_Init();
 	
-	//ÎÂÊª¶È´«¸ĞÆ÷³õÊ¼»¯
+	//æ¸©æ¹¿åº¦ä¼ æ„Ÿå™¨åˆå§‹åŒ–
 	SHT3X_Init(0x44);
 	hSHT30.error = SHT3X_SoftReset();
 	HAL_Delay(10);
@@ -67,23 +67,23 @@ void Turtle_Bsp_Init(void)
 	hSHT30.error |= SHT3X_ReadStatus(&hSHT30.status.u16);
 	hSHT30.error = SHT3X_StartPeriodicMeasurment(REPEATAB_HIGH, FREQUENCY_4HZ);
 	
-	//ÔÆÌ¨¡¢´«¸ĞÆ÷³õÊ¼»¯Íê³É
+	//äº‘å°ã€ä¼ æ„Ÿå™¨åˆå§‹åŒ–å®Œæˆ
 	Turtle_LED_SetLumin(LED_CH1,30);
 	Turtle_LED_SetLumin(LED_CH2,30);
 	HAL_Delay(500);
 	Turtle_LED_SetLumin(LED_CH1,LED_PWM_MIN);
 	Turtle_LED_SetLumin(LED_CH2,LED_PWM_MIN);
 	
-	//³õÊ¼»¯EventRecorder²¢¿ªÆô
+	//åˆå§‹åŒ–EventRecorderå¹¶å¼€å¯
 #if TIMESTAMP_EN == G_TURE
 	EventRecorderInitialize(EventRecordAll, 1U);
 	EventRecorderStart();
 #endif
 	
-	//ÍÆ½øÆ÷¶¨Ê±Æ÷³õÊ¼»¯²¿·Ö
+	//æ¨è¿›å™¨å®šæ—¶å™¨åˆå§‹åŒ–éƒ¨åˆ†
 	HAL_TIM_Base_Start_IT(&htim5);
 	
-	//ÍÆ½øÆ÷³õÊ¼»¯
+	//æ¨è¿›å™¨åˆå§‹åŒ–
 	for(uint8_t i=0;i<8;i++)
 		hprop[i].Prop_CQ = 1600;
 	
@@ -95,30 +95,30 @@ void Turtle_Bsp_Init(void)
 	for(uint8_t i=0;i<8;i++)
 		hprop[i].Prop_CQ = PROP_CQ_MID;
 	
-	//ÍÆ½øÆ÷³õÊ¼»¯Íê³ÉÖ¸Ê¾
+	//æ¨è¿›å™¨åˆå§‹åŒ–å®ŒæˆæŒ‡ç¤º
 	Turtle_LED_SetLumin(LED_CH1,30);
 	Turtle_LED_SetLumin(LED_CH2,30);
 	HAL_Delay(500);
 	Turtle_LED_SetLumin(LED_CH1,LED_PWM_MIN);
 	Turtle_LED_SetLumin(LED_CH2,LED_PWM_MIN);
 	
-	//´®¿Ú³õÊ¼»¯²¿·Ö
-	HAL_UART_Receive_DMA(&huart1, huart[0].rxBuf, RX_DATA_SIZE);//¿ªÊ¼½ÓÊÕ
-	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);																//´ò¿ª¿ÕÏĞÖĞ¶Ï
+	//ä¸²å£åˆå§‹åŒ–éƒ¨åˆ†
+	HAL_UART_Receive_DMA(&huart1, huart[0].rxBuf, RX_DATA_SIZE);//å¼€å§‹æ¥æ”¶
+	__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);																//æ‰“å¼€ç©ºé—²ä¸­æ–­
 	
-	HAL_UART_Receive_DMA(&huart2, huart[1].rxBuf, RX_DATA_SIZE);//¿ªÊ¼½ÓÊÕ
-	__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);																//´ò¿ª¿ÕÏĞÖĞ¶Ï
+	HAL_UART_Receive_DMA(&huart2, huart[1].rxBuf, RX_DATA_SIZE);//å¼€å§‹æ¥æ”¶
+	__HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);																//æ‰“å¼€ç©ºé—²ä¸­æ–­
 	
-	HAL_UART_Receive_DMA(&huart3, huart[2].rxBuf, RX_DATA_SIZE);//¿ªÊ¼½ÓÊÕ
-	__HAL_UART_ENABLE_IT(&huart3, UART_IT_IDLE);																//´ò¿ª¿ÕÏĞÖĞ¶Ï
+	HAL_UART_Receive_DMA(&huart3, huart[2].rxBuf, RX_DATA_SIZE);//å¼€å§‹æ¥æ”¶
+	__HAL_UART_ENABLE_IT(&huart3, UART_IT_IDLE);																//æ‰“å¼€ç©ºé—²ä¸­æ–­
 	
-	HAL_UART_Receive_DMA(&huart4, huart[3].rxBuf, RX_DATA_SIZE);//¿ªÊ¼½ÓÊÕ
-	__HAL_UART_ENABLE_IT(&huart4, UART_IT_IDLE);																//´ò¿ª¿ÕÏĞÖĞ¶Ï
+	HAL_UART_Receive_DMA(&huart4, huart[3].rxBuf, RX_DATA_SIZE);//å¼€å§‹æ¥æ”¶
+	__HAL_UART_ENABLE_IT(&huart4, UART_IT_IDLE);																//æ‰“å¼€ç©ºé—²ä¸­æ–­
 	
-	HAL_UART_Receive_IT(&huart5, huart[4].rxBuf, RX_DATA_SIZE);	//¿ªÊ¼½ÓÊÕ
-	__HAL_UART_ENABLE_IT(&huart5, UART_IT_IDLE);																//´ò¿ª¿ÕÏĞÖĞ¶Ï
+	HAL_UART_Receive_IT(&huart5, huart[4].rxBuf, RX_DATA_SIZE);	//å¼€å§‹æ¥æ”¶
+	__HAL_UART_ENABLE_IT(&huart5, UART_IT_IDLE);																//æ‰“å¼€ç©ºé—²ä¸­æ–­
 	
-	//Ö÷»ú¿ØÖÆ³õÊ¼»¯
+	//ä¸»æœºæ§åˆ¶åˆå§‹åŒ–
 	host[1].err_cnt = 101;
 	host[1].joy_stick[KID_RSTICK_FB] = 0x80;
 	host[1].joy_stick[KID_RSTICK_RL] = 0x80;
@@ -127,12 +127,12 @@ void Turtle_Bsp_Init(void)
 	host[1].joy_stick[KID_RT] = 0x80;
 	host[1].joy_stick[KID_LT] = 0x80;
 	
-	//ÆäÓà¶¨Ê±Æ÷³õÊ¼»¯²¿·Ö
+	//å…¶ä½™å®šæ—¶å™¨åˆå§‹åŒ–éƒ¨åˆ†
 	HAL_TIM_Base_Start_IT(&htim6);
 	HAL_TIM_Base_Start_IT(&htim7);
 	HAL_TIM_Base_Start_IT(&htim8);
 	
-//	//³õÊ¼»¯Ñ¹Á¦
+//	//åˆå§‹åŒ–å‹åŠ›
 //	Turtle_Press_Init();
 
 	hRov.led_lumin1 = LED_PWM_MIN;
@@ -142,7 +142,7 @@ void Turtle_Bsp_Init(void)
 	
 	Compass_GetAdd();
 	
-	//È«²¿³õÊ¼»¯Íê³ÉÖ¸Ê¾
+	//å…¨éƒ¨åˆå§‹åŒ–å®ŒæˆæŒ‡ç¤º
 	Turtle_LED_SetLumin(LED_CH1,30);
 	Turtle_LED_SetLumin(LED_CH2,30);
 	HAL_Delay(500);

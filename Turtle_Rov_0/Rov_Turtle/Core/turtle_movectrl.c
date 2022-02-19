@@ -1,32 +1,32 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_movectrl.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV ÔË¶¯¿ØÖÆ³ÌĞò
+  * @brief   Turtle ç³»åˆ— ROV è¿åŠ¨æ§åˆ¶ç¨‹åº
   *
   ******************************************************************************
   * @attention
-  *	ÔË¶¯·½ÏòËµÃ÷(Ë®Æ½ÍÆ½øÆ÷ÈçÏÂËùÊ¾£¬´¹ÏòÍÆ½øÆ÷ÏòÏÂÎªÕı)£º
-	*		¢ô¨J*******¨I¢ñ
+  *	è¿åŠ¨æ–¹å‘è¯´æ˜(æ°´å¹³æ¨è¿›å™¨å¦‚ä¸‹æ‰€ç¤ºï¼Œå‚å‘æ¨è¿›å™¨å‘ä¸‹ä¸ºæ­£)ï¼š
+	*		â…£â†—*******â†–â… 
 	*				*			*
 	*				 *   *
 	*          *				
 	*        *   *
 	*       *     *
-  *		¢ó¨I*******¨J¢ò
+  *		â…¢â†–*******â†—â…¡
 	*
-	*	¹ØÓÚÒ¡¸ËµÄËµÃ÷:
-	*		Ò¡¸ËÏòÉÏÎª0; Ïò×óÎª0.
+	*	å…³äºæ‘‡æ†çš„è¯´æ˜:
+	*		æ‘‡æ†å‘ä¸Šä¸º0; å‘å·¦ä¸º0.
   ******************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/
 #include "turtle_g.h"
 
-/*¹ØÓÚÕı·½ÏòµÄ¶¨Òå:Ç°½øÎªÕı¡¢ºóÍËÎª¸º
-									Ë³Ê±ÕëÎªÕı¡¢ÄæÊ±ÕëÎª¸º
-									ÃæÏòÇ°½øµÄ·½Ïò£¬ÏòÓÒÎªÕı¡¢Ïò×óÎª¸º
-									ÏòÏÂÎªÕı£¬ÏòÉÏÎª¸º
+/*å…³äºæ­£æ–¹å‘çš„å®šä¹‰:å‰è¿›ä¸ºæ­£ã€åé€€ä¸ºè´Ÿ
+									é¡ºæ—¶é’ˆä¸ºæ­£ã€é€†æ—¶é’ˆä¸ºè´Ÿ
+									é¢å‘å‰è¿›çš„æ–¹å‘ï¼Œå‘å³ä¸ºæ­£ã€å‘å·¦ä¸ºè´Ÿ
+									å‘ä¸‹ä¸ºæ­£ï¼Œå‘ä¸Šä¸ºè´Ÿ
 */
 
 uint16_t  prop_buf;
@@ -40,7 +40,7 @@ static short Turtle_Prop_CovValue(uint8_t key_val)
 	return (short)(((float)key_val-0x80)*prop_inter);
 }
 
-//ÍÆ½øÆ÷ÉÏ¸¡ÏÂÇ±
+//æ¨è¿›å™¨ä¸Šæµ®ä¸‹æ½œ
 void Turtle_Prop_UpDown(uint8_t key)
 {
 	uint8_t i = PROPV_RF;
@@ -51,7 +51,7 @@ void Turtle_Prop_UpDown(uint8_t key)
 		hprop[i].Prop_CQ = prop_buf;
 }
 
-//ÍÆ½øÆ÷Ç°½øºóÍË
+//æ¨è¿›å™¨å‰è¿›åé€€
 void Turtle_Prop_FwBack(uint8_t key)
 {
 	uint8_t i = PROPL_RF;
@@ -61,25 +61,25 @@ void Turtle_Prop_FwBack(uint8_t key)
 }
 
 float side_k = 1;
-//ÍÆ½øÆ÷ºáÒÆ
+//æ¨è¿›å™¨æ¨ªç§»
 void Turtle_Prop_Side(uint8_t key)
 {
 	key_buf = Turtle_Prop_CovValue(key);
-	//1,3·´Ïò
+	//1,3åå‘
 	prop_buf = PROP_CQ_MID - key_buf;
 	hprop[PROP_ID1].Prop_CQ = prop_buf;
 	hprop[PROP_ID3].Prop_CQ = prop_buf;
 	
-	//2,4ÕıÏò
+	//2,4æ­£å‘
 	prop_buf = PROP_CQ_MID + (uint16_t)((float)key_buf*side_k);
 	hprop[PROP_ID2].Prop_CQ = prop_buf;
 	hprop[PROP_ID4].Prop_CQ = prop_buf;
 }
-//ÍÆ½øÆ÷Ç°Ïò×ªÍä
+//æ¨è¿›å™¨å‰å‘è½¬å¼¯
 void Turtle_Prop_FHeading(uint8_t key)
 {
 	uint16_t buf[2];
-	//Ç°½ø·½Ïò 4¼Ó 1¼õ
+	//å‰è¿›æ–¹å‘ 4åŠ  1å‡
 	buf[0] = hprop[PROP_ID1].Prop_CQ;
 	buf[1] = hprop[PROP_ID4].Prop_CQ;
 	
@@ -94,11 +94,11 @@ void Turtle_Prop_FHeading(uint8_t key)
 	hprop[PROP_ID4].Prop_CQ = buf[1];
 }
 	
-//ÍÆ½øÆ÷ºóÍË×ªÍä
+//æ¨è¿›å™¨åé€€è½¬å¼¯
 void Turtle_Prop_BHeading(uint8_t key)
 {
 	uint16_t buf[2];
-	//ºóÍË·½Ïò 2¼Ó 3¼õ
+	//åé€€æ–¹å‘ 2åŠ  3å‡
 	buf[0] = hprop[PROP_ID2].Prop_CQ;
 	buf[1] = hprop[PROP_ID3].Prop_CQ;
 	
@@ -113,10 +113,10 @@ void Turtle_Prop_BHeading(uint8_t key)
 	hprop[PROP_ID3].Prop_CQ = buf[1];
 }
 
-//ÍÆ½øÆ÷×ªÍä
+//æ¨è¿›å™¨è½¬å¼¯
 void Turtle_Prop_Heading(uint8_t key)
 {
-	//Ê×ÏÈÅĞ¶ÏROVÔË¶¯·½Ïò
+	//é¦–å…ˆåˆ¤æ–­ROVè¿åŠ¨æ–¹å‘
 	if ((hRov.run_state & ROV_RUN_BACK) == ROV_RUN_BACK)
 	{
 		Turtle_Prop_BHeading(key);
@@ -128,46 +128,46 @@ void Turtle_Prop_Heading(uint8_t key)
 
 }
 
-//ÍÆ½øÆ÷×Ô×ª
+//æ¨è¿›å™¨è‡ªè½¬
 void Turtle_Prop_Rotation(uint8_t key)
 {
 	key_buf = Turtle_Prop_CovValue(key);
-	//1¡¢2·´Ïò
+	//1ã€2åå‘
 	hprop[PROP_ID1].Prop_CQ = PROP_CQ_MID - key_buf;
 	hprop[PROP_ID2].Prop_CQ = PROP_CQ_MID - key_buf;
 	
-	//3¡¢4ÕıÏò
+	//3ã€4æ­£å‘
 	hprop[PROP_ID3].Prop_CQ = PROP_CQ_MID + key_buf;
 	hprop[PROP_ID4].Prop_CQ = PROP_CQ_MID + key_buf;
 }
 
-//ÍÆ½øÆ÷¸©Ñö£¨Õı·½ÏòÏòÉÏ£©
+//æ¨è¿›å™¨ä¿¯ä»°ï¼ˆæ­£æ–¹å‘å‘ä¸Šï¼‰
 void Turtle_Prop_Pitch(uint8_t key)
 {
 	key_buf = Turtle_Prop_CovValue(key);
-	//5¡¢8·´Ïò
+	//5ã€8åå‘
 	hprop[PROP_ID5].Prop_CQ = PROP_CQ_MID - key_buf;
 	hprop[PROP_ID8].Prop_CQ = PROP_CQ_MID - key_buf;
 	
-	//6¡¢7ÕıÏò
+	//6ã€7æ­£å‘
 	hprop[PROP_ID6].Prop_CQ = PROP_CQ_MID + key_buf;
 	hprop[PROP_ID7].Prop_CQ = PROP_CQ_MID + key_buf;
 }
 
-//ÍÆ½øÆ÷·­×ª£¨Õı·½ÏòÄæÊ±Õë£©
+//æ¨è¿›å™¨ç¿»è½¬ï¼ˆæ­£æ–¹å‘é€†æ—¶é’ˆï¼‰
 void Turtle_Prop_Roll(uint8_t key)
 {
 	key_buf = Turtle_Prop_CovValue(key);
-	//5¡¢6·´Ïò
+	//5ã€6åå‘
 	hprop[PROP_ID5].Prop_CQ = PROP_CQ_MID - key_buf;
 	hprop[PROP_ID6].Prop_CQ = PROP_CQ_MID - key_buf;
 	
-	//7¡¢8ÕıÏòÏò
+	//7ã€8æ­£å‘å‘
 	hprop[PROP_ID7].Prop_CQ = PROP_CQ_MID + key_buf;
 	hprop[PROP_ID8].Prop_CQ = PROP_CQ_MID + key_buf;
 }
 
-//ÍÆ½øÆ÷×ËÌ¬¿ØÖÆ(µş¼Ó)
+//æ¨è¿›å™¨å§¿æ€æ§åˆ¶(å åŠ )
 void Turtle_Prop_AtPlus(uint8_t *key)
 {
 	uint16_t buf;
@@ -182,7 +182,7 @@ void Turtle_Prop_AtPlus(uint8_t *key)
 	}
 }
 
-//ÍÆ½øÆ÷×ËÌ¬¿ØÖÆ(·ÖÅä)
+//æ¨è¿›å™¨å§¿æ€æ§åˆ¶(åˆ†é…)
 void Turtle_Prop_AtDrt(uint8_t *key)
 {
 	for (uint8_t i=0;i<4;i++)
@@ -192,14 +192,14 @@ void Turtle_Prop_AtDrt(uint8_t *key)
 	}
 }
 
-//Ë®Æ½ÍÆ½øÆ÷ÇåÁã
+//æ°´å¹³æ¨è¿›å™¨æ¸…é›¶
 void Turtle_Prop_PCLC(void)
 {
 	for(uint8_t i=0;i<4;i++)
 		hprop[PROP_ID1+i].Prop_CQ = PROP_CQ_MID;
 }
 	
-//´¹ÏòÍÆ½øÆ÷ÇåÁã
+//å‚å‘æ¨è¿›å™¨æ¸…é›¶
 void Turtle_Prop_VCLC(void)
 {
 	for(uint8_t i=0;i<4;i++)

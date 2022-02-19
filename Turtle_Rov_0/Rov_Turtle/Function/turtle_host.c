@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    turtle_host.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle œµ¡– ROV …œŒªª˙Õ®–≈¥¶¿Ì≥Ã–Ú
+  * @brief   Turtle Á≥ªÂàó ROV ‰∏ä‰ΩçÊú∫ÈÄö‰ø°Â§ÑÁêÜÁ®ãÂ∫è
   *
   ******************************************************************************
   * @attention
@@ -26,7 +26,7 @@ Rov_StateTypeDef	hRov = {
 };
 Host_StateTypeDef host[2];
 
-float gear_switch[4] = {0,2,1.5,1};  //µ≤Œªœµ ˝…Ë÷√
+float gear_switch[4] = {0,2,1.5,1};  //Êå°‰ΩçÁ≥ªÊï∞ËÆæÁΩÆ
 
 static uint8_t AbsMinus(uint8_t arg1, uint8_t arg2)
 {
@@ -58,11 +58,11 @@ static void ShortConvertSign(short input,uint8_t *buf)
 	buf[1] = (uint8_t)((uint16_t)input);
 }
 
-#if 0 //æ…µƒ≤Ÿ◊˜∑Ω Ω
+#if 0 //ÊóßÁöÑÊìç‰ΩúÊñπÂºè
 void Turtle_HostMove(void)
 {
-	//Õ∆Ω¯∆˜øÿ÷∆
-		//ÀÆ∆ΩÕ∆Ω¯∆˜øÿ÷∆
+	//Êé®ËøõÂô®ÊéßÂà∂
+		//Ê∞¥Âπ≥Êé®ËøõÂô®ÊéßÂà∂
 	if (host[1].joy_stick[KID_RB] || ((host[1].auto_flag&hAuto[AUTO_DEPTH_ID].symbol) == hAuto[AUTO_DEPTH_ID].symbol\
 																&& (host[1].auto_flag&hAuto[AUTO_HEADING_ID].symbol) != hAuto[AUTO_HEADING_ID].symbol))
 	{
@@ -116,7 +116,7 @@ void Turtle_HostMove(void)
 	}
 	
 	
-		//¥πœÚÕ∆Ω¯∆˜øÿ÷∆
+		//ÂûÇÂêëÊé®ËøõÂô®ÊéßÂà∂
 	if (host[1].joy_stick[KID_RB] || ((host[1].auto_flag&hAuto[AUTO_HEADING_ID].symbol) == hAuto[AUTO_HEADING_ID].symbol\
 																&&	(host[1].auto_flag&hAuto[AUTO_DEPTH_ID].symbol) != hAuto[AUTO_DEPTH_ID].symbol))
 	{
@@ -185,11 +185,11 @@ void Turtle_HostMove(void)
 		hSI[AUTO_ROLL_ID].enable	= AUTO_DISABLE;
 	}
 	
-	//◊‘∂Øøÿ÷∆◊¥Ã¨ºÏ≤È
+	//Ëá™Âä®ÊéßÂà∂Áä∂ÊÄÅÊ£ÄÊü•
 	uint8_t bit_buf1 = 0x80;
 	for (uint8_t i=0;i<3;i++)
 	{
-		//≤ª πƒ‹◊ÀÃ¨ ±£¨∆¡±Œ±Í÷æŒª
+		//‰∏ç‰ΩøËÉΩÂßøÊÄÅÊó∂ÔºåÂ±èËîΩÊ†áÂøó‰Ωç
 		if (at_en == 0 && i ==2)
 		{
 			hRov.run_state &= ~(bit_buf1>>i);
@@ -205,15 +205,15 @@ void Turtle_HostMove(void)
 #else
 void Turtle_HostMove(void)
 {
-	//Õ∆Ω¯∆˜øÿ÷∆
-		//ÀÆ∆ΩÕ∆Ω¯∆˜øÿ÷∆
+	//Êé®ËøõÂô®ÊéßÂà∂
+		//Ê∞¥Âπ≥Êé®ËøõÂô®ÊéßÂà∂
 	if (AbsMinus(host[1].joy_stick[KID_RSTICK_FB],KEY_MID) > KEY_MIN_GATE || AbsMinus(host[1].joy_stick[KID_LSTICK_RL],KEY_MID) > KEY_MIN_GATE)
 	{
 		Turtle_Prop_FwBack(KEY_MAX - host[1].joy_stick[KID_RSTICK_FB]);
 		Turtle_Prop_Heading(KeyValue_Div(host[1].joy_stick[KID_LSTICK_RL],1.5));
 		Turtle_AutoCtrl_EnAt();
-		hAuto[AUTO_HEADING_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_HEADING_ID].enable = AUTO_DISABLE;
+		hAuto[AUTO_HEADING_ID].pid_enable = AUTO_DISABLE;
+		//hSI[AUTO_HEADING_ID].pid_enable = AUTO_DISABLE;
 	}
 	
 	else if (host[1].joy_stick[KID_LB] || host[1].joy_stick[KID_RB])
@@ -223,8 +223,8 @@ void Turtle_HostMove(void)
 		else
 			Turtle_Prop_Rotation(KeyValue_Div(0xF0,host[1].prop_gear));
 		Turtle_AutoCtrl_EnAt();
-		hAuto[AUTO_HEADING_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_HEADING_ID].enable = AUTO_DISABLE;
+		hAuto[AUTO_HEADING_ID].pid_enable = AUTO_DISABLE;
+		//hSI[AUTO_HEADING_ID].pid_enable = AUTO_DISABLE;
 	}
 //	else if (host[1].joy_stick[KID_LB])
 //	{
@@ -233,63 +233,69 @@ void Turtle_HostMove(void)
 //		hAuto[AUTO_HEADING_ID].enable = AUTO_DISABLE;
 //		hSI[AUTO_HEADING_ID].enable = AUTO_DISABLE;
 //	}
-	else if((host[1].auto_flag&hAuto[AUTO_HEADING_ID].symbol) == hAuto[AUTO_HEADING_ID].symbol)
+	else if((host[1].auto_flag&(uint8_t)hAuto[AUTO_HEADING_ID].pid_flag) == (uint8_t)hAuto[AUTO_HEADING_ID].pid_flag)
 	{
 		Turtle_Prop_FwBack(KEY_MAX - host[1].joy_stick[KID_RSTICK_FB]);
 		Turtle_AutoCtrl_EnAt();
-		hAuto[AUTO_HEADING_ID].enable = AUTO_ENABLE;
-		hSI[AUTO_HEADING_ID].enable = AUTO_DISABLE;
+		hAuto[AUTO_HEADING_ID].pid_enable = AUTO_ENABLE;
+		//hSI[AUTO_HEADING_ID].enable = AUTO_DISABLE;
 	}
-	else if((host[1].si_flag&hSI[AUTO_HEADING_ID].mode) == hSI[AUTO_HEADING_ID].mode)
-	{
-		Turtle_AutoCtrl_DisAt();
-		hSI[AUTO_HEADING_ID].enable = AUTO_ENABLE;
-		hAuto[AUTO_HEADING_ID].enable = AUTO_DISABLE;
-	}
+//	else if((host[1].si_flag&hSI[AUTO_HEADING_ID].mode) == hSI[AUTO_HEADING_ID].mode)
+//	{
+//		Turtle_AutoCtrl_DisAt();
+//		hSI[AUTO_HEADING_ID].enable = AUTO_ENABLE;
+//		hAuto[AUTO_HEADING_ID].pid_enable = AUTO_DISABLE;
+//	}
 	else
 	{
 		Turtle_Prop_PCLC();
 		Turtle_AutoCtrl_DisAt();
-		hAuto[AUTO_HEADING_ID].esum = 0;
-		hAuto[AUTO_PITCH_ID].esum = 0;
-		hAuto[AUTO_ROLL_ID].esum = 0;
-		hAuto[AUTO_HEADING_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_HEADING_ID].enable = AUTO_DISABLE;
+		//hAuto[AUTO_HEADING_ID].esum = 0;
+		//hAuto[AUTO_PITCH_ID].esum = 0;
+		//hAuto[AUTO_ROLL_ID].esum = 0;
+		hAuto[AUTO_HEADING_ID].pid_enable = AUTO_DISABLE;
+		//hSI[AUTO_HEADING_ID].enable = AUTO_DISABLE;
 	}
 	
 	
-		//¥πœÚÕ∆Ω¯∆˜øÿ÷∆
+		//ÂûÇÂêëÊé®ËøõÂô®ÊéßÂà∂
 	if (host[1].joy_stick[KID_LT] > KEY_MID+KEY_MIN_GATE || host[1].joy_stick[KID_RT] < KEY_MID-KEY_MIN_GATE)
 	{
 		if (host[1].joy_stick[KID_LT] > KEY_MID+KEY_MIN_GATE)
 		{
-			if (host[1].auto_flag&hAuto[AUTO_DEPTH_ID].symbol)
-				Turtle_Prop_UpDown(host[1].joy_stick[KID_LT]/4+hAuto[AUTO_DEPTH_ID].pidout); // ÷∂Ø∏˙ÀÊ≤¢œﬁ÷∆ÀŸ∂»
-			else
+			if (host[1].auto_flag&(uint8_t)hAuto[AUTO_DEPTH_ID].pid_flag)
+      {
+				hAuto[AUTO_DEPTH_ID].pid_output += (float)host[1].joy_stick[KID_LT] - KEY_MID;
+				PID_OutOrg(&hAuto[AUTO_DEPTH_ID]);
+				Turtle_Prop_UpDown((uint8_t)(hAuto[AUTO_DEPTH_ID].pid_output+128.0)); //ÊâãÂä®Ë∑üÈöèÂπ∂ÈôêÂà∂ÈÄüÂ∫¶
+      }else
 				Turtle_Prop_UpDown(host[1].joy_stick[KID_LT]);
 		}
 		else
 		{
-			if (host[1].auto_flag&hAuto[AUTO_DEPTH_ID].symbol)
-				Turtle_Prop_UpDown(host[1].joy_stick[KID_RT]/4+hAuto[AUTO_DEPTH_ID].pidout); // ÷∂Ø∏˙ÀÊ≤¢œﬁ÷∆ÀŸ∂»
-			else
+			if (host[1].auto_flag&(uint8_t)hAuto[AUTO_DEPTH_ID].pid_flag)
+			{
+				hAuto[AUTO_DEPTH_ID].pid_output += (float)host[1].joy_stick[KID_RT] - KEY_MID;
+				PID_OutOrg(&hAuto[AUTO_DEPTH_ID]);
+				Turtle_Prop_UpDown((uint8_t)(hAuto[AUTO_DEPTH_ID].pid_output+128.0)); //ÊâãÂä®Ë∑üÈöèÂπ∂ÈôêÂà∂ÈÄüÂ∫¶
+			}else
 				Turtle_Prop_UpDown(host[1].joy_stick[KID_RT]);
 		}
 		Turtle_AutoCtrl_EnAt();
 		
 					
-		//…Ó∂»øÿ÷∆∏˙ÀÊ
-#if DEPTH_FLW == 1u
-		if (host[1].auto_flag&hAuto[AUTO_DEPTH_ID].symbol)
+		//Ê∑±Â∫¶ÊéßÂà∂Ë∑üÈöè
+#if AUTO_DEPTH_FLW == 1u
+		if (host[1].auto_flag&(uint8_t)hAuto[AUTO_DEPTH_ID].pid_flag)
 		{
-			hAuto[AUTO_DEPTH_ID].set_value = (float)hPress.conv_depth[0]*0.1;
+			hAuto[AUTO_DEPTH_ID].pid_setpoint = (float)hPress.conv_depth[0]*0.1;
 		}
 #endif
 		
-		hAuto[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_PITCH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_ROLL_ID].enable	= AUTO_DISABLE;
+		hAuto[AUTO_DEPTH_ID].pid_enable = AUTO_DISABLE;
+//		hSI[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
+//		hSI[AUTO_PITCH_ID].enable = AUTO_DISABLE;
+//		hSI[AUTO_ROLL_ID].enable	= AUTO_DISABLE;
 	}
 //	else if (host[1].joy_stick[KID_LT] > 0x90)
 //	{
@@ -306,60 +312,60 @@ void Turtle_HostMove(void)
 //		hSI[AUTO_PITCH_ID].enable = AUTO_DISABLE;
 //		hSI[AUTO_ROLL_ID].enable	= AUTO_DISABLE;
 //	}
-	else if ((host[1].auto_flag&hAuto[AUTO_DEPTH_ID].symbol) == hAuto[AUTO_DEPTH_ID].symbol)
+	else if ((host[1].auto_flag&(uint8_t)hAuto[AUTO_DEPTH_ID].pid_flag) == (uint8_t)hAuto[AUTO_DEPTH_ID].pid_flag)
 	{
 		Turtle_AutoCtrl_EnAt();
-		hAuto[AUTO_DEPTH_ID].enable = AUTO_ENABLE;
-		hSI[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_PITCH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_ROLL_ID].enable	= AUTO_DISABLE;
+		hAuto[AUTO_DEPTH_ID].pid_enable = AUTO_ENABLE;
+//		hSI[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
+//		hSI[AUTO_PITCH_ID].enable = AUTO_DISABLE;
+//		hSI[AUTO_ROLL_ID].enable	= AUTO_DISABLE;
 	}
-	else if((host[1].si_flag&hSI[AUTO_DEPTH_ID].mode) == hSI[AUTO_DEPTH_ID].mode)
-	{
-		Turtle_AutoCtrl_DisAt();
-		hAuto[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_DEPTH_ID].enable = AUTO_ENABLE;
-		hSI[AUTO_PITCH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_ROLL_ID].enable	= AUTO_DISABLE;
-	}
-	else if((host[1].si_flag&hSI[AUTO_PITCH_ID].mode) == hSI[AUTO_PITCH_ID].mode)
-	{
-		Turtle_AutoCtrl_DisAt();
-		hAuto[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_PITCH_ID].enable = AUTO_ENABLE;
-		hSI[AUTO_ROLL_ID].enable	= AUTO_DISABLE;
-	}
-	else if((host[1].si_flag&hSI[AUTO_ROLL_ID].mode) == hSI[AUTO_ROLL_ID].mode)
-	{
-		Turtle_AutoCtrl_DisAt();
-		hAuto[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_PITCH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_ROLL_ID].enable	= AUTO_ENABLE;
-	}
+//	else if((host[1].si_flag&hSI[AUTO_DEPTH_ID].mode) == hSI[AUTO_DEPTH_ID].mode)
+//	{
+//		Turtle_AutoCtrl_DisAt();
+//		hAuto[AUTO_DEPTH_ID].pid_enable = AUTO_DISABLE;
+//		hSI[AUTO_DEPTH_ID].enable = AUTO_ENABLE;
+//		hSI[AUTO_PITCH_ID].enable = AUTO_DISABLE;
+//		hSI[AUTO_ROLL_ID].enable	= AUTO_DISABLE;
+//	}
+//	else if((host[1].si_flag&hSI[AUTO_PITCH_ID].mode) == hSI[AUTO_PITCH_ID].mode)
+//	{
+//		Turtle_AutoCtrl_DisAt();
+//		hAuto[AUTO_DEPTH_ID].pid_enable = AUTO_DISABLE;
+//		hSI[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
+//		hSI[AUTO_PITCH_ID].enable = AUTO_ENABLE;
+//		hSI[AUTO_ROLL_ID].enable	= AUTO_DISABLE;
+//	}
+//	else if((host[1].si_flag&hSI[AUTO_ROLL_ID].mode) == hSI[AUTO_ROLL_ID].mode)
+//	{
+//		Turtle_AutoCtrl_DisAt();
+//		hAuto[AUTO_DEPTH_ID].pid_enable = AUTO_DISABLE;
+//		hSI[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
+//		hSI[AUTO_PITCH_ID].enable = AUTO_DISABLE;
+//		hSI[AUTO_ROLL_ID].enable	= AUTO_ENABLE;
+//	}
 	else
 	{
 		Turtle_Prop_VCLC();
-		hAuto[AUTO_DEPTH_ID].esum = 0;
-		hAuto[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_PITCH_ID].enable = AUTO_DISABLE;
-		hSI[AUTO_ROLL_ID].enable	= AUTO_DISABLE;
+		//hAuto[AUTO_DEPTH_ID].esum = 0;
+		hAuto[AUTO_DEPTH_ID].pid_enable = AUTO_DISABLE;
+//		hSI[AUTO_DEPTH_ID].enable = AUTO_DISABLE;
+//		hSI[AUTO_PITCH_ID].enable = AUTO_DISABLE;
+//		hSI[AUTO_ROLL_ID].enable	= AUTO_DISABLE;
 	}
 	
-	//◊‘∂Øøÿ÷∆◊¥Ã¨ºÏ≤È
+	//Ëá™Âä®ÊéßÂà∂Áä∂ÊÄÅÊ£ÄÊü•
 	uint8_t bit_buf1 = 0x80;
 	for (uint8_t i=0;i<3;i++)
 	{
-		//≤ª πƒ‹◊ÀÃ¨ ±£¨∆¡±Œ±Í÷æŒª
+		//‰∏ç‰ΩøËÉΩÂßøÊÄÅÊó∂ÔºåÂ±èËîΩÊ†áÂøó‰Ωç
 		if (at_en == 0 && i ==2)
 		{
 			hRov.run_state &= ~(bit_buf1>>i);
 			continue;
 		}
 		
-		if (hAuto[i].enable == AUTO_ENABLE)
+		if (hAuto[i].pid_enable == AUTO_ENABLE)
 			hRov.run_state |= bit_buf1>>i;
 		else
 			hRov.run_state &= ~(bit_buf1>>i);
@@ -376,7 +382,7 @@ void Turtle_HostFb(void)
 	huart[HOST_UART_ID].txBuf[0] = 0xEB;
 	huart[HOST_UART_ID].txBuf[1] = 0x90;
 	huart[HOST_UART_ID].txBuf[2] = HOST_FLENGTH;
-	//◊¥Ã¨∑¥¿°Œ¥º”
+	//Áä∂ÊÄÅÂèçÈ¶àÊú™Âä†
 	huart[HOST_UART_ID].txBuf[3] = hRov.run_state>>16;
 	huart[HOST_UART_ID].txBuf[4] = hRov.run_state>>8;
 	huart[HOST_UART_ID].txBuf[5] = hRov.run_state;
@@ -437,57 +443,57 @@ void Turtle_HostFb(void)
 	huart[HOST_UART_ID].txBuf[42] = host[1].fpid_check;
 	for (uint8_t j=0;j<4;j++)
 	{
-		if ((host[1].fpid_check&hAuto[j].symbol) == hAuto[j].symbol)
+		if ((host[1].fpid_check&(uint8_t)hAuto[j].pid_flag) == (uint8_t)hAuto[j].pid_flag)
 		{
-			huart[HOST_UART_ID].txBuf[43] = (uint8_t)hAuto[j].kp;
-			huart[HOST_UART_ID].txBuf[44] = (uint8_t)((hAuto[j].kp-huart[HOST_UART_ID].txBuf[43])*100);
-			huart[HOST_UART_ID].txBuf[45] = (uint8_t)hAuto[j].ki;
-			huart[HOST_UART_ID].txBuf[46] = (uint8_t)((hAuto[j].ki-huart[HOST_UART_ID].txBuf[45])*100);
-			huart[HOST_UART_ID].txBuf[47] = (uint8_t)hAuto[j].kd;
-			huart[HOST_UART_ID].txBuf[48] = (uint8_t)((hAuto[j].kd-huart[HOST_UART_ID].txBuf[47])*100);
-			if (hAuto[0].mode == MODE_CCPID)
+			huart[HOST_UART_ID].txBuf[43] = (uint8_t)hAuto[j].pid_Kp;
+			huart[HOST_UART_ID].txBuf[44] = (uint8_t)((hAuto[j].pid_Kp-huart[HOST_UART_ID].txBuf[43])*100);
+			huart[HOST_UART_ID].txBuf[45] = (uint8_t)hAuto[j].pid_Ki;
+			huart[HOST_UART_ID].txBuf[46] = (uint8_t)((hAuto[j].pid_Ki-huart[HOST_UART_ID].txBuf[45])*100);
+			huart[HOST_UART_ID].txBuf[47] = (uint8_t)hAuto[j].pid_Kd;
+			huart[HOST_UART_ID].txBuf[48] = (uint8_t)((hAuto[j].pid_Kd-huart[HOST_UART_ID].txBuf[47])*100);
+			if (hAuto[0].pid_mode == MODE_CCPID)
 			{
 				switch(j)
 				{
 					case 0:
-						huart[HOST_UART_ID].txBuf[43] = (uint8_t)hDeepAuto[0].kp;
-						huart[HOST_UART_ID].txBuf[44] = (uint8_t)((hDeepAuto[0].kp-huart[HOST_UART_ID].txBuf[43])*100);
-						huart[HOST_UART_ID].txBuf[45] = (uint8_t)hDeepAuto[0].ki;
-						huart[HOST_UART_ID].txBuf[46] = (uint8_t)((hDeepAuto[0].ki-huart[HOST_UART_ID].txBuf[45])*100);
-						huart[HOST_UART_ID].txBuf[47] = (uint8_t)hDeepAuto[0].kd;
-						huart[HOST_UART_ID].txBuf[48] = (uint8_t)((hDeepAuto[0].kd-huart[HOST_UART_ID].txBuf[47])*100);
+						huart[HOST_UART_ID].txBuf[43] = (uint8_t)hDepthAuto[0].pid_Kp;
+						huart[HOST_UART_ID].txBuf[44] = (uint8_t)((hDepthAuto[0].pid_Kp-huart[HOST_UART_ID].txBuf[43])*100);
+						huart[HOST_UART_ID].txBuf[45] = (uint8_t)hDepthAuto[0].pid_Ki;
+						huart[HOST_UART_ID].txBuf[46] = (uint8_t)((hDepthAuto[0].pid_Ki-huart[HOST_UART_ID].txBuf[45])*100);
+						huart[HOST_UART_ID].txBuf[47] = (uint8_t)hDepthAuto[0].pid_Kd;
+						huart[HOST_UART_ID].txBuf[48] = (uint8_t)((hDepthAuto[0].pid_Kd-huart[HOST_UART_ID].txBuf[47])*100);
 						break;
 					case 3:
-						huart[HOST_UART_ID].txBuf[43] = (uint8_t)hDeepAuto[1].kp;
-						huart[HOST_UART_ID].txBuf[44] = (uint8_t)((hDeepAuto[1].kp-huart[HOST_UART_ID].txBuf[43])*100);
-						huart[HOST_UART_ID].txBuf[45] = (uint8_t)hDeepAuto[1].ki;
-						huart[HOST_UART_ID].txBuf[46] = (uint8_t)((hDeepAuto[1].ki-huart[HOST_UART_ID].txBuf[45 ])*100);
-						huart[HOST_UART_ID].txBuf[47] = (uint8_t)hDeepAuto[1].kd;
-						huart[HOST_UART_ID].txBuf[48] = (uint8_t)((hDeepAuto[1].kd-huart[HOST_UART_ID].txBuf[47])*100);
+						huart[HOST_UART_ID].txBuf[43] = (uint8_t)hDepthAuto[1].pid_Kp;
+						huart[HOST_UART_ID].txBuf[44] = (uint8_t)((hDepthAuto[1].pid_Kp-huart[HOST_UART_ID].txBuf[43])*100);
+						huart[HOST_UART_ID].txBuf[45] = (uint8_t)hDepthAuto[1].pid_Ki;
+						huart[HOST_UART_ID].txBuf[46] = (uint8_t)((hDepthAuto[1].pid_Ki-huart[HOST_UART_ID].txBuf[45])*100);
+						huart[HOST_UART_ID].txBuf[47] = (uint8_t)hDepthAuto[1].pid_Kd;
+						huart[HOST_UART_ID].txBuf[48] = (uint8_t)((hDepthAuto[1].pid_Kd-huart[HOST_UART_ID].txBuf[47])*100);
 						break;
 				}
 			}
 		}
 	}
 	
-	//∑¢ÀÕµ≤Œª
+	//ÂèëÈÄÅÊå°‰Ωç
 	for (uint8_t j=0;j<4;j++)
 		if (gear_switch[j] == host[1].prop_gear)
 			huart[HOST_UART_ID].txBuf[49] = j;
 	
-	//∑¢ÀÕœµÕ≥±Ê ∂œ‡πÿ…Ë÷√
-	huart[HOST_UART_ID].txBuf[50] = host[1].fsi_check;
-	for (uint8_t j=0;j<4;j++)
-	{
-		if ((host[1].fsi_check&hSI[j].mode) == hSI[j].mode)
-		{
-			huart[HOST_UART_ID].txBuf[51] = hSI[j].period;
-			huart[HOST_UART_ID].txBuf[52] = hSI[j].amp;
-		}
-	}
+	//ÂèëÈÄÅÁ≥ªÁªüËæ®ËØÜÁõ∏ÂÖ≥ËÆæÁΩÆ
+//	huart[HOST_UART_ID].txBuf[50] = host[1].fsi_check;
+//	for (uint8_t j=0;j<4;j++)
+//	{
+//		if ((host[1].fsi_check&hSI[j].mode) == hSI[j].mode)
+//		{
+//			huart[HOST_UART_ID].txBuf[51] = hSI[j].period;
+//			huart[HOST_UART_ID].txBuf[52] = hSI[j].amp;
+//		}
+//	}
 
-	for (uint8_t j=0;j<4;j++)
-		huart[HOST_UART_ID].txBuf[53+j] = (uint8_t)((short)hSI[j].si_out + 0x80);
+//	for (uint8_t j=0;j<4;j++)
+//		huart[HOST_UART_ID].txBuf[53+j] = (uint8_t)((short)hSI[j].si_out + 0x80);
 
 	u16_buf = CRC16_MODBUS(huart[HOST_UART_ID].txBuf,HOST_FLENGTH-4);
 	huart[HOST_UART_ID].txBuf[60] = u16_buf;
@@ -513,12 +519,12 @@ void Turtle_HostData(uint8_t *data)
 	uint8_t zero_cnt = 0;
 	uint8_t i;
 	
-	/**************** Ω” ’ ˝æ›¥¶¿Ì ****************/
+	/**************** Êé•Êî∂Êï∞ÊçÆÂ§ÑÁêÜ ****************/
 	if (data[0] == HOST_START_H && data[1] == HOST_START_L && data[2] == HOST_LENGTH)
 	{
 		if (data[HOST_LENGTH-2] == HOST_END_H && data[HOST_LENGTH-1] == HOST_END_L)
 		{
-			//º¸÷µº∞PIDœ‡πÿflag±£¥Ê
+			//ÈîÆÂÄºÂèäPIDÁõ∏ÂÖ≥flag‰øùÂ≠ò
 			p_buf = host[1].joy_stick;
 			for(i=0;i<20;i++)
 			{
@@ -540,57 +546,57 @@ void Turtle_HostData(uint8_t *data)
 			host[1].fpid_change	= data[23];
 			host[1].fpid_check	= data[24];
 
-			//◊‘∂Øøÿ÷∆≤Œ ˝»∑∂®
+			//Ëá™Âä®ÊéßÂà∂ÂèÇÊï∞Á°ÆÂÆö
 			for (i=0;i<4;i++)
 			{	
-				//PID≤Œ ˝–ﬁ∏ƒ
-				if ((host[1].fpid_change&hAuto[i].symbol) == hAuto[i].symbol)
+				//PIDÂèÇÊï∞‰øÆÊîπ
+				if ((host[1].fpid_change&(uint8_t)hAuto[i].pid_flag) == (uint8_t)hAuto[i].pid_flag)
 				{
 					float pid_buf[3];
 					pid_buf[0] = (float)data[25] + (float)data[26]*0.01;
 					pid_buf[1] = (float)data[27] + (float)data[28]*0.01;
 					pid_buf[2] = (float)data[29] + (float)data[30]*0.01;
 					
-					//¥Æº∂PID≤Œ ˝¥¶¿Ì
-					if (hAuto[0].mode == MODE_CCPID)
+					//‰∏≤Á∫ßPIDÂèÇÊï∞Â§ÑÁêÜ
+					if (hAuto[0].pid_mode == MODE_CCPID)
 					{
 						switch(i)
 						{
 							case 0:
-								hDeepAuto[0].kp = pid_buf[0];
-								hDeepAuto[0].ki = pid_buf[1];
-								hDeepAuto[0].kd = pid_buf[2];
+								hDepthAuto[0].pid_Kp = pid_buf[0];
+								hDepthAuto[0].pid_Ki = pid_buf[1];
+								hDepthAuto[0].pid_Kd = pid_buf[2];
 								break;
 							case 3:
-								hDeepAuto[1].kp = pid_buf[0];
-								hDeepAuto[1].ki = pid_buf[1];
-								hDeepAuto[1].kd = pid_buf[2];
+								hDepthAuto[1].pid_Kp = pid_buf[0];
+								hDepthAuto[1].pid_Ki = pid_buf[1];
+								hDepthAuto[1].pid_Kd = pid_buf[2];
 								break;
 						}
 					}
-					else if (pid_buf[0] != hAuto[i].kp || pid_buf[1] != hAuto[i].ki || pid_buf[2] != hAuto[i].kd)
+					else if (pid_buf[0] != hAuto[i].pid_Kp || pid_buf[1] != hAuto[i].pid_Ki || pid_buf[2] != hAuto[i].pid_Kd)
 					{
 						//uint16_t *pid_p = (uint16_t *)&data[25];
-						hAuto[i].kp = pid_buf[0];
-						hAuto[i].ki = pid_buf[1];
-						hAuto[i].kd = pid_buf[2];
+						hAuto[i].pid_Kp = pid_buf[0];
+						hAuto[i].pid_Ki = pid_buf[1];
+						hAuto[i].pid_Kd = pid_buf[2];
 						//FLASH_Write(PID_START_ADD-i*8,pid_p,6);
 					}
 				}
 				
-				//◊‘∂Øøÿ÷∆
-				if ((data[31]&hAuto[i].symbol) == hAuto[i].symbol)
+				//Ëá™Âä®ÊéßÂà∂
+				if ((data[31]&(uint8_t)hAuto[i].pid_flag) == (uint8_t)hAuto[i].pid_flag)
 				{
-					hAuto[i].set_value = (float)(((uint16_t)data[32+2*i]<<8)+data[33+2*i]);
-					host[1].auto_flag |= hAuto[i].symbol;
+					hAuto[i].pid_setpoint = (float)(((uint16_t)data[32+2*i]<<8)+data[33+2*i]);
+					host[1].auto_flag |= (uint8_t)hAuto[i].pid_flag;
 				}
-				else if (hAuto[i].enable == AUTO_DISABLE)
+				else if (hAuto[i].pid_enable == AUTO_DISABLE)
 				{
-					host[1].auto_flag &= ~hAuto[i].symbol;
+					host[1].auto_flag &= ~(uint8_t)hAuto[i].pid_flag;
 				}
 			}
 			
-			//‘⁄…œŒªª˙≤ª πƒ‹◊‘∂Øøÿ÷∆µƒ«Èøˆœ¬£¨∞¥º¸ πƒ‹◊‘∂Øøÿ÷∆
+			//Âú®‰∏ä‰ΩçÊú∫‰∏ç‰ΩøËÉΩËá™Âä®ÊéßÂà∂ÁöÑÊÉÖÂÜµ‰∏ãÔºåÊåâÈîÆ‰ΩøËÉΩËá™Âä®ÊéßÂà∂
 			static uint8_t auto_key_cnt = 0;
 			static uint8_t auto_key_flag = 0;
 				
@@ -600,8 +606,8 @@ void Turtle_HostData(uint8_t *data)
 				{
 					if (auto_key_cnt > 3)
 					{
-						hAuto[AUTO_HEADING_ID].set_value = hRov.yaw*10;
-						hAuto[AUTO_HEADING_ID].enable = AUTO_ENABLE - hAuto[AUTO_HEADING_ID].enable;
+						hAuto[AUTO_HEADING_ID].pid_setpoint = hRov.yaw*10;
+						hAuto[AUTO_HEADING_ID].pid_enable = AUTO_ENABLE - hAuto[AUTO_HEADING_ID].pid_enable;
 						auto_key_flag ^= AUTO_ENABLE << AUTO_HEADING_ID;
 					}
 					auto_key_cnt = 0;
@@ -610,8 +616,8 @@ void Turtle_HostData(uint8_t *data)
 				{
 					if (auto_key_cnt > 3)
 					{
-						hAuto[AUTO_DEPTH_ID].set_value = (float)hPress.conv_depth[0]/10;
-						hAuto[AUTO_DEPTH_ID].enable = AUTO_ENABLE - hAuto[AUTO_DEPTH_ID].enable;
+						hAuto[AUTO_DEPTH_ID].pid_setpoint = (float)hPress.conv_depth[0]/10;
+						hAuto[AUTO_DEPTH_ID].pid_enable = AUTO_ENABLE - hAuto[AUTO_DEPTH_ID].pid_enable;
 						auto_key_flag ^= AUTO_ENABLE << AUTO_DEPTH_ID;
 					}
 					auto_key_cnt = 0;
@@ -624,31 +630,31 @@ void Turtle_HostData(uint8_t *data)
 				host[1].auto_flag = auto_key_flag;
 			}
 			
-			//µ≤Œª∂¡»°
-			//”––ß–‘—È÷§
+			//Êå°‰ΩçËØªÂèñ
+			//ÊúâÊïàÊÄßÈ™åËØÅ
 			//host[1].prop_gear = gear_switch[data[40]];
 			
-			//„–÷µ∫Õ¬ˆøÌ∂¡»°
+			//ÈòàÂÄºÂíåËÑâÂÆΩËØªÂèñ
 			host[1].si_flag			= data[41];
 			host[1].fsi_check		= data[42];
 			host[1].fsi_change	= data[43];
 			
-			//œµÕ≥±Ê ∂≤Œ ˝»∑∂®
-			for (i=0;i<4;i++)
-			{	
-				//œµÕ≥±Ê ∂≤Œ ˝–ﬁ∏ƒ
-				if ((host[1].fsi_change&hSI[i].mode) == hSI[i].mode)
-				{
-					hSI[i].period = data[44];
-					hSI[i].amp		= data[45];
-				}
-			}
+			//Á≥ªÁªüËæ®ËØÜÂèÇÊï∞Á°ÆÂÆö
+//			for (i=0;i<4;i++)
+//			{	
+//				//Á≥ªÁªüËæ®ËØÜÂèÇÊï∞‰øÆÊîπ
+//				if ((host[1].fsi_change&hSI[i].mode) == hSI[i].mode)
+//				{
+//					hSI[i].period = data[44];
+//					hSI[i].amp		= data[45];
+//				}
+//			}
 			
-			/****************  ˝æ›¥¶¿Ì ****************/
-			//º¸÷µ¥¶¿Ì
+			/**************** Êï∞ÊçÆÂ§ÑÁêÜ ****************/
+			//ÈîÆÂÄºÂ§ÑÁêÜ
 			for (i=0;i<4;i++)
 			{
-				//◊Ó–°œﬁ÷∆
+				//ÊúÄÂ∞èÈôêÂà∂
 				if (AbsMinus(host[1].joy_stick[i],KEY_MID) < KEY_MIN_GATE)
 					host[1].joy_stick[i] = KEY_MID;
 				if (host[1].prop_gear == 0)
@@ -661,12 +667,12 @@ void Turtle_HostData(uint8_t *data)
 			host[1].joy_stick[KID_RT] = KeyValue_Div(host[1].joy_stick[KID_RT],host[1].prop_gear);
 #endif
 			
-			// ˝æ›±∏∑›
+			//Êï∞ÊçÆÂ§á‰ªΩ
 			p_buf_back = host[0].joy_stick;
 			for (i=0;i<sizeof(host[1]);i++)
 				p_buf_back[i] = p_buf[i];
 			
-			//◊¥Ã¨ªÿ∏¥
+			//Áä∂ÊÄÅÂõûÂ§ç
 			Turtle_HostFb();
 		}
 	}

@@ -1,12 +1,12 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_prop_485&pwm.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV ÍÆ½øÆ÷¿ØÖÆ³ÌĞò
+  * @brief   Turtle ç³»åˆ— ROV æ¨è¿›å™¨æ§åˆ¶ç¨‹åº
   *
   ******************************************************************************
   * @attention
-  *	Í¬Ê±°üº¬PWM¼°485¿ØÖÆ
+  *	åŒæ—¶åŒ…å«PWMåŠ485æ§åˆ¶
   *
   ******************************************************************************
   */
@@ -80,7 +80,7 @@ void Turtle_Prop_Update(void)
 		}
 	}
 	
-	//Ë®Æ½ºÍ´¹Ïò·Ö¿ª¿ØÖÆ£¬¼õÉÙµçÔ´³å»÷µÄÇé¿ö
+	//æ°´å¹³å’Œå‚å‘åˆ†å¼€æ§åˆ¶ï¼Œå‡å°‘ç”µæºå†²å‡»çš„æƒ…å†µ
 	if (prop_cnt == 3)
 	{
 		uint8_t err_cnt = 0;
@@ -135,7 +135,7 @@ void Turtle_Prop_Update(void)
 
 void Turtle_Prop_DataPro(uint8_t *prop_rt)
 {
-	//·µ»ØÊı¾İ´¦Àí
+	//è¿”å›æ•°æ®å¤„ç†
 	uint8_t i;
 
 #if PROP_MODE == PROP_485
@@ -193,7 +193,7 @@ void Turtle_Prop_PwrCuc(void)
 #define LR_GATE	100
 #define CTRL_K	1
 
-//ÍÆ½øÆ÷ÔËĞĞ×´Ì¬¼ì²â
+//æ¨è¿›å™¨è¿è¡ŒçŠ¶æ€æ£€æµ‹
 void Turtle_Prop_RunCheck(void)
 {
 	uint8_t i;
@@ -202,7 +202,7 @@ void Turtle_Prop_RunCheck(void)
 	static uint8_t v_cntp = 0;
 	static uint8_t v_cntm = 0;
 	
-	//ÍÆ½øÆ÷Òì³£¼ì²â
+	//æ¨è¿›å™¨å¼‚å¸¸æ£€æµ‹
 	for (i=0;i<8;i++)
 	{
 		if (hprop[i].Prop_RSp < PROP_RSP_GMIN && AbsMinus(hprop[i].Prop_CQ,PROP_CQ_MID) > PROP_CQ_GATE)
@@ -221,7 +221,7 @@ void Turtle_Prop_RunCheck(void)
 			hRov.run_state &= ~(buf>>i);
 	}
 	
-	//Ë®Æ½ÔË¶¯ÅĞ¶Ï
+	//æ°´å¹³è¿åŠ¨åˆ¤æ–­
 	p_cnt = 0;
 	for (i=0;i<4;i++)
 		if (hprop[i].Prop_RSp < PROP_RSP_GMIN)
@@ -233,11 +233,11 @@ void Turtle_Prop_RunCheck(void)
 	}
 	else
 	{
-		//ÅĞ¶ÏË®Æ½ÔËĞĞ·½Ïò
+		//åˆ¤æ–­æ°´å¹³è¿è¡Œæ–¹å‘
 		if (hprop[PROP_ID2].Prop_CQ>PROP_CQ_MID && hprop[PROP_ID3].Prop_CQ>PROP_CQ_MID)
 		{
 			hRov.run_state |= ROV_RUN_FORWARD,hRov.run_state &= ~ROV_RUN_BACK;
-			//ÅĞ¶ÏË®Æ½×ªÍä·½Ïò
+			//åˆ¤æ–­æ°´å¹³è½¬å¼¯æ–¹å‘
 #if G_PROP == G_PROP_N
 			if ((hprop[PROP_ID4].Prop_DRSp - hprop[PROP_ID1].Prop_DRSp) > LR_GATE)
 				hRov.run_state |= ROV_TURN_LEFT,hRov.run_state &= ~ROV_TURN_RIGHT;
@@ -261,7 +261,7 @@ void Turtle_Prop_RunCheck(void)
 #endif
 		{
 			hRov.run_state |= ROV_RUN_BACK,hRov.run_state &= ~ROV_RUN_FORWARD;
-			//ÅĞ¶ÏË®Æ½×ªÍä·½Ïò
+			//åˆ¤æ–­æ°´å¹³è½¬å¼¯æ–¹å‘
 			if (hprop[PROP_ID2].Prop_DRSp - hprop[PROP_ID3].Prop_DRSp > LR_GATE)
 				hRov.run_state |= ROV_TURN_RIGHT,hRov.run_state &= ~ROV_TURN_LEFT;
 			else if (hprop[PROP_ID3].Prop_DRSp - hprop[PROP_ID2].Prop_DRSp > LR_GATE)
@@ -272,7 +272,7 @@ void Turtle_Prop_RunCheck(void)
 		else
 		{
 			hRov.run_state &= ~ROV_RUN_FORWARD,hRov.run_state &= ~ROV_RUN_BACK;
-			//ÅĞ¶ÏÔ­µØ×ªÍä·½Ïò
+			//åˆ¤æ–­åŸåœ°è½¬å¼¯æ–¹å‘
 			if ((hprop[PROP_ID4].Prop_DRSp - hprop[PROP_ID1].Prop_DRSp) > LR_GATE)
 				hRov.run_state |= ROV_TURN_RIGHT,hRov.run_state &= ~ROV_TURN_LEFT;
 			else if ((hprop[PROP_ID1].Prop_DRSp - hprop[PROP_ID4].Prop_DRSp) > LR_GATE)
@@ -283,7 +283,7 @@ void Turtle_Prop_RunCheck(void)
 	}
 
 	
-	//´¹ÏòÔË¶¯ÅĞ¶Ï
+	//å‚å‘è¿åŠ¨åˆ¤æ–­
 	v_cntp = 0;
 	for (i=4;i<8;i++)
 		if (hprop[i].Prop_RSp < PROP_RSP_GMIN)
@@ -295,7 +295,7 @@ void Turtle_Prop_RunCheck(void)
 	}
 	else
 	{
-		//ÅĞ¶Ï´¹ÏòÔË¶¯·½Ïò
+		//åˆ¤æ–­å‚å‘è¿åŠ¨æ–¹å‘
 		v_cntp = 0;
 		v_cntm = 0;
 		for (i=4;i<8;i++)
@@ -311,12 +311,12 @@ void Turtle_Prop_RunCheck(void)
 	}
 }
 
-//ÍÆ½øÆ÷Òì³£´¦Àí
+//æ¨è¿›å™¨å¼‚å¸¸å¤„ç†
 void Turtle_Prop_ErrPro(void)
 {
 	uint8_t i = 0;
 	
-	//Ë®Æ½ÍÆ½øÆ÷Òì³£´¦Àí
+	//æ°´å¹³æ¨è¿›å™¨å¼‚å¸¸å¤„ç†
 	for (i=0;i<4;i++)
 	{
 		if ((hprop[i].Prop_State & PROP_ERR)  != 0x00)
@@ -325,7 +325,7 @@ void Turtle_Prop_ErrPro(void)
 			hprop[3-i].Prop_State &= ~PROP_FBD;
 	}
 	
-	//´¹ÏòÍÆ½øÆ÷Òì³£´¦Àí
+	//å‚å‘æ¨è¿›å™¨å¼‚å¸¸å¤„ç†
 	for (i=4;i<8;i++)
 	{
 		switch(i)
@@ -349,7 +349,7 @@ void Turtle_Prop_ErrPro(void)
 	}
 }
 
-//ÍÆ½øÆ÷ãĞÖµ´¦Àí¼°Âß¼­´¦Àí
+//æ¨è¿›å™¨é˜ˆå€¼å¤„ç†åŠé€»è¾‘å¤„ç†
 uint16_t cq_sum_max = (uint16_t)((float)(PROP_CQ_MAX-PROP_CQ_MID)*CQ_SUM_MAX*8);
 
 void Turtle_Prop_GatePro(void)

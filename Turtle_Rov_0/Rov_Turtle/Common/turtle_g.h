@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    turtle_g.h
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV È«¾ÖÍ·ÎÄ¼ş
-	*          °üº¬ÒÔÏÂ¶¨Òå£º
+  * @brief   Turtle ç³»åˆ— ROV å…¨å±€å¤´æ–‡ä»¶
+	*          åŒ…å«ä»¥ä¸‹å®šä¹‰ï¼š
 	*          + 
   ******************************************************************************
   * @attention
@@ -32,7 +32,7 @@
 #include "shell_port.h"
 #include "turtle_cmd.h"
 
-/** @defgroup È«¾ÖÏà¹Ø¶¨Òå
+/** @defgroup å…¨å±€ç›¸å…³å®šä¹‰
   * @{
   */
 #define G_TURE				1u
@@ -41,46 +41,46 @@
 #define TIMESTAMP_EN	G_TURE
 #define PROP_FBD_EN		G_TURE
 
-//ÒÔÏÂÔİÎ´Ê¹ÓÃ
+//ä»¥ä¸‹æš‚æœªä½¿ç”¨
 #define PROP_485			0u
 #define PROP_PWM			1u
 
 #define PROP_MODE			PROP_PWM
 
-//Ñ¡Ôñµç×ÓÂŞÅÌ»òÕßÍÓÂİÒÇ
+//é€‰æ‹©ç”µå­ç½—ç›˜æˆ–è€…é™€èºä»ª
 #define G_GYRO				0u
 #define G_COMP				1u
 
 #define G_ANGLE				G_GYRO
 
-//ÍÆ½øÆ÷²¼¾Ö
+//æ¨è¿›å™¨å¸ƒå±€
 #define G_PROP_N			0u
 #define G_PROP_P			1u
 
 #define G_PROP				G_PROP_N
 
 
-/** @defgroup FIFOÏà¹Ø¶¨Òå
+/** @defgroup FIFOç›¸å…³å®šä¹‰
   * @{
   */
 
 #define ElemType       uint8_t
-#define QueueSize      64					//FIFO¶ÓÁĞµÄ´óĞ¡
-#define QueueFull      1					//FIFOÂúÖÃ1
-#define QueueEmpty     0					//FIFO¿ÕÖÃ0
-#define QueueOperateOk 2					//¶ÓÁĞ²Ù×÷Íê³É ¸³ÖµÎª2
+#define QueueSize      64					//FIFOé˜Ÿåˆ—çš„å¤§å°
+#define QueueFull      1					//FIFOæ»¡ç½®1
+#define QueueEmpty     0					//FIFOç©ºç½®0
+#define QueueOperateOk 2					//é˜Ÿåˆ—æ“ä½œå®Œæˆ èµ‹å€¼ä¸º2
 
 typedef struct FifoQueue
 {
-    uint16_t front;			//¶ÓÁĞÍ·
-    uint16_t rear;			//¶ÓÁĞÎ²
-    uint16_t count;			//¶ÓÁĞ¼ÆÊı
+    uint16_t front;			//é˜Ÿåˆ—å¤´
+    uint16_t rear;			//é˜Ÿåˆ—å°¾
+    uint16_t count;			//é˜Ÿåˆ—è®¡æ•°
     ElemType dat[QueueSize];
 }FifoQueueTypedef;
 
 extern FifoQueueTypedef Terminal_RxQueue;
 
-/** @defgroup ´®¿ÚÏà¹Ø¶¨Òå
+/** @defgroup ä¸²å£ç›¸å…³å®šä¹‰
   * @{
   */
 
@@ -125,7 +125,7 @@ typedef struct
 
 extern UART_DataTypeDef huart[5];
 
-/** @defgroup ¶¨Ê±Æ÷Ïà¹Ø¶¨Òå
+/** @defgroup å®šæ—¶å™¨ç›¸å…³å®šä¹‰
   * @{
   */
 
@@ -153,7 +153,7 @@ extern UART_DataTypeDef huart[5];
 #define PROP_CH8				TIM_CHANNEL_4
 
 
-/** @defgroup ÍÆ½øÆ÷Ïà¹Ø¶¨Òå
+/** @defgroup æ¨è¿›å™¨ç›¸å…³å®šä¹‰
   * @{
   */
 	
@@ -175,7 +175,7 @@ extern UART_DataTypeDef huart[5];
 #define		PROP_ID7		PROPV_LB
 #define		PROP_ID8		PROPV_LF
 
-//#define		PROP_VAL_INTER	2.8				//£¨×î´óPWMÖµ-×îĞ¡PWMÖµ£©/£¨0xFF£©
+//#define		PROP_VAL_INTER	2.8				//ï¼ˆæœ€å¤§PWMå€¼-æœ€å°PWMå€¼ï¼‰/ï¼ˆ0xFFï¼‰
 #define 	PROP_CQ_MAX			1850
 #define 	PROP_CQ_MID			1500
 #define 	PROP_CQ_MIN			1150
@@ -200,20 +200,20 @@ typedef enum
 
 typedef struct
 {
-	uint8_t                  Prop_ID;				//ÍÆ½øÆ÷±àºÅ
-	uint16_t                 Prop_CQ;				//ÍÆ½øÆ÷¿ØÖÆÁ¿
-	uint16_t                 Prop_OCQ;			//ÍÆ½øÆ÷¾É¿ØÖÆÁ¿
-	uint8_t                  Prop_Vot;			//ÍÆ½øÆ÷µçÑ¹ 0.1V
-	uint8_t                  Prop_Cur;			//ÍÆ½øÆ÷µçÁ÷ 0.1A
-	uint16_t								 Prop_RSp;			//ÍÆ½øÆ÷×ªËÙ r/min
-	int16_t									 Prop_DRSp;			//ÍÆ½øÆ÷×ªËÙ r/min
-	uint8_t									 Prop_Gear;			//ÍÆ½øÆ÷µ²Î»£¨Î´Ê¹ÓÃ£©
-	Prop_StateTypeDef				 Prop_State;		//ÍÆ½øÆ÷ÔËĞĞ×´Ì¬
+	uint8_t                  Prop_ID;				//æ¨è¿›å™¨ç¼–å·
+	uint16_t                 Prop_CQ;				//æ¨è¿›å™¨æ§åˆ¶é‡
+	uint16_t                 Prop_OCQ;			//æ¨è¿›å™¨æ—§æ§åˆ¶é‡
+	uint8_t                  Prop_Vot;			//æ¨è¿›å™¨ç”µå‹ 0.1V
+	uint8_t                  Prop_Cur;			//æ¨è¿›å™¨ç”µæµ 0.1A
+	uint16_t								 Prop_RSp;			//æ¨è¿›å™¨è½¬é€Ÿ r/min
+	int16_t									 Prop_DRSp;			//æ¨è¿›å™¨è½¬é€Ÿ r/min
+	uint8_t									 Prop_Gear;			//æ¨è¿›å™¨æŒ¡ä½ï¼ˆæœªä½¿ç”¨ï¼‰
+	Prop_StateTypeDef				 Prop_State;		//æ¨è¿›å™¨è¿è¡ŒçŠ¶æ€
 }Prop_CtrlTypeDef;
 
 extern Prop_CtrlTypeDef hprop[8];
 
-/** @defgroup Â©Ë®¼ì²âÏà¹Ø¶¨Òå
+/** @defgroup æ¼æ°´æ£€æµ‹ç›¸å…³å®šä¹‰
   * @{
   */
 
@@ -227,7 +227,7 @@ typedef enum
 	LSJC_NONE
 }LSJC_StateTypeDef;
 
-/** @defgroup ÉãÏñ»úÏà¹Ø¶¨Òå
+/** @defgroup æ‘„åƒæœºç›¸å…³å®šä¹‰
   * @{
   */
 typedef enum
@@ -241,26 +241,26 @@ typedef enum
 
 extern Cam_RunStateTypeDef cam_run_state;
 
-/** @defgroup Ñ¹Á¦´«¸ĞÆ÷Ïà¹Ø¶¨Òå
+/** @defgroup å‹åŠ›ä¼ æ„Ÿå™¨ç›¸å…³å®šä¹‰
   * @{
   */
 typedef struct
 {
-	uint16_t		init_press;					//³õÊ¼Ñ¹Á¦
+	uint16_t		init_press;					//åˆå§‹å‹åŠ›
 	uint16_t		press;							//mbar
-	int16_t			temp;								//0.01¡ã
+	int16_t			temp;								//0.01Â°
 	uint16_t		depth;							//cm
-	uint16_t		conv_depth[10];			//»»ËãÉî¶È cm
-	float				conv_speed[10];			//»»ËãËÙ¶È mm/s
+	uint16_t		conv_depth[10];			//æ¢ç®—æ·±åº¦ cm
+	float				conv_speed[10];			//æ¢ç®—é€Ÿåº¦ mm/s
 }Press_StateTypeDef;
 
 extern Press_StateTypeDef hPress;
 
-/** @defgroup ÉÏÏÂÎ»»úÏà¹Ø¶¨Òå
+/** @defgroup ä¸Šä¸‹ä½æœºç›¸å…³å®šä¹‰
   * @{
   */
 
-//ÔËĞĞ×´Ì¬¶¨Òå
+//è¿è¡ŒçŠ¶æ€å®šä¹‰
 #define ROV_TURN_RIGHT		0x000200
 #define ROV_TURN_LEFT			0x000100
 #define ROV_AUTO_DEEP			0x000080
@@ -313,17 +313,17 @@ typedef enum
 
 typedef struct
 {
-	int16_t							pwr_temp;			//0.1¶È
-	int16_t							yt_angle;			//0.1¶È
-	uint8_t							comp_id;			//µç×ÓÂŞÅÌID
-	float								roll;					//¶È
-	float								pitch;				//¶È
-	float								yaw;					//¶È
-	float								gyro_t;				//¶È(ÔİÎ´Ê¹ÓÃ)
-	uint16_t						led_lumin1;		//PWMÖµ
-	uint16_t						led_lumin2;		//PWMÖµ
-	uint16_t						voltage;			//µçÑ¹ 0.1V
-	uint16_t						current;			//µçÁ÷ 0.1A
+	int16_t							pwr_temp;			//0.1åº¦
+	int16_t							yt_angle;			//0.1åº¦
+	uint8_t							comp_id;			//ç”µå­ç½—ç›˜ID
+	float								roll;					//åº¦
+	float								pitch;				//åº¦
+	float								yaw;					//åº¦
+	float								gyro_t;				//åº¦(æš‚æœªä½¿ç”¨)
+	uint16_t						led_lumin1;		//PWMå€¼
+	uint16_t						led_lumin2;		//PWMå€¼
+	uint16_t						voltage;			//ç”µå‹ 0.1V
+	uint16_t						current;			//ç”µæµ 0.1A
 	uint32_t						run_state;
 	LSJC_StateTypeDef		lsjc_state[2];
 	int16_t							prop_cq_gmax;
@@ -346,68 +346,8 @@ extern float gear_switch[4];
 extern Rov_StateTypeDef		hRov;
 extern Host_StateTypeDef 	host[2];
 
-/** @defgroup ×Ô¶¯¿ØÖÆÏà¹Ø¶¨Òå
-  * @{
-  */
 
-#define AUTO_DEPTH_ID		0u
-#define AUTO_HEADING_ID	1u
-#define AUTO_PITCH_ID		2u
-#define AUTO_ROLL_ID		3u
-
-#define AUTO_ENABLE			1u
-#define AUTO_DISABLE		0u
-
-#define DEPTH_FLW				1u
-
-typedef enum
-{
-  AUTO_DEPTH		= 0x01,
-	AUTO_HEADING	= 0x02,
-	AUTO_PITCH		= 0x04,
-	AUTO_ROLL			= 0x08
-}AutoCtrl_SymbolTypeDef;
-
-typedef enum
-{
-  MODE_PID = 0,
-	MODE_SGPID,
-	MODE_SCPID,
-	MODE_CCPID
-}AutoCtrl_ModeTypeDef;
-
-typedef enum
-{
-  OUT_ORG = 0,
-  OUT_XGATE,
-	OUT_YGATE,
-	OUT_SQRT,
-	OUT_DC,
-}AutoCtrl_OModeTypeDef;
-
-typedef struct
-{
-	float											set_value;			//Éè¶¨Öµ
-	float											act_value;			//Êµ¼ÊÖµ
-	float											max_range;			//×î´ó·¶Î§
-	float											err[3];					//Îó²îÖµĞòÁĞ
-	float											esum;						//ÀÛ¼ÆÎó²î
-	float											kp;							//±ÈÀıÏµÊı
-	float											ki;							//»ı·ÖÏµÊı
-	float											kd;							//Î¢·ÖÏµÊı
-	float											pidout;					//¿ØÖÆÆ÷Êä³ö
-	float											out_dc;
-	float											out_db;
-	uint8_t										out_mode;
-	uint8_t										enable;					//PIDÊ¹ÄÜ±êÖ¾Î»
-	AutoCtrl_SymbolTypeDef		symbol;					//PID¿ØÖÆ±êÖ¾Î»
-	AutoCtrl_ModeTypeDef			mode;						//PID¿ØÖÆ·½Ê½
-}AutoCtrl_StateTypeDef;
-
-extern AutoCtrl_StateTypeDef hAuto[4];
-extern AutoCtrl_StateTypeDef hDeepAuto[2];
-
-/** @defgroup ÏµÍ³±æÊ¶Ïà¹Ø¶¨Òå
+/** @defgroup ç³»ç»Ÿè¾¨è¯†ç›¸å…³å®šä¹‰
   * @{
   */
 
@@ -429,12 +369,12 @@ typedef enum
 
 typedef struct
 {
-	float											period;			//ÖÜÆÚ
-	float											amp;				//·ùÖµ
-	float											si_out;			//SIÊä³ö
-	uint8_t										enable;			//SIÊ¹ÄÜ
-	SI_ModeTypeDef						mode;				//SIÄ£Ê½
-	SI_OutTypeDef							si_outmode;	//SIÊä³öÄ£Ê½
+	float											period;			//å‘¨æœŸ
+	float											amp;				//å¹…å€¼
+	float											si_out;			//SIè¾“å‡º
+	uint8_t										enable;			//SIä½¿èƒ½
+	SI_ModeTypeDef						mode;				//SIæ¨¡å¼
+	SI_OutTypeDef							si_outmode;	//SIè¾“å‡ºæ¨¡å¼
 }SI_StateTypeDef;
 
 extern SI_StateTypeDef hSI[4];

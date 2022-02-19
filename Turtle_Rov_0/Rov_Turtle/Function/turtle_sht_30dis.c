@@ -1,12 +1,12 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_sht_30dis.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   SHT ÏµÁĞ´«¸ĞÆ÷¹Ù·½Àı³ÌÖĞ sht3x.c ÎÄ¼şÒÆÖ²
+  * @brief   SHT ç³»åˆ—ä¼ æ„Ÿå™¨å®˜æ–¹ä¾‹ç¨‹ä¸­ sht3x.c æ–‡ä»¶ç§»æ¤
   *
   ******************************************************************************
   * @attention
-  *	ÓÉÓÚÓ²¼şÎ´Á¬½ÓALERTÒı½Å¼°RESETÒı½Å£¬¹ÊÆÁ±ÎÏà¹Ø²Ù×÷
+  *	ç”±äºç¡¬ä»¶æœªè¿æ¥ALERTå¼•è„šåŠRESETå¼•è„šï¼Œæ•…å±è”½ç›¸å…³æ“ä½œ
   *
   ******************************************************************************
   */
@@ -20,7 +20,7 @@
 // Author    :  RFU
 // Date      :  6-Mai-2015
 // Controller:  STM32F100RB
-// IDE       :  µVision V5.12.0.0
+// IDE       :  çŸ¿ision V5.12.0.0
 // Compiler  :  Armcc
 // Brief     :  Sensor Layer: Implementation of functions for sensor access.
 //=============================================================================
@@ -28,7 +28,7 @@
 //-- Includes -----------------------------------------------------------------
 #include "turtle_sht_30dis.h"
 
-//Ôö¼Ó½ÓÊÕÊı¾İ½á¹¹Ìå¶¨Òå
+//å¢åŠ æ¥æ”¶æ•°æ®ç»“æ„ä½“å®šä¹‰
 hSHT30_Data_TypeDef hSHT30;
 //-- Defines ------------------------------------------------------------------
 // Generator polynomial for CRC
@@ -223,7 +223,7 @@ etError SHT3X_GetTempAndHumiClkStretch(ft* temperature, ft* humidity,
   
   SHT3X_StopAccess();
   
-  // if no error, calculate temperature in °C and humidity in %RH
+  // if no error, calculate temperature in ç™ˆ and humidity in %RH
   if(error == NO_ERROR)
   {
     *temperature = SHT3X_CalcTemperature(rawValueTemp);
@@ -295,7 +295,7 @@ etError SHT3X_GetTempAndHumiPolling(ft* temperature, ft* humidity,
   
   SHT3X_StopAccess();
   
-  // if no error, calculate temperature in °C and humidity in %RH
+  // if no error, calculate temperature in ç™ˆ and humidity in %RH
   if(error == NO_ERROR)
   {
     *temperature = SHT3X_CalcTemperature(rawValueTemp);
@@ -417,7 +417,7 @@ etError SHT3X_ReadMeasurementBuffer(ft* temperature, ft* humidity)
   if(error == NO_ERROR) error = SHT3X_Read2BytesAndCrc(&rawValueTemp, ACK, 0);
   if(error == NO_ERROR) error = SHT3X_Read2BytesAndCrc(&rawValueHumi, NACK, 0);
 
-  // if no error, calculate temperature in °C and humidity in %RH
+  // if no error, calculate temperature in ç™ˆ and humidity in %RH
   if(error == NO_ERROR)
   {
     *temperature = SHT3X_CalcTemperature(rawValueTemp);
@@ -770,7 +770,7 @@ static etError SHT3X_CheckCrc(u8t data[], u8t nbrOfBytes, u8t checksum)
 //-----------------------------------------------------------------------------
 static ft SHT3X_CalcTemperature(u16t rawValue)
 {
-  // calculate temperature [°C]
+  // calculate temperature [ç™ˆ]
   // T = -45 + 175 * rawValue / (2^16-1)
   return 175.0f * (ft)rawValue / 65535.0f - 45.0f;
 }

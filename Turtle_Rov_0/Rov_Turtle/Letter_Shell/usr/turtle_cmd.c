@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    turtle_cmd.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle œµ¡–ª˙∆˜»Àshell÷∏¡Óº∞∫Ø ˝∂®“Â
+  * @brief   Turtle Á≥ªÂàóÊú∫Âô®‰∫∫shellÊåá‰ª§ÂèäÂáΩÊï∞ÂÆö‰πâ
   *
   ******************************************************************************
   * @attention
@@ -16,7 +16,7 @@
 #include "stdlib.h"
 #include "string.h"
 
-/****************ª˘¥°∫Ø ˝∂®“Â****************/
+/****************Âü∫Á°ÄÂáΩÊï∞ÂÆö‰πâ****************/
 
 char wait_char[5] = {'\\','|','/','-','.'};
 
@@ -53,7 +53,7 @@ void Turtle_Shell_CmdErr(void)
 	printf("Command not found !\r\n");
 }
 
-/****************Shell∫Ø ˝****************/
+/****************ShellÂáΩÊï∞****************/
 
 int Turtle_HelloWorld(int argc, char *argv[])
 {
@@ -89,12 +89,12 @@ int Turtle_RovReset(int argc, char *argv[])
 }
 
 #define AUTO_FLAG_L 2u
-#define AUTO_MODE_L 4u
-#define AUTO_OUT_L  5u
+#define AUTO_MODE_L 3u
+#define AUTO_OUT_L  2u
 
 char *auto_flag_c[AUTO_FLAG_L]	= {"AUTO_DEPTH","AUTO_HEADING"};
-char *auto_mode_c[AUTO_MODE_L]	= {"MODE_PID","MODE_SGPID","MODE_SCPID","MODE_CCPID"};
-char *auto_out_c[AUTO_OUT_L]		= {"OUT_ORG","OUT_XGATE","OUT_YGATE","OUT_SQRT","OUT_DC"};
+char *auto_mode_c[AUTO_MODE_L]	= {"MODE_PID","MODE_FOPID","MODE_CCPID"};
+char *auto_out_c[AUTO_OUT_L]		= {"OUT_ORG","OUT_DC"};
 
 int Turtle_Enable_Auto(int argc, char *argv[])
 {
@@ -124,7 +124,7 @@ int Turtle_Enable_Auto(int argc, char *argv[])
 	
 	auto_en = atoi(argv[2]);
 	
-	hAuto[auto_flag].set_value = atof(argv[3])*10;
+	hAuto[auto_flag].pid_setpoint = atof(argv[3])*10;
 	
 	printf("Set %s at %s",argv[1],argv[3]);
 	
@@ -134,20 +134,20 @@ int Turtle_Enable_Auto(int argc, char *argv[])
 			for (uint8_t i=0;i<AUTO_OUT_L;i++)
 				if(strcmp(auto_out_c[i],argv[5]) == 0)
 				{
-					hAuto[auto_flag].out_mode = i;
+					hAuto[auto_flag].out_mode = OUT_ORG|(uint32_t)i;
 					printf(", out mode: %s",argv[5]);
 				}
 		case 5:
 			for (uint8_t i=0;i<AUTO_MODE_L;i++)
 				if(strcmp(auto_mode_c[i],argv[4]) == 0)
 				{
-					hAuto[auto_flag].mode = i;
+					hAuto[auto_flag].pid_mode = MODE_PID|(uint32_t)i;
 					printf(", mode: %s",argv[4]);
 				}
 			for (uint8_t i=0;i<AUTO_OUT_L;i++)
 				if(strcmp(auto_out_c[i],argv[4]) == 0)
 				{
-					hAuto[auto_flag].out_mode = i;
+					hAuto[auto_flag].out_mode = OUT_ORG|(uint32_t)i;
 					printf(", out mode: %s",argv[4]);
 				}
 				break;
@@ -163,10 +163,6 @@ int Turtle_Enable_Auto(int argc, char *argv[])
 		host[1].auto_flag &= ~(1<<auto_flag);
 		printf("%s%s%s%s\r\n",", ",GREEN,"disbale",NONE);
 	}
-	
-	uint16_t pid_buf;
-	pid_buf = ((uint16_t)hAuto[auto_flag].mode<<8) + hAuto[auto_flag].out_mode;
-	//FLASH_Write(PID_START_ADD-auto_flag*8+6,&pid_buf,2);
 	
 	return NO_ERR;
 }
@@ -198,24 +194,24 @@ int Turtle_SProp_Ctrl(int argc, char *argv[])
 	return 0;
 }
 
-int Turrle_AutoDeep_Sqrt(int argc, char *argv[])
-{
-	if (argc == 2)
-	{
-		if (atoi(argv[1]) == 1)
-			hDeepAuto[0].out_mode = OUT_SQRT;
-		else
-			hDeepAuto[0].out_mode = OUT_ORG;
-		printf ("Set AutoDeep Sqrt as %d\r\n",atoi(argv[1]));
-		return NO_ERR;
-	}
-	else
-	{
-		Turtle_Shell_ArgErr();
-		return ARG_ERR;
-	}
-	return 0;
-}
+//int Turrle_AutoDeep_Sqrt(int argc, char *argv[])
+//{
+//	if (argc == 2)
+//	{
+//		if (atoi(argv[1]) == 1)
+//			hDeepAuto[0].out_mode = OUT_SQRT;
+//		else
+//			hDeepAuto[0].out_mode = OUT_ORG;
+//		printf ("Set AutoDeep Sqrt as %d\r\n",atoi(argv[1]));
+//		return NO_ERR;
+//	}
+//	else
+//	{
+//		Turtle_Shell_ArgErr();
+//		return ARG_ERR;
+//	}
+//	return 0;
+//}
 
 int Turrle_AutoAt_En(int argc, char *argv[])
 {
@@ -303,7 +299,7 @@ int Turrle_SetPressLPTk(int argc, char *argv[])
 	return 0;
 }
 
-/****************Shell¡–±Ì****************/
+/****************ShellÂàóË°®****************/
 
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_hello, Turtle_HelloWorld, turtle hello world);
 
@@ -317,7 +313,7 @@ SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_
 
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_prop, Turtle_SProp_Ctrl, coontrol single propeller);
 
-SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_autoDeepSqrt_en, Turrle_AutoDeep_Sqrt, set deep coontrol outloop sqrt en);
+//SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_autoDeepSqrt_en, Turrle_AutoDeep_Sqrt, set deep coontrol outloop sqrt en);
 
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_autoAttitude_en, Turrle_AutoAt_En, set attitude coontrol en);
 

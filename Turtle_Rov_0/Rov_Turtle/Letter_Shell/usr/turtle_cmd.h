@@ -1,8 +1,8 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_cmd.h
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ»úÆ÷ÈËshellÖ¸Áî¼°º¯ÊıÍ·ÎÄ¼ş
+  * @brief   Turtle ç³»åˆ—æœºå™¨äººshellæŒ‡ä»¤åŠå‡½æ•°å¤´æ–‡ä»¶
   *
   ******************************************************************************
   * @attention
@@ -24,9 +24,9 @@ typedef enum
 }Shell_ErrDef;
 
 
-/********VT100ÖÕ¶ËÖ¸ÁîÏà¹Ø¶¨Òå********/
+/********VT100ç»ˆç«¯æŒ‡ä»¤ç›¸å…³å®šä¹‰********/
 
-//VT100 ÑÕÉ«¶¨Òå
+//VT100 é¢œè‰²å®šä¹‰
 #define NONE          "\033[m"
 #define RED           "\033[0;32;31m"
 #define LIGHT_RED     "\033[1;31m"
@@ -44,14 +44,14 @@ typedef enum
 #define LIGHT_GRAY    "\033[0;37m"
 #define WHITE         "\033[1;37m"
 
-//VT100 ¿ØÖÆÖ¸Áî¶¨Òå
-#define CLEAR_ALL			"\033[0m" 			//¹Ø±ÕËùÓĞÊôĞÔ
-#define SET_HIGHLIGHT	"\033[1m"				//ÉèÖÃ¸ßÁÁ¶È
-#define UNDER_LINE    "\033[4m"				//ÏÂ»®Ïß
-#define TWINKLE				"\033[5m"				//ÉÁË¸
-#define INVERSE       "\033[7m"				//·´ÏÔ
-#define VANISH				"\033[8m"				//ÏûÒş
-				//ÉèÖÃÇ°¾°É«
+//VT100 æ§åˆ¶æŒ‡ä»¤å®šä¹‰
+#define CLEAR_ALL			"\033[0m" 			//å…³é—­æ‰€æœ‰å±æ€§
+#define SET_HIGHLIGHT	"\033[1m"				//è®¾ç½®é«˜äº®åº¦
+#define UNDER_LINE    "\033[4m"				//ä¸‹åˆ’çº¿
+#define TWINKLE				"\033[5m"				//é—ªçƒ
+#define INVERSE       "\033[7m"				//åæ˜¾
+#define VANISH				"\033[8m"				//æ¶ˆéš
+				//è®¾ç½®å‰æ™¯è‰²
 #define FG_BLACK			"\033[30m"
 #define FG_RED				"\033[31m"
 #define FG_GREEN			"\033[32m"
@@ -60,7 +60,7 @@ typedef enum
 #define FG_PURPLE			"\033[35m"
 #define FG_BGREEN			"\033[36m"
 #define FG_WHITE			"\033[37m"
-				//ÉèÖÃ±³¾°É«
+				//è®¾ç½®èƒŒæ™¯è‰²
 #define BG_BLACK			"\033[40m"
 #define BG_RED				"\033[41m"
 #define BG_GREEN			"\033[42m"
@@ -69,27 +69,27 @@ typedef enum
 #define BG_PURPLE			"\033[45m"
 #define BG_DGREEN			"\033[46m"
 #define BG_WHITE			"\033[47m"
-				//Êó±êÒÆ¶¯
+				//é¼ æ ‡ç§»åŠ¨
 				/*
-				\033[nA       ¹â±êÉÏÒÆ n ĞĞ
-				\033[nB       ¹â±êÏÂÒÆ n ĞĞ
-				\033[nC       ¹â±êÓÒÒÆ n ĞĞ
-				\033[nD       ¹â±ê×óÒÆ n ĞĞ
-				\033[y;xH     ÉèÖÃ¹â±êÎ»ÖÃ(x,y)
+				\033[nA       å…‰æ ‡ä¸Šç§» n è¡Œ
+				\033[nB       å…‰æ ‡ä¸‹ç§» n è¡Œ
+				\033[nC       å…‰æ ‡å³ç§» n è¡Œ
+				\033[nD       å…‰æ ‡å·¦ç§» n è¡Œ
+				\033[y;xH     è®¾ç½®å…‰æ ‡ä½ç½®(x,y)
 				*/
-#define MOUSE_MOVE		"\033["					//Êó±êÒÆ¶¯Ç°×º
+#define MOUSE_MOVE		"\033["					//é¼ æ ‡ç§»åŠ¨å‰ç¼€
 #define MOUSE_UP		  "A"
 #define MOUSE_DOWN		"B"
 #define MOUSE_RIGHT		"C"
 #define MOUSE_LEFT		"D"
 #define MOUSE_POS			"H"
 
-#define DISPLAY_CLR		"\033[2J"				//ÇåÆÁ
-#define DISPLAY_LCLR  "\033[K"				//Çå³ı´Ó¹â±êµ½ĞĞÎ²µÄÄÚÈİ
-#define MOUSE_SPOS		"\033[s"				//±£´æ¹â±êÎ»ÖÃ
-#define MOUSE_RPOS		"\033[u"				//»Ö¸´¹â±êÎ»ÖÃ
-#define MOUSE_HIDE		"\033[?25l"			//Òş²Ø¹â±ê
-#define MOUSE_DISPLAY	"\033[?25h"			//ÏÔÊ¾¹â±ê
+#define DISPLAY_CLR		"\033[2J"				//æ¸…å±
+#define DISPLAY_LCLR  "\033[K"				//æ¸…é™¤ä»å…‰æ ‡åˆ°è¡Œå°¾çš„å†…å®¹
+#define MOUSE_SPOS		"\033[s"				//ä¿å­˜å…‰æ ‡ä½ç½®
+#define MOUSE_RPOS		"\033[u"				//æ¢å¤å…‰æ ‡ä½ç½®
+#define MOUSE_HIDE		"\033[?25l"			//éšè—å…‰æ ‡
+#define MOUSE_DISPLAY	"\033[?25h"			//æ˜¾ç¤ºå…‰æ ‡
 
 void Shell_PutStr(char* data, uint16_t len);
 

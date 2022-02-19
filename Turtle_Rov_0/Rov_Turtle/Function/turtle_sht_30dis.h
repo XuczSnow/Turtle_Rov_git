@@ -1,12 +1,12 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_sht_30dis.h
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   SHT ÏµÁĞ´«¸ĞÆ÷¹Ù·½Àı³ÌÖĞ sht3x.h ÎÄ¼şÒÆÖ²
+  * @brief   SHT ç³»åˆ—ä¼ æ„Ÿå™¨å®˜æ–¹ä¾‹ç¨‹ä¸­ sht3x.h æ–‡ä»¶ç§»æ¤
   *
   ******************************************************************************
   * @attention
-  *	ÓÉÓÚÓ²¼şÎ´Á¬½ÓALERTÒı½Å¼°RESETÒı½Å£¬¹ÊÆÁ±ÎÏà¹Ø²Ù×÷
+  *	ç”±äºç¡¬ä»¶æœªè¿æ¥ALERTå¼•è„šåŠRESETå¼•è„šï¼Œæ•…å±è”½ç›¸å…³æ“ä½œ
   *
   ******************************************************************************
   */
@@ -19,7 +19,7 @@
 // Author    :  RFU
 // Date      :  6-Mai-2015
 // Controller:  STM32F100RB
-// IDE       :  µVision V5.12.0.0
+// IDE       :  çŸ¿ision V5.12.0.0
 // Compiler  :  Armcc
 // Brief     :  Sensor Layer: Definitions of commands and functions for sensor
 //                            access.
@@ -183,7 +183,7 @@ etError SHT3X_ClearAllAlertFlags(void);
 
 
 //=============================================================================
-// Gets the temperature [°C] and the relative humidity [%RH] from the sensor.
+// Gets the temperature [ç™ˆ] and the relative humidity [%RH] from the sensor.
 //-----------------------------------------------------------------------------
 // input: temperature   pointer to temperature
 //        humiditiy     pointer to humidity
@@ -203,7 +203,7 @@ etError SHT3X_GetTempAndHumi(ft* temperature, ft* humiditiy,
 
 
 //=============================================================================
-// Gets the temperature [°C] and the relative humidity [%RH] from the sensor.
+// Gets the temperature [ç™ˆ] and the relative humidity [%RH] from the sensor.
 // This function uses the i2c clock stretching for waiting until measurement is
 // ready.
 //-----------------------------------------------------------------------------
@@ -224,7 +224,7 @@ etError SHT3X_GetTempAndHumiClkStretch(ft* temperature, ft* humiditiy,
 
 
 //=============================================================================
-// Gets the temperature [°C] and the relative humidity [%RH] from the sensor.
+// Gets the temperature [ç™ˆ] and the relative humidity [%RH] from the sensor.
 // This function polls every 1ms until measurement is ready.
 //-----------------------------------------------------------------------------
 // input: temperature   pointer to temperature
@@ -335,13 +335,13 @@ etError SHT3X_SoftReset(void);
 //-----------------------------------------------------------------------------
 //void SHT3X_HardReset(void);
 
-//Ôö¼ÓÏà¹Ø½á¹¹µÄ±äÁ¿µÄÍâ²¿ÒıÓÃ
+//å¢åŠ ç›¸å…³ç»“æ„çš„å˜é‡çš„å¤–éƒ¨å¼•ç”¨
 typedef struct sht
 {
   etError   error;       // error code
   u32t      serialNumber;// serial number
   regStatus status;      // sensor status
-  ft        temperature; // temperature [°C]
+  ft        temperature; // temperature [ç™ˆ]
   ft        humidity;    // relative humidity [%RH]
   bt        heater;      // heater, false: off, true: on
 }hSHT30_Data_TypeDef;

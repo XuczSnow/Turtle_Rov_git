@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file shell_passthrough.h
  * @author Letter(nevermindzzt@gmail.com)
  * @brief shell passthrough mode
@@ -14,44 +14,36 @@
 #include "shell.h"
 
 /**
- * @brief 退出 passthrough 模式的按键键值，单字节
- */
+ * @brief 阃€鍑?passthrough 妯″纺镄勬寜阌敭链硷紝鍗曞瓧鑺? */
 #define     SHELL_PASSTHROUGH_EXIT_KEY          0x04    // Ctrl + D
 
 /**
- * @brief passthrough 模式 handler 函数原型
+ * @brief passthrough 妯″纺 handler 鍑芥暟铡熷瀷
  * 
- * @param data 数据
- * @param len 数据长度
+ * @param data 鏁版嵁
+ * @param len 鏁版嵁闀垮害
  * 
- * @return int 返回值
- */
+ * @return int 杩斿洖链? */
 typedef int (*ShellPassthrough)(char *data, unsigned short len);
 
 /**
- * @brief shell passthrough 模式函数名
- */
+ * @brief shell passthrough 妯″纺鍑芥暟鍚? */
 #define SHELL_PASSTROUGH_FUNC_NAME(_name)       agency##_name
 
 /**
- * @brief shell passthrough 模式函数定义
+ * @brief shell passthrough 妯″纺鍑芥暟瀹氢箟
  * 
- * @param _name 命令名
- * @param _prompt passthrough 模式提示符
- * @param _handler passthrough 模式 handler
+ * @param _name 锻戒护鍚? * @param _prompt passthrough 妯″纺鎻愮ず绗? * @param _handler passthrough 妯″纺 handler
  */
 #define SHELL_PASSTROUGH_FUNC(_name, _prompt, _handler) \
         void SHELL_PASSTROUGH_FUNC_NAME(_name)(int p1, int p2) \
         { shellPassthrough(shellGetCurrent(), #_prompt, _handler, p1, (void *)p2); }
 
 /**
- * @brief shell passthrouh 定义
+ * @brief shell passthrouh 瀹氢箟
  * 
- * @param _attr 属性
- * @param _name passthrough 命令名
- * @param _prompt passthrough 提示符
- * @param _handler passthrough handler
- * @param _desc passthrough 描述
+ * @param _attr 灞炴€? * @param _name passthrough 锻戒护鍚? * @param _prompt passthrough 鎻愮ず绗? * @param _handler passthrough handler
+ * @param _desc passthrough 鎻忚堪
  */
 #define SHELL_EXPORT_PASSTROUGH(_attr, _name, _prompt, _handler, _desc) \
         SHELL_PASSTROUGH_FUNC(_name, _prompt, _handler) \

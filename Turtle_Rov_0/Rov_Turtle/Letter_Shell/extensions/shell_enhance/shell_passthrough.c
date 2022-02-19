@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file shell_passthrough.c
  * @author Letter(nevermindzzt@gmail.com)
  * @brief shell passthrough mode
@@ -12,16 +12,12 @@
 #include "string.h"
 
 /**
- * @brief shell passthrough 模式
+ * @brief shell passthrough 妯″纺
  * 
  * @param shell shell
- * @param prompt passthrough 提示符
- * @param handler pssthrough handler
- * @param argc 命令行参数数量
- * @param argv 命令行参数
- * 
- * @return unsigned int 返回值
- */
+ * @param prompt passthrough 鎻愮ず绗? * @param handler pssthrough handler
+ * @param argc 锻戒护琛屽弬鏁版暟閲? * @param argv 锻戒护琛屽弬鏁? * 
+ * @return unsigned int 杩斿洖链? */
 unsigned int shellPassthrough(Shell *shell, const char *prompt, ShellPassthrough handler, int argc, char *argv[])
 {
     char data;

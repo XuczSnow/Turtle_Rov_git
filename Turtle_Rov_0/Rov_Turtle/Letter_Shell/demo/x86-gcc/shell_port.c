@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file shell_port.c
  * @author Letter (NevermindZZT@gmail.com)
  * @brief 
@@ -29,10 +29,9 @@ Log log = {
 };
 
 /**
- * @brief 日志写函数实现
- * 
- * @param buffer 数据
- * @param len 数据长度
+ * @brief 镞ュ织鍐椤嚱鏁板疄鐜? * 
+ * @param buffer 鏁版嵁
+ * @param len 鏁版嵁闀垮害
  * 
  */
 void terminalLogWrite(char *buffer, short len)
@@ -44,9 +43,8 @@ void terminalLogWrite(char *buffer, short len)
 }
 
 /**
- * @brief 用户shell写
- * 
- * @param data 数据
+ * @brief 鐢ㄦ埛shell鍐? * 
+ * @param data 鏁版嵁
  */
 unsigned short userShellWrite(char *data, unsigned short len)
 {
@@ -59,11 +57,9 @@ unsigned short userShellWrite(char *data, unsigned short len)
 }
 
 /**
- * @brief 用户shell读
- * 
- * @param data 数据
- * @return char 状态
- */
+ * @brief 鐢ㄦ埛shell璇? * 
+ * @param data 鏁版嵁
+ * @return char 钟舵€? */
 unsigned short userShellRead(char *data, unsigned short len)
 {
     unsigned short length = len;
@@ -95,12 +91,11 @@ int userShellUnlock(struct shell_def *shell)
 #endif
 
 /**
- * @brief 列出文件
+ * @brief 鍒楀嚭鏂囦欢
  * 
- * @param path 路径
- * @param buffer 结果缓冲
- * @param maxLen 最大缓冲长度
- * @return size_t 0
+ * @param path 璺缎
+ * @param buffer 缁撴灉缂揿啿
+ * @param maxLen 链€澶х紦鍐查昵搴? * @return size_t 0
  */
 size_t userShellListDir(char *path, char *buffer, size_t maxLen)
 {
@@ -119,8 +114,7 @@ size_t userShellListDir(char *path, char *buffer, size_t maxLen)
 }
 
 /**
- * @brief 用户shell初始化
- * 
+ * @brief 鐢ㄦ埛shell鍒濆鍖? * 
  */
 void userShellInit(void)
 {

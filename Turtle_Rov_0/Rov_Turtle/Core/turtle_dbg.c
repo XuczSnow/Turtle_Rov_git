@@ -1,8 +1,8 @@
-/**
+ï»¿/**
   ******************************************************************************
   * @file    turtle_dbg.c
   * @author  Xucz(OUC Fab U+/ROV Team)
-  * @brief   Turtle ÏµÁĞ ROV µ÷ÊÔÏà¹Øº¯Êı
+  * @brief   Turtle ç³»åˆ— ROV è°ƒè¯•ç›¸å…³å‡½æ•°
   *
   ******************************************************************************
   * @attention
@@ -68,7 +68,7 @@ void JumpToBootloader(void)
 	
 	void (*SysMemBootJump)(void);
 
-	volatile uint32_t addr = 0x1FFFF000; //´ËµØÖ·ÎªSTM32F103REµÄµØÖ·£¬ÆäÓàĞÍºÅµØÖ·×ÔĞĞÔÚÊı¾İÊÖ²áÖĞ½øĞĞ²éÕÒ
+	volatile uint32_t addr = 0x1FFFF000; //æ­¤åœ°å€ä¸ºSTM32F103REçš„åœ°å€ï¼Œå…¶ä½™å‹å·åœ°å€è‡ªè¡Œåœ¨æ•°æ®æ‰‹å†Œä¸­è¿›è¡ŒæŸ¥æ‰¾
 	 
 	/**
 	 * Step: Disable RCC, set it to default (after reset) settings
@@ -93,7 +93,7 @@ void JumpToBootloader(void)
 	 */
 	__disable_irq();
 	
-	/* ¹Ø±ÕËùÓĞÖĞ¶Ï£¬Çå³ıËùÓĞÖĞ¶Ï¹ÒÆğ±êÖ¾ */
+	/* å…³é—­æ‰€æœ‰ä¸­æ–­ï¼Œæ¸…é™¤æ‰€æœ‰ä¸­æ–­æŒ‚èµ·æ ‡å¿— */
 	for (i = 0; i < 8; i++)
 	{
 		NVIC->ICER[i]=0xFFFFFFFF;
