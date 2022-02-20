@@ -51,7 +51,7 @@
 #define G_GYRO				0u
 #define G_COMP				1u
 
-#define G_ANGLE				G_GYRO
+#define G_ANGLE				G_COMP
 
 //推进器布局
 #define G_PROP_N			0u

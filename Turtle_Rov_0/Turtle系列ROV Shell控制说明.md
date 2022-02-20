@@ -26,7 +26,7 @@
 
 - t_auto [flag]  [en]  [sp] \<mode> \<out>
 
-  自动控制模式设置：
+  自动控制模式设置。
 
   参数|取值
   ---|:---
@@ -36,15 +36,18 @@
   mode|控制方式设定(MODE_PID MODE_FOPID MODE_CCPID)
   out|自动控制输出方式 (OUT_ORG OUT_DC)
 
-- t_si [flag] [en] \<mode> (**暂无**)
+- t_auto_param [flag] [Kp] [Ki] [Kd] [lam] [u]
 
-  系统辨识模式设置：
+  自动控制参数设置。
 
   参数|取值
   ---|:---
-  flag|系统辨识目标设置 (SI_DEEP SI_HEADING SI_PITCH SI_ROLL)
-  en|系统辨识使能 (1 0)
-  mode|系统辨识方式设定(SI_SIN)
+  flag |自动控制目标设置 (AUTO_DEPTH AUTO_HEADING AUTO_PUTCH CC_PID_IN CC_PID_OUT)
+  Kp|比例增益
+  Ki|积分增益
+  Kd|微分增益
+  lam|积分阶次
+  u|微分阶次
 
 - t_prop [flag] [ppm]
 
@@ -55,14 +58,6 @@
   flag|推进器序号(PROP1 ……)
   ppm|推进器控制量(ppm值)
 
-- t_autoDeepSqrt_en [en] (**暂无**)
-
-  是否使能深度控制外环平方根
-
-  参数|取值
-  ---|:---
-  en|是否使能(1 0)
-
 - t_autoAttitude_en [en]
 
   是否使能姿态控制
@@ -71,10 +66,26 @@
   ---|:---
   en|是否使能(1 0)
 
-- t_autoDe_en [en]
+- t_autoSetDc_value [value]
 
-  是否使能差分进化算法
+  设置浮力补偿值
 
   参数|取值
   ---|:---
-  en|是否使能(1 0)
+  value| 实际补偿值（0-125）
+
+- t_autoSet_cycle [value]
+
+  设置控制周期
+
+  参数|取值
+  ---|:---
+  value| 实际设置控制周期为(value*10)ms
+
+- t_pressSet_lptk [gain]
+
+  设置低通滤波增益，用于垂向运动速度求解
+
+  参数|取值
+  ---|:---
+  gain|浮点数(0-1)

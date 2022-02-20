@@ -37,7 +37,7 @@ float pid_kd[4] = {2.5,  0.4,  0.4,  0.0};
 float fopid_lam[4] = {1.0,  1.0,  1.0,  1.0};
 float fopid_u[4]   = {1.0,  1.0,  1.0,  1.0};
 
-TPidMode_Type pid_mode[4] = {MODE_PID,MODE_PID,MODE_PID,MODE_PID};
+TPidMode_Type pid_mode[4] = {MODE_FOPID,MODE_FOPID,MODE_FOPID,MODE_FOPID};
 TPidOut_Type  pid_out[4]  = {OUT_ORG,OUT_ORG,OUT_ORG,OUT_ORG};
 
 float depth_kp[2] = {0};
@@ -50,7 +50,7 @@ float depth_u[2]   = {1.0,  1.0};
 float depth_dc = 36;
 
 TPidMode_Type depth_mode[2] = {MODE_PID,MODE_FOPID};
-TPidOut_Type  depth_out[2]  = {OUT_ORG,OUT_ORG};
+TPidOut_Type  depth_out[2]  = {OUT_ORG,OUT_DC};
 
 void Turtle_AutoCtrl_Init(void)
 {
@@ -70,8 +70,8 @@ void Turtle_AutoCtrl_Init(void)
                    depth_lam[i], depth_u[i], 0, 0, depth_out[i],\
                    depth_mode[i], FLAG_DEPTH);
     hAuto[i].pid_enable = AUTO_DISABLE;
+    HAL_Delay(10);
   }
-
 }
 
 /*PID控制参数刷新*/
@@ -202,7 +202,7 @@ void Turtle_AutoCtrl(TurtlePid_Type *hPid)
       Turtle_Fopid(hPid, err_temp);
       break;
     case MODE_CCPID:
-      if (hPid->pid_flag == FLAG_DEPTH)
+      //if (hPid->pid_flag == FLAG_DEPTH)
         Turtle_Auto_CCPID();
       break;
     default:

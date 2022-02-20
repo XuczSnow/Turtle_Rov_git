@@ -709,11 +709,6 @@
           <GroupName>Rov_Turtle/Test</GroupName>
           <Files>
             <File>
-              <FileName>turtle_pid.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Pid_Control\turtle_pid.h</FilePath>
-            </File>
-            <File>
               <FileName>turtle_pid_type.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Pid_Control\turtle_pid_type.h</FilePath>
@@ -724,14 +719,19 @@
               <FilePath>..\Pid_Control\turtle_pid.c</FilePath>
             </File>
             <File>
-              <FileName>turtle_autoctrl.h</FileName>
+              <FileName>turtle_pid.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Pid_Control\turtle_autoctrl.h</FilePath>
+              <FilePath>..\Pid_Control\turtle_pid.h</FilePath>
             </File>
             <File>
               <FileName>turtle_autoctrl.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Pid_Control\turtle_autoctrl.c</FilePath>
+            </File>
+            <File>
+              <FileName>turtle_autoctrl.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Pid_Control\turtle_autoctrl.h</FilePath>
             </File>
           </Files>
         </Group>

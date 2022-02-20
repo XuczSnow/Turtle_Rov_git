@@ -167,10 +167,45 @@ int Turtle_Enable_Auto(int argc, char *argv[])
 	return NO_ERR;
 }
 
-int Turtle_Enable_SI(int argc, char *argv[])
+char *auto_param_flag[5] = {"AUTO_DEPTH", "AUTO_HEADING", "AUTO_PITCH", "CC_PID_OUT", "CC_PID_IN"};
+int Turtle_Auto_Param(int argc, char *argv[])
 {
-	
-	return NO_ERR;
+  uint8_t auto_flag = 0;
+  TurtlePid_Type *pAuto = NULL;
+
+  if (argc != 7)
+	{
+		Turtle_Shell_ArgErr();
+		return ARG_ERR;
+	}
+
+  for (uint8_t i=0;i<AUTO_FLAG_L;i++)
+	{
+		if(strcmp(auto_flag_c[i],argv[i]) == 0)
+		{
+			auto_flag = i;
+			break;
+		}
+	}
+
+  if (auto_flag < 3)
+    pAuto = &hAuto[auto_flag];
+  else if (auto_flag < 5)
+    pAuto = &hDepthAuto[auto_flag-3];
+  else
+    return ARG_ERR;
+
+  pAuto->pid_Kp = atof(argv[2]);
+  pAuto->pid_Ki = atof(argv[3]);
+  pAuto->pid_Kd = atof(argv[4]);
+  pAuto->fopid_lam = atof(argv[5]);
+  pAuto->fopid_u = atof(argv[6]);
+
+  if (pAuto->pid_mode == MODE_FOPID)
+    Turtle_FopidInit(pAuto);
+
+  printf("%s%s%s%s%s%s\r\n","Set ",auto_param_flag[auto_flag]," param ",GREEN,"OK!",NONE);
+  return NO_ERR;
 }
 
 char *prop_ctrl_c[8]	= {"PROP1","PROP2","PROP3","PROP4","PROP5","PROP6","PROP7","PROP8"};
@@ -194,25 +229,6 @@ int Turtle_SProp_Ctrl(int argc, char *argv[])
 	return 0;
 }
 
-//int Turrle_AutoDeep_Sqrt(int argc, char *argv[])
-//{
-//	if (argc == 2)
-//	{
-//		if (atoi(argv[1]) == 1)
-//			hDeepAuto[0].out_mode = OUT_SQRT;
-//		else
-//			hDeepAuto[0].out_mode = OUT_ORG;
-//		printf ("Set AutoDeep Sqrt as %d\r\n",atoi(argv[1]));
-//		return NO_ERR;
-//	}
-//	else
-//	{
-//		Turtle_Shell_ArgErr();
-//		return ARG_ERR;
-//	}
-//	return 0;
-//}
-
 int Turrle_AutoAt_En(int argc, char *argv[])
 {
 	if (argc == 2)
@@ -231,31 +247,13 @@ int Turrle_AutoAt_En(int argc, char *argv[])
 	return 0;
 }
 
-int Turrle_AutoDe_En(int argc, char *argv[])
-{
-	if (argc == 2)
-	{
-		if (atoi(argv[1]) == 1)
-			de_en = 1;
-		else
-			de_en = 0;
-		printf ("Set Differential Evolution Algorithm as %d\r\n",atoi(argv[1]));
-	}
-	else
-	{
-		Turtle_Shell_ArgErr();
-		return ARG_ERR;
-	}
-	return 0;
-}
-
 int Turrle_SetDCValue(int argc, char *argv[])
 {
 	if (argc == 2)
 	{
 		if (atoi(argv[1]) > 1)
-			hAuto[0].out_dc = (float)atoi(argv[1]);
-		printf ("Set Dynamic Compensation Value as %f\r\n",hAuto[0].out_dc);
+			depth_dc = (float)atoi(argv[1]);
+		printf ("Set Dynamic Compensation Value as %f\r\n", depth_dc);
 	}
 	else
 	{
@@ -289,7 +287,7 @@ int Turrle_SetPressLPTk(int argc, char *argv[])
 		tmp = atof(argv[1]);
 		if (tmp <= 1 && tmp > 0)
 			lpt_k = tmp;
-		printf ("Set Control Cycle Value as %.1f\r\n",tmp);
+		printf ("Set LPT Gain as %.1f\r\n",tmp);
 	}
 	else
 	{
@@ -309,15 +307,11 @@ SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_
 
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_auto, Turtle_Enable_Auto, set rov aoto control);
 
-SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_si, Turtle_Enable_SI, set rov SI mode(NA));
+SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_auto_param, Turtle_Auto_Param, set rov aoto control parameter);
 
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_prop, Turtle_SProp_Ctrl, coontrol single propeller);
 
-//SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_autoDeepSqrt_en, Turrle_AutoDeep_Sqrt, set deep coontrol outloop sqrt en);
-
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_autoAttitude_en, Turrle_AutoAt_En, set attitude coontrol en);
-
-SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_autoDe_en, Turrle_AutoDe_En, set differential evolution algorithm en);
 
 SHELL_EXPORT_CMD(SHELL_CMD_PERMISSION(0)|SHELL_CMD_TYPE(SHELL_TYPE_CMD_MAIN), t_autoSetDc_value, Turrle_SetDCValue, set dynamic compensation value);
 

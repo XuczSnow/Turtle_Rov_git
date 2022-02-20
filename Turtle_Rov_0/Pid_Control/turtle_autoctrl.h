@@ -20,6 +20,7 @@
 #define     AUTO_DEPTH_FLW      1u
 
 extern float u[3];
+extern float depth_dc;
 extern uint8_t de_en;
 extern TurtlePid_Type hAuto[4];
 extern TurtlePid_Type hDepthAuto[2];
@@ -33,8 +34,8 @@ enum TPid_ID
 };
 
 enum TPid_En{
-  AUTO_ENABLE   = 0,
-  AUTO_DISABLE  = 1,
+  AUTO_DISABLE   = 0,
+  AUTO_ENABLE  = 1,
 };
 
 void Turtle_AutoCtrl_Init(void);
