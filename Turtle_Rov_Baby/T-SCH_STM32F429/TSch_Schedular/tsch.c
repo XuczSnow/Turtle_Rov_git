@@ -1,9 +1,9 @@
 /**
   ******************************************************************************
-  * @file    tsch_task.h
+  * @file    tsch.c
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 任务示例头文件
-  * @version Baby 1.0.0
+  * @brief   Turtle Scheduler TSch文件
+  * @version 1.0.0
   *
   @verbatim
 
@@ -35,19 +35,54 @@
 
   ******************************************************************************
   */
+#include "tsch.h"
 
-#ifndef TURTLE_TASK_H
-#define TURTLE_TASK_H
+TSchTask_Type     __TaskIdle;
+TScheduler_Type   __TSchIdle;
 
-void Tim6Task1_Func(void *p_arg);
-void Tim7Task1_Func(void *p_arg);
-void Tim7Task2_Func(void *p_arg);
-void Tim7Task3_Func(void *p_arg);
-void Tim7Task4_Func(void *p_arg);
-void Tim11Task1_Func(void *p_arg);
-void UartTask_Func(void *p_arg);
-void MsgTask1_Func(void *p_arg);
-void MsgTask2_Func(void *p_arg);
-void SynTask_Func(void *p_arg);
+/**
+  * @brief  用户空闲任务函数
+  *
+  * @note   如用户需要在空闲任务中加入自行处理的数据，可以重载此函数
+  */
+__weak void TSch_UserIdleTask(void){
+  
+  return;
+}
 
-#endif
+/**
+  * @brief  用户空闲任务函数
+  *
+  * @note   如用户需要在空闲任务中加入自行处理的数据，可以重载此函数
+  */
+__weak void TSch_UserFatal(void){
+  
+  return;
+}
+
+/**
+  * @brief  系统空闲任务
+  */
+static void __TSch_IdleTask(void *p_arg){
+  TSch_UserIdleTask();
+  return;
+}
+
+/**
+  * @brief  时间调度器启动函数
+  *
+  * @note   初始化完成后，使用此函数，任务调度器将接管系统
+  */
+void TSch_Start(void){
+  TSch_SchCreat(&__TSchIdle, IDLE_SCH, NULL);
+  TSch_TaskCreat(&__TSchIdle, &__TaskIdle, __TSch_IdleTask, 0, 0, MSG_NULL, NULL);
+  while(1){
+    TSch_SchRun(&__TSchIdle);
+  }
+}
+
+void TSch_FatalError(void){
+  while (1){
+    TSch_UserFatal();
+  }
+}

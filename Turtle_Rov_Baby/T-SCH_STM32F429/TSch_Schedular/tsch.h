@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    tsch_bsp.c
+  * @file    tsch.c
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 接口函数实现
+  * @brief   Turtle Scheduler TSch头文件
   *
   @verbatim
 
@@ -35,17 +35,18 @@
   ******************************************************************************
   */
 
+#ifndef TSCH_H
+#define TSCH_H
+
 #include "tsch_global.h"
 
-/*调度器周期设置函数具体实现*/
-void TSch_UserSetPeriod(TScheduler_Type *sch, uint16_t period){
+extern TSchTask_Type     __TaskIdle;
+extern TScheduler_Type   __TSchIdle;
 
-  return;
-}
+/**************************************函数声明**********************************/
 
+void TSch_Start(void);
+void TSch_FatalError(void);
 
-/*调度器优先级设置函数具体实现*/
-void TSch_UserSetPriority(TScheduler_Type *sch, uint16_t priority){
-
-  return;
-}
+#endif
+/*************************************头文件结束**********************************/

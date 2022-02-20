@@ -71,7 +71,7 @@ __weak void TSch_UserSetPriority(TScheduler_Type *sch, uint16_t priority){
   * 
   * @retval TSchResState见定义
   */
-TSchResState_Type TSch_SchCreat(TScheduler_Type *sch, TSchMode_Type mode, TSchTList_Type **list){
+TSchResState_Type TSch_SchCreat(TScheduler_Type *sch, TSchMode_Type mode, TSchTList_Type *list){
   static uint8_t __adt_cnt = 0;
   if (mode == ADT_TIM_SCH){
     if (__adt_cnt > 0)
@@ -83,7 +83,7 @@ TSchResState_Type TSch_SchCreat(TScheduler_Type *sch, TSchMode_Type mode, TSchTL
   if (mode == TIM_SCH){
     if (list == NULL) return TSCH_INVAILD;
     sch->task_rdlist = list;
-    sch->task_rdlist[USR_SCH_LIST_MAX-1]->task_num = 0xA5;
+    sch->task_rdlist[USR_SCH_LIST_MAX-1].task_num = 0xA5;
     sch->tsch_pmax   = 0;
     sch->tsch_pmin   = TMR_CARRYMAX;
   }
@@ -123,21 +123,32 @@ TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task, TSc
   TSchTask_Type *ptask = sch->task_list;
 
   /*自适应任务调度器任务强制设置为最低优先级*/
-  if (sch->tsch_mode == ADT_TIM_SCH) task->task_prio = 14;
+  if (sch->tsch_mode == ADT_TIM_SCH) task->task_prio = USR_PRIO_MAX;
 
   /*调度器没有任务*/
   if (ptask == NULL && sch->task_num == 0){
-    ptask = task;
+    sch->task_list = task;
     sch->task_num = 1;
     TSch_UserSetPriority(sch,task->task_prio);
     if (sch->tsch_mode == TIM_SCH || sch->tsch_mode == ADT_TIM_SCH){
       sch->tsch_period = task->task_period;
+      sch->tsch_pmax = task->task_period;
+      sch->tsch_pmin = task->task_period;
+      TSch_UserSetPeriod(sch, sch->tsch_period);
+      if (sch->tsch_mode == TIM_SCH){
+        /*计算任务就绪列表的长度*/
+        TSchTmr_Type temp;
+        temp = (sch->tsch_pmax/sch->tsch_period+sch->task_num)*10;
+        if (temp > USR_SCH_LIST_MAX) return TSCH_CAERR;             /*若计算无法满足需求，会返回一个计算错误，调整任务周期*/
+        else  sch->task_rdlist_len = (uint32_t)temp;
+        sch->tsch_cnt = sch->task_rdlist_len+sch->task_dlnum-1;
+      }
     }
     return TSCH_OK;
   }
 
-  /*串口任务及同步任务仅支持添加一个任务*/
-  if (sch->tsch_mode != UART_SCH && sch->tsch_mode != SYN_SCH){
+  /*外部消息任务及同步任务仅支持添加一个任务*/
+  if (sch->tsch_mode != EXT_SCH && sch->tsch_mode != SYN_SCH){
     /*有效性检查*/
     if (sch->tsch_mode == MSG_SCH){
       if (task->msg_wait == MSG_NULL && task->syn_funptr == NULL)
@@ -158,19 +169,17 @@ TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task, TSc
       if (sch->tsch_pmin/temp>TSCH_P_ORDER_MAX) return TSCH_CAERR;
       TSch_UserSetPeriod(sch, temp);
       /*计算任务就绪列表的长度*/
-      temp = sch->tsch_pmax/sch->tsch_period+sch->task_num;
+      temp = (sch->tsch_pmax/sch->tsch_period+sch->task_num)*10;
       if (temp > USR_SCH_LIST_MAX) return TSCH_CAERR;             /*若计算无法满足需求，会返回一个计算错误，调整任务周期*/
       else  sch->task_rdlist_len = (uint32_t)temp;
+      sch->tsch_cnt = sch->task_rdlist_len+sch->task_dlnum-1;
     }else if (sch->tsch_mode == ADT_TIM_SCH){
-      if (sch->tsch_period == 0){
-        sch->tsch_period = task->task_period;
-        TSch_UserSetPeriod(sch, sch->tsch_period);
-      }else{
-        TSch_UserSetPeriod(sch, sch->tsch_period*sch->task_num/(sch->task_num+1));
-      }
+      task->task_period = sch->tsch_period*sch->task_num;
+      TSch_UserSetPeriod(sch, task->task_period/(sch->task_num+1));
     }
-        /*添加任务*/
+    /*添加任务*/
     while (ptask->task_next != NULL) ptask = ptask->task_next;
+    ptask->task_next = task;
     ++(sch->task_num);
     return TSCH_OK;
   }
@@ -190,10 +199,80 @@ TSchResState_Type TSch_SchRun(TScheduler_Type *sch){
   TSchTmr_Type        last  = 0;
   TSchResState_Type   res   = TSCH_OK;
 
-  if (++(sch->tsch_cnt) == sch->task_rdlist_len) sch->tsch_cnt = 0, ++(sch->tsch_ccnt);
+  //if (++(sch->tsch_cnt) == sch->task_rdlist_len) sch->tsch_cnt = 0, ++(sch->tsch_ccnt);
+  ++(sch->tsch_cnt);
 
+  /*任务就绪列表及优先级调整*/
+  if (sch->tsch_mode == TIM_SCH){
+    if (sch->tsch_cnt == sch->task_rdlist_len+sch->task_dlnum-1 || sch->task_rdlist[sch->tsch_cnt].task == NULL){
+      /*清空任务就绪列表*/
+      sch->tsch_cnt = 0, ++(sch->tsch_ccnt);
+      for (uint8_t i=0;i<sch->task_rdlist_len+sch->task_dlnum;++i){
+        sch->task_rdlist[i].task_num = 0;
+        sch->task_rdlist[i].task = NULL;
+      }
+      uint8_t task_num    = 0;
+      uint8_t task_cnt    = 0;
+      uint8_t period_n    = 0;
+
+      /*计算任务就序列表*/
+      sch->task_dlnum = 0;
+      for (uint8_t i=0;i<sch->task_rdlist_len+sch->task_dlnum;++i){
+        if (sch->task_rdlist[i].task_num == 0xA5)  TSch_FatalError();
+        task_cnt = 0;
+        ptask = sch->task_list;
+        while(ptask != NULL){
+          if (task_num < task_cnt) break;
+          period_n = ptask->task_period/sch->tsch_period;
+          if ((task_num-task_cnt)%period_n == 0){
+            if (sch->task_rdlist[i].task == NULL){
+              ++task_num;
+              sch->task_rdlist[i].task_num = task_num;
+              sch->task_rdlist[i].task = ptask;
+            }else{
+              ++i;
+              /*比较优先级*/
+              sch->task_rdlist[i].task_num = task_num;
+              if (sch->task_rdlist[i-1].task->task_prio <= ptask->task_prio){
+                sch->task_rdlist[i].task = ptask;
+              }else{
+                sch->task_rdlist[i].task = sch->task_rdlist[i-1].task;
+                sch->task_rdlist[i-1].task = ptask;
+              }
+            }
+          }
+          ptask = ptask->task_next;
+          ++ task_cnt;
+        }
+      }
+      TSch_UserSetPriority(sch, sch->task_rdlist[0].task->task_prio);
+    }else{
+      /*判断是否需要延迟提交*/
+      if (sch->task_rdlist[sch->tsch_cnt+1].task_num == sch->task_rdlist[sch->tsch_cnt].task_num){
+        TSch_UserSetPeriod(sch, 1);
+        sch->task_dlcnt ++;
+      }else if(sch->task_rdlist[sch->tsch_cnt-1].task_num == sch->task_rdlist[sch->tsch_cnt].task_num){
+        TSch_UserSetPeriod(sch, sch->tsch_period-sch->task_dlcnt);
+        sch->task_dlcnt = 0;
+      }else{
+        TSch_UserSetPeriod(sch,sch->tsch_period);
+      }
+      /*设置调度器优先级*/
+      TSch_UserSetPriority(sch, sch->task_rdlist[sch->tsch_cnt+1].task->task_prio);
+    }
+  }
+
+  /*时间自适应任务周期调整*/
+  if (sch->tsch_mode == ADT_TIM_SCH){
+    if (sch->tsch_cnt%TMR_SDT_K == 0){
+      TSch_TmrAdtTime(sch);
+      TSch_UserSetPeriod(sch, sch->tsch_period);
+    }
+  }
+  
+  /*选择任务并运行*/
   switch(sch->tsch_mode){
-    case UART_SCH:
+    case EXT_SCH:
     case SYN_SCH:
     case IDLE_SCH:{
       sch->task_current = sch->task_list;
@@ -207,7 +286,8 @@ TSchResState_Type TSch_SchRun(TScheduler_Type *sch){
       break;
     }
     case TIM_SCH:{
-      sch->task_current = sch->task_rdlist[sch->tsch_cnt]->task;
+      sch->task_current = sch->task_rdlist[sch->tsch_cnt].task;
+      //printf("%d", sch->tsch_cnt);
       if (sch->task_current == NULL) return TSCH_SKIP;
       break;
     }
@@ -242,70 +322,5 @@ TSchResState_Type TSch_SchRun(TScheduler_Type *sch){
   res = TSch_TmrTask(ptask, start, last);
   if (res != TSCH_OK) return res;
 
-  /*任务就绪列表及优先级调整*/
-  if (sch->tsch_mode == TIM_SCH){
-    if (sch->tsch_cnt == sch->task_rdlist_len+sch->task_dlnum-1){
-      /*清空任务就绪列表*/
-      for (uint8_t i=0;i<sch->task_rdlist_len+sch->task_dlnum;++i){
-        sch->task_rdlist[i]->task_num = 0;
-        sch->task_rdlist[i]->task = NULL;
-      }
-      uint8_t task_num    = 0;
-      uint8_t task_cnt    = 0;
-      uint8_t period_n    = 0;
-
-      /*计算任务就序列表*/
-      sch->task_dlnum = 0;
-      for (uint8_t i=0;i<sch->task_rdlist_len+sch->task_dlnum;++i){
-        if (sch->task_rdlist[i]->task_num == 0xA5)  Tsch_FatalError();
-        task_cnt = 0;
-        ptask = sch->task_list;
-        while(ptask != NULL && ptask->task_next != NULL){
-          if (task_num < task_cnt) break;
-          period_n = ptask->task_period/sch->tsch_period;
-          if ((task_num-task_cnt)%period_n == 0){
-            if (sch->task_rdlist[i]->task == NULL){
-              ++task_num;
-              sch->task_rdlist[i]->task_num = task_num;
-              sch->task_rdlist[i]->task = ptask;
-            }else{
-              ++i;
-              /*比较优先级*/
-              sch->task_rdlist[i]->task_num = task_num;
-              if (sch->task_rdlist[i-1]->task->task_prio <= ptask->task_prio){
-                sch->task_rdlist[i]->task = ptask;
-              }else{
-                sch->task_rdlist[i]->task = sch->task_rdlist[i-1]->task;
-                sch->task_rdlist[i-1]->task = ptask;
-              }
-            }
-          }
-          ++ task_cnt;
-        }
-      }
-      TSch_UserSetPriority(sch, sch->task_rdlist[0]->task->task_prio);
-    }else{
-      /*判断是否需要延迟提交*/
-      if (sch->task_rdlist[sch->tsch_cnt+1]->task_num == sch->task_rdlist[sch->tsch_cnt]->task_num){
-        TSch_UserSetPeriod(sch, 1);
-        sch->task_dlcnt ++;
-      }else if(sch->task_rdlist[sch->tsch_cnt-1]->task_num == sch->task_rdlist[sch->tsch_cnt]->task_num){
-        TSch_UserSetPeriod(sch, sch->tsch_period-sch->task_dlcnt);
-        sch->task_dlcnt = 0;
-      }else{
-        TSch_UserSetPeriod(sch,sch->tsch_period);
-      }
-      /*设置调度器优先级*/
-      TSch_UserSetPriority(sch, sch->task_rdlist[sch->tsch_cnt+1]->task->task_prio);
-    }
-  }
-
-  /*时间自适应任务周期调整*/
-  if (sch->tsch_mode == ADT_TIM_SCH){
-    if (sch->tsch_cnt%TMR_SDT_K == 0){
-      TSch_TmrAdtTime(sch);
-      TSch_UserSetPeriod(sch, sch->tsch_period);
-    }
-  }
   return TSCH_OK;
 }

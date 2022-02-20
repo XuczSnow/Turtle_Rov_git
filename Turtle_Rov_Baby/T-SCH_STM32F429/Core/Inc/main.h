@@ -31,7 +31,10 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 
+#include "tsch_global.h"
+#include "EventRecorder.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -41,6 +44,31 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
+extern TScheduler_Type   Tim6_Sch;
+extern TSchTask_Type     EH_Tim6Task1;
+extern TSchTList_Type    Tim6_List[USR_SCH_LIST_MAX];
+
+extern TScheduler_Type   Tim7_Sch;
+extern TSchTask_Type     H_Tim7Task1;
+extern TSchTask_Type     H_Tim7Task2;
+extern TSchTask_Type     M_Tim7Task3;
+extern TSchTask_Type     M_Tim7Task4;
+extern TSchTList_Type    Tim7_List[USR_SCH_LIST_MAX];
+
+extern TScheduler_Type   Tim11_Sch;
+extern TSchTask_Type     EL_Tim11Task1;
+
+extern TScheduler_Type   Uart_Sch;
+extern TSchTask_Type     H_UartTask;
+
+extern TScheduler_Type   Msg_Sch;
+extern TSchTask_Type     H_MsgTask1;
+extern TSchMsg_Type      High_Msg;
+extern TSchTask_Type     L_MsgTask2;
+extern TSchMsg_Type      Low_Msg;
+
+extern TScheduler_Type   Syn_Sch;
+extern TSchTask_Type     EH_SynTask;
 
 /* USER CODE END EC */
 

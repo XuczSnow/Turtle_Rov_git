@@ -107,7 +107,7 @@ struct TSchMsg{
 
 /*调度器相关定义*/
 enum TSchMode{
-  UART_SCH      = 0x00010001,         //串口中断调度器
+  EXT_SCH       = 0x00010001,         //串口中断调度器
   TIM_SCH       =	0x00010002,         //定时器调度器
   MSG_SCH       = 0x00010003,         //消息唤醒调度器
   SYN_SCH       = 0x00010004,         //同步唤醒调度器
@@ -134,7 +134,7 @@ struct TScheduler{
   uint8_t            task_dlnum;
   uint8_t            task_dlcnt;
   uint32_t           task_rdlist_len;
-  TSchTList_Type   **task_rdlist;
+  TSchTList_Type    *task_rdlist;
   TSchTmr_Type       tsch_pmin;
   TSchTmr_Type       tsch_pmax;
   TSchTmr_Type       tsch_period;

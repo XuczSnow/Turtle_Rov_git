@@ -1,9 +1,9 @@
 /**
   ******************************************************************************
-  * @file    tsch_task.c
+  * @file    tsch_task.h
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 任务处理文件，主要包含任务处理函数
-  * 
+  * @brief   Turtle Scheduler 任务处理头文件
+  *
   @verbatim
 
   @endverbatim
@@ -35,58 +35,17 @@
   ******************************************************************************
   */
 
-/*(TODO)后期需要增加任务参数调整的功能 - XuczSnow 2022.02.17*/
+#ifndef TSCH_TASK_H
+#define TSCH_TASK_H
 
-#include "tsch_task.h"
+#include "tsch_global.h"
 
-static uint8_t __tsch_task_cnt = 0;
-/**
-  * @brief  任务创建函数
-  *
-  * @param  sch         调度器处理块，用于将任务添加至调度器
-  * @param  task        任务处理块
-  * @param  taskptr     任务处理函数
-  * @param  period      任务执行周期
-  * @param  prio        任务优先级
-  * @param  wait_msg    任务调度信号量，无信号量阻塞时，输入MSG_NULL
-  * @param  syn_ptr     任务同步唤醒函数
-  * 
-  * @retval TSchResState见定义
-  */
+/**************************************函数声明**********************************/
+
 TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSchTaskPtr taskptr,\
                                  TSchTmr_Type period, uint8_t prio, TSchMsg_Type *wait_msg,\
-                                 TSchExtiPtr syn_ptr){
-  TSchResState_Type   res = TSCH_OK;
-  
-  task->__task_id = (__tsch_task_cnt++);
+                                 TSchExtiPtr syn_ptr);
+TSchResState_Type TSch_TaskWeak(TSchTask_Type *task);
 
-  if (taskptr == NULL) return TSCH_INVAILD;
-  task->task_ptr = taskptr;
-
-  if (prio > 14) return TSCH_INVAILD;
-  task->task_prio = prio;
-
-  if (wait_msg != MSG_NULL && syn_ptr == NULL){
-    return TSCH_INVAILD;
-  }else if (wait_msg != MSG_NULL){
-    task->msg_wait = wait_msg;
-    task->syn_funptr = syn_ptr;
-    task->task_state = TASK_WAIT;
-  }else if (syn_ptr != NULL){
-    task->syn_funptr = syn_ptr;
-    task->task_state = TASK_WAIT;   
-  }else{
-    task->task_state = TASK_CREAT;
-  }
-
-  res = TSch_SchAddTask(sch, task, period);
-  return res;
-}
-
-//任务唤醒函数
-TSchResState_Type TSch_TaskWeak(TSchTask_Type *task){
-  if (task->syn_funptr == NULL) return TSCH_INVAILD;
-  task->syn_funptr(task->task_prio);
-  return TSCH_OK;
-}
-
+#endif
+/*************************************头文件结束**********************************/

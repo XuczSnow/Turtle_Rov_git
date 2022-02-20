@@ -25,7 +25,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "tsch_global.h"
+#include "tsch_port.h"
+#include "turtle_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -35,6 +36,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define  HIGH_MSG_LEN   100u
+#define  LOW_MSG_LEN    100u
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -47,25 +50,31 @@
 /* USER CODE BEGIN PV */
 TScheduler_Type   Tim6_Sch;
 TSchTask_Type     EH_Tim6Task1;
+TSchTList_Type    Tim6_List[USR_SCH_LIST_MAX];
 
 TScheduler_Type   Tim7_Sch;
 TSchTask_Type     H_Tim7Task1;
 TSchTask_Type     H_Tim7Task2;
 TSchTask_Type     M_Tim7Task3;
 TSchTask_Type     M_Tim7Task4;
+TSchTList_Type    Tim7_List[USR_SCH_LIST_MAX];
 
 TScheduler_Type   Tim11_Sch;
-TSchTask_Type     L_Tim11Task1;
+TSchTask_Type     EL_Tim11Task1;
 
-TScheduler_Type   High_Msg;
+TScheduler_Type   Uart_Sch;
+TSchTask_Type     H_UartTask;
+
+TScheduler_Type   Msg_Sch;
 TSchTask_Type     H_MsgTask1;
-
-TScheduler_Type   Mid_Sch;
-TSchTask_Type     M_MsgTask2;
+TSchMsg_Type      High_Msg;
+TSchMsgEle_Type   High_MsgBuf[HIGH_MSG_LEN];
+TSchTask_Type     L_MsgTask2;
+TSchMsg_Type      Low_Msg;
+TSchMsgEle_Type   Low_MsgBuf[LOW_MSG_LEN];
 
 TScheduler_Type   Syn_Sch;
 TSchTask_Type     EH_SynTask;
-
 
 /* USER CODE END PV */
 
@@ -77,6 +86,33 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+void Creat_Task(void)
+{
+  TSch_SchCreat(&Tim6_Sch, TIM_SCH, Tim6_List);
+  TSch_TaskCreat(&Tim6_Sch, &EH_Tim6Task1, Tim6Task1_Func, 50, 10, MSG_NULL, NULL);
+  
+  TSch_SchCreat(&Tim7_Sch, TIM_SCH, Tim7_List);
+  TSch_TaskCreat(&Tim7_Sch, &H_Tim7Task1, Tim7Task1_Func, 100, 11, MSG_NULL, NULL);
+  TSch_TaskCreat(&Tim7_Sch, &H_Tim7Task2, Tim7Task2_Func, 200, 11, MSG_NULL, NULL);
+  TSch_TaskCreat(&Tim7_Sch, &M_Tim7Task3, Tim7Task3_Func, 100, 12, MSG_NULL, NULL);
+  TSch_TaskCreat(&Tim7_Sch, &M_Tim7Task4, Tim7Task4_Func, 200, 12, MSG_NULL, NULL);
+
+  TSch_SchCreat(&Tim11_Sch, ADT_TIM_SCH, NULL);
+  TSch_TaskCreat(&Tim11_Sch, &EL_Tim11Task1, Tim11Task1_Func, 1000, 14, MSG_NULL, NULL);
+
+  TSch_SchCreat(&Uart_Sch, EXT_SCH, NULL);
+  TSch_TaskCreat(&Uart_Sch, &H_UartTask, UartTask_Func, 0, 11, MSG_NULL, NULL);
+
+  TSch_MsgCreat(&High_Msg, MSG_STACK, High_MsgBuf, HIGH_MSG_LEN);
+  TSch_MsgCreat(&Low_Msg, MSG_QUEUE, Low_MsgBuf, LOW_MSG_LEN);
+  TSch_SchCreat(&Msg_Sch, MSG_SCH, NULL);
+  TSch_TaskCreat(&Msg_Sch, &H_MsgTask1, MsgTask1_Func, 0, 11, &High_Msg, MsgTask_Weak);
+  TSch_TaskCreat(&Msg_Sch, &L_MsgTask2, MsgTask2_Func, 0, 13, &Low_Msg, MsgTask_Weak);
+  
+  TSch_SchCreat(&Syn_Sch, SYN_SCH, NULL);
+  TSch_TaskCreat(&Syn_Sch, &EH_SynTask, SynTask_Func, 0, 10, NULL, SynTask_Weak);
+}
 
 /* USER CODE END 0 */
 
@@ -103,7 +139,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  SoftExti_WeakInit();
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -113,8 +149,16 @@ int main(void)
   MX_TIM7_Init();
   MX_TIM11_Init();
   MX_USART1_UART_Init();
+  MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
-
+  EventRecorderInitialize(EventRecordAll, 1U);
+  EventRecorderStart();
+  Creat_Task();
+  HAL_TIM_Base_Start_IT(&htim6);
+  HAL_TIM_Base_Start_IT(&htim7);
+  HAL_TIM_Base_Start_IT(&htim11);
+  HAL_TIM_Base_Start_IT(&htim13);
+	TSch_Start();
   /* USER CODE END 2 */
 
   /* Infinite loop */

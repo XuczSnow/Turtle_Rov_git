@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    tsch_task.h
+  * @file    tsch_bsp.c
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 任务示例头文件
+  * @brief   Turtle Scheduler 接口函数实现
   * @version Baby 1.0.0
   *
   @verbatim
@@ -36,18 +36,34 @@
   ******************************************************************************
   */
 
-#ifndef TURTLE_TASK_H
-#define TURTLE_TASK_H
+#include "main.h"
+#include "tim.h"
 
-void Tim6Task1_Func(void *p_arg);
-void Tim7Task1_Func(void *p_arg);
-void Tim7Task2_Func(void *p_arg);
-void Tim7Task3_Func(void *p_arg);
-void Tim7Task4_Func(void *p_arg);
-void Tim11Task1_Func(void *p_arg);
-void UartTask_Func(void *p_arg);
-void MsgTask1_Func(void *p_arg);
-void MsgTask2_Func(void *p_arg);
-void SynTask_Func(void *p_arg);
+#define  TIM6_MASK  10u
+#define  TIM7_MASK  10u
+#define  TIM11_MASK 10u
 
-#endif
+/*调度器周期设置函数具体实现*/
+void TSch_UserSetPeriod(TScheduler_Type *sch, uint16_t period){
+  if (sch == &Tim6_Sch)
+    __HAL_TIM_SET_AUTORELOAD(&htim6, TIM6_MASK*period);
+  else if (sch == &Tim7_Sch)
+    __HAL_TIM_SET_AUTORELOAD(&htim7, TIM7_MASK*period);
+  else if (sch == &Tim11_Sch)
+    __HAL_TIM_SET_AUTORELOAD(&htim11, TIM11_MASK*period);
+  else
+    return;
+}
+
+
+/*调度器优先级设置函数具体实现*/
+void TSch_UserSetPriority(TScheduler_Type *sch, uint16_t priority){
+  if (sch == &Tim6_Sch)
+    HAL_NVIC_SetPriority(TIM6_DAC_IRQn, priority, 0);
+  else if (sch == &Tim7_Sch)
+    HAL_NVIC_SetPriority(TIM7_IRQn, priority, 0);
+  else if (sch == &Tim11_Sch)
+    HAL_NVIC_SetPriority(TIM1_TRG_COM_TIM11_IRQn, priority, 0);
+  else
+    return;
+}

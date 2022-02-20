@@ -1,8 +1,9 @@
 /**
   ******************************************************************************
-  * @file    tsch_sch.h
+  * @file    tsch_it.c
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 任务调度器处理头文件
+  * @brief   Turtle Scheduler 相关中断实现
+  * @version Baby 1.0.0
   *
   @verbatim
 
@@ -34,19 +35,49 @@
 
   ******************************************************************************
   */
-#ifndef TSCH_SCH_H
-#define TSCH_SCH_H
 
-#include "tsch_global.h"
+#include "main.h"
 
-#define     TSCH_P_ORDER_MAX      100u
+#include "tsch_port.h"
 
-/**************************************函数声明**********************************/
+TSchMsgEle_Type test[1] = "t";
 
-TSchResState_Type TSch_SchCreat(TScheduler_Type *sch, TSchMode_Type mode, TSchTList_Type **list);
-inline TSchTmr_Type __Tsch_Gcd(TSchTmr_Type num1, TSchTmr_Type num2);
-TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task, TSchTmr_Type task_period);
-TSchResState_Type TSch_SchRun(TScheduler_Type *sch);
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+  TSch_SchRun(&Uart_Sch);
+}
 
-#endif
-/*************************************头文件结束**********************************/
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  switch((uint32_t)htim->Instance){
+    case (uint32_t)TIM6:{
+      TSch_SchRun(&Tim6_Sch);
+      break;
+    }
+    case (uint32_t)TIM7:{
+      TSch_SchRun(&Tim7_Sch);
+      break;
+    }
+    case (uint32_t)TIM11:{
+      TSch_SchRun(&Tim11_Sch);
+      break;
+    }
+    case (uint32_t)TIM13:{
+      TSch_MsgPub(&High_Msg, test, 1);
+      TSch_TaskWeak(&EH_SynTask);
+      break;
+    }
+  }
+}
+
+void EXTI15_10_IRQHandler(void){
+  if (EXTI->PR &= 1<<MSG_EXTI)
+  {
+    EXTI->SWIER &= 0<<MSG_EXTI;
+    TSch_SchRun(&Msg_Sch);
+  }
+  else if (EXTI->PR &= 1<<SYN_EXTI)
+  {
+    EXTI->SWIER &= 0<<MSG_EXTI;
+    TSch_SchRun(&Syn_Sch);    
+  }
+}

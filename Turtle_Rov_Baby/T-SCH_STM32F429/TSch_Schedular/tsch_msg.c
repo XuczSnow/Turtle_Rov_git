@@ -106,13 +106,15 @@ TSchResState_Type TSch_MsgGet(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint1
   * 
   * @retval TSchResState见定义
   */
+
+/*(TODO)好像没办法同时发布同一调度器的两个消息 -XuczSnow 2022.02.20*/
 TSchResState_Type TSch_MsgPub(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint16_t len){
   uint16_t head = msg->msg_head;
   uint16_t tail = msg->msg_tail;
   uint16_t count = msg->msg_count;
-  uint16_t length = msg->msg_mode;
+  uint16_t length = msg->msg_length;
 
-  if (count != head-tail || count != tail+length-head) return TSCH_INVAILD;
+  if (count != head-tail && count != tail+length-head) return TSCH_INVAILD;
 
   switch(msg->msg_mode){
     case MSG_STACK:{

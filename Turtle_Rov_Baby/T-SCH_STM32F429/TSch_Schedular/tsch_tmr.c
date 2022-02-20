@@ -169,7 +169,7 @@ TSchResState_Type TSch_TmrAdtTime(TScheduler_Type *sch){
   temp = (TSchTmr_Type)(pt*ptask->task_period);
   temp = (temp/TMR_AVG_K + 1)*TMR_AVG_K;                    /*调整为TMR_AVG_K的倍数，方式最大公约数计算过小*/
 
-  while (ptask != NULL || ptask->task_next != NULL){
+  while (ptask != NULL){
     ptask->task_period = temp;
     ptask = ptask->task_next;
   }

@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    tsch_task.h
+  * @file    tsch_it.h
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 任务示例头文件
+  * @brief   Turtle Scheduler 相关中断实现头文件
   * @version Baby 1.0.0
   *
   @verbatim
@@ -35,19 +35,9 @@
 
   ******************************************************************************
   */
+#ifndef TSCH_IT_H
+#define TSCH_IT_H
 
-#ifndef TURTLE_TASK_H
-#define TURTLE_TASK_H
-
-void Tim6Task1_Func(void *p_arg);
-void Tim7Task1_Func(void *p_arg);
-void Tim7Task2_Func(void *p_arg);
-void Tim7Task3_Func(void *p_arg);
-void Tim7Task4_Func(void *p_arg);
-void Tim11Task1_Func(void *p_arg);
-void UartTask_Func(void *p_arg);
-void MsgTask1_Func(void *p_arg);
-void MsgTask2_Func(void *p_arg);
-void SynTask_Func(void *p_arg);
+void EXTI15_10_IRQHandler(void);
 
 #endif

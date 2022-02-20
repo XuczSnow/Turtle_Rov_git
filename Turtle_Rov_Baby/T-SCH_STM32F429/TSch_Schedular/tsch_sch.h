@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    tsch_msg.h
+  * @file    tsch_sch.h
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 消息栈及消息队列头文件
+  * @brief   Turtle Scheduler 任务调度器处理头文件
   *
   @verbatim
 
@@ -34,22 +34,19 @@
 
   ******************************************************************************
   */
-#ifndef TSCH_MSG_H
-#define TSCH_MSG_H
+#ifndef TSCH_SCH_H
+#define TSCH_SCH_H
 
 #include "tsch_global.h"
 
-/*************************************宏定义声明**********************************/
-
-#define   MSG_NULL       NULL      /*任务无需消息阻塞时使用*/
-
-extern TSchMsg_Type    *__tsch_msg_current;
+#define     TSCH_P_ORDER_MAX      100u
 
 /**************************************函数声明**********************************/
 
-TSchResState_Type TSch_MsgAdd(TSchMsg_Type *msg, TSchMsgMode_Type mode, TSchMsgEle_Type *buf, uint16_t length);
-TSchResState_Type TSch_MsgGet(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint16_t len);
-TSchResState_Type TSch_MsgPub(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint16_t len);
+TSchResState_Type TSch_SchCreat(TScheduler_Type *sch, TSchMode_Type mode, TSchTList_Type *list);
+inline TSchTmr_Type __Tsch_Gcd(TSchTmr_Type num1, TSchTmr_Type num2);
+TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task, TSchTmr_Type task_period);
+TSchResState_Type TSch_SchRun(TScheduler_Type *sch);
 
 #endif
 /*************************************头文件结束**********************************/

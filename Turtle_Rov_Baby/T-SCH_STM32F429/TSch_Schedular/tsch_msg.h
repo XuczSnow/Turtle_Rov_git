@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    tsch_task.h
+  * @file    tsch_msg.h
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler 任务处理头文件
+  * @brief   Turtle Scheduler 消息栈及消息队列头文件
   *
   @verbatim
 
@@ -34,17 +34,22 @@
 
   ******************************************************************************
   */
-
-#ifndef TSCH_TASK_H
-#define TSCH_TASK_H
+#ifndef TSCH_MSG_H
+#define TSCH_MSG_H
 
 #include "tsch_global.h"
 
+/*************************************宏定义声明**********************************/
+
+#define   MSG_NULL       NULL      /*任务无需消息阻塞时使用*/
+
+extern TSchMsg_Type    *__tsch_msg_current;
+
 /**************************************函数声明**********************************/
 
-TSchResState_Type TSch_TaskCreat(TScheduler_Type *sch, TSchTask_Type *task, TSchTaskPtr taskptr,\
-                                 TSchTmr_Type period, uint8_t prio, TSchMsg_Type *wait_msg,\
-                                 TSchExtiPtr syn_ptr);
+TSchResState_Type TSch_MsgCreat(TSchMsg_Type *msg, TSchMsgMode_Type mode, TSchMsgEle_Type *buf, uint16_t length);
+TSchResState_Type TSch_MsgGet(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint16_t len);
+TSchResState_Type TSch_MsgPub(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint16_t len);
 
 #endif
 /*************************************头文件结束**********************************/

@@ -1,8 +1,9 @@
 /**
   ******************************************************************************
-  * @file    tsch.c
+  * @file    tsch_port.c
   * @author  XuczSnow, OUC/Fab U+
-  * @brief   Turtle Scheduler TSch头文件
+  * @brief   Turtle Scheduler 相关接口文件实现
+  * @version Baby 1.0.0
   *
   @verbatim
 
@@ -35,18 +36,38 @@
   ******************************************************************************
   */
 
-#ifndef TSCH_H
-#define TSCH_H
+#include "tsch_port.h"
 
+#include <stdio.h>
+
+#include "main.h"
 #include "tsch_global.h"
 
-extern TSchTask_Type     __TaskIdle;
-extern TScheduler_Type   __TSchIdle;
+void TSch_UserIdleTask(void){
+  //printf("Idle Task Run!\r\n");
+  return;
+}
 
-/**************************************函数声明**********************************/
+void TSch_UserFatal(void){
+  printf("Fatal Error!!!");
+  return;
+}
 
-void TSch_Start(void);
-void Tsch_FatalError(void);
+void SoftExti_WeakInit(void){
+  EXTI->IMR |= 1<<MSG_EXTI;
+  EXTI->IMR |= 1<<SYN_EXTI;
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 15, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+//  EXTI->SWIER |= 1<<MSG_EXTI;
+//  EXTI->SWIER |= 1<<SYN_EXTI;
+}
 
-#endif
-/*************************************头文件结束**********************************/
+void MsgTask_Weak(uint8_t prio){
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, prio, 0);
+  EXTI->SWIER |= 1<<MSG_EXTI;
+}
+
+void SynTask_Weak(uint8_t prio){
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, prio, 0);
+  EXTI->SWIER |= 1<<SYN_EXTI;
+}
