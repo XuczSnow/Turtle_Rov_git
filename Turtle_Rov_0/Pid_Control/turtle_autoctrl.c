@@ -38,7 +38,7 @@ float fopid_lam[4] = {1.0,  1.0,  1.0,  1.0};
 float fopid_u[4]   = {1.0,  1.0,  1.0,  1.0};
 
 TPidMode_Type pid_mode[4] = {MODE_FOPID,MODE_FOPID,MODE_FOPID,MODE_FOPID};
-TPidOut_Type  pid_out[4]  = {OUT_ORG,OUT_ORG,OUT_ORG,OUT_ORG};
+TPidOut_Type  pid_out[4]  = {OUT_DC,OUT_ORG,OUT_ORG,OUT_ORG};
 
 float depth_kp[2] = {0};
 float depth_ki[2] = {0};

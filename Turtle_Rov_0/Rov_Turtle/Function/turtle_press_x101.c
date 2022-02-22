@@ -44,7 +44,7 @@ void Turtle_Press_Init(void)
 }
 
 //低通滤波系数
-float lpt_k = 0.5;
+float lpt_k = 0.2;
 
 void Turtle_Press_DataPro(uint8_t *press_rt)
 {
