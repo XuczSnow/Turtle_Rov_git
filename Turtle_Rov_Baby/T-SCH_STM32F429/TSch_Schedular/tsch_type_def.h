@@ -124,8 +124,9 @@ struct TScheduler{
   uint8_t            __tsch_id;       /*调度器内部ID*/
   /*调度器相关定义*/
   TSchMode_Type      tsch_mode;
-  uint16_t           tsch_ccnt;       /*调度器运行次数进位值*/
-  uint16_t           tsch_cnt;        /*调度器运行次数*/
+  TSchTmr_Type       tsch_ccnt;       /*调度器运行次数进位值*/
+  TSchTmr_Type       tsch_cnt;        /*调度器运行次数*/
+  TScheduler_Type   *tsch_next;
   /*任务相关定义*/
   uint8_t            task_num;
   TSchTask_Type     *task_list;
@@ -159,14 +160,15 @@ struct TSchTask{
   uint8_t             task_prio;
   TSchTmr_Type        task_period;
   /*时间统计相关定义*/
-  TSchTmr_Type        tmr_start;
+  TSchTmr_Type        tmr_start[G_TMR_AVG_K];
   TSchTmr_Type        tmr_last;
   TSchTmr_Type        tmr_plast;
+  TSchTmr_Type        tmr_cnt;
   TSchTmr_Type        tmr_min;
   TSchTmr_Type        tmr_max;
   TSchTmr_Type        tmr_avg;
-  uint16_t            task_ccnt;        /*任务运行次数进位值*/
-  uint16_t            task_cnt;         /*任务运行计数*/
+  TSchTmr_Type        task_ccnt;        /*任务运行次数进位值*/
+  TSchTmr_Type        task_cnt;         /*任务运行计数*/
   /*消息量相关定义*/
   TSchMsg_Type       *msg_wait;
   /*同步唤醒中断服务函数*/

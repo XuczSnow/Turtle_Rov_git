@@ -41,6 +41,8 @@
 
 #define     TSCH_P_ORDER_MAX      100u
 
+extern TScheduler_Type *__tscheduler_list;
+
 /**************************************函数声明**********************************/
 
 TSchResState_Type TSch_SchCreat(TScheduler_Type *sch, TSchMode_Type mode, TSchTList_Type *list);

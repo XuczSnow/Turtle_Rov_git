@@ -41,64 +41,89 @@
 #include "stdio.h"
 
 TSchMsgEle_Type test_shou[1];
+TSchTmr_Type    test_tmr;
 
 void Tim6Task1_Func(void *p_arg)
 {
-  //printf("Tim6Task1 Run!\r\n");
+  static uint8_t delay;
+  test_tmr = TSch_TmrGet();
+  if (EH_Tim6Task1.task_cnt%100 == 0)
+    delay = test_tmr%10;
+  HAL_Delay(delay);
+//  printf("Tim6Task1 Run! at %d\r\n", test_tmr);
   return;
 }
 
 void Tim7Task1_Func(void *p_arg)
 {
-  //printf("Tim7Task1 Run!\r\n");
+  static uint8_t delay;
+  test_tmr = TSch_TmrGet();
+  if (H_Tim7Task1.task_cnt%100 == 0)
+    delay = test_tmr%10; 
+  HAL_Delay(delay);
+//  printf("Tim7Task1 Run! at %d\r\n", test_tmr);
   return;
 }
 
 void Tim7Task2_Func(void *p_arg)
 {
-  //printf("Tim7Task2 Run!\r\n");
+  test_tmr = TSch_TmrGet();
+  HAL_Delay(5);
+//  printf("Tim7Task2 Run! at %d\r\n", test_tmr);
   return;
 }
 
 void Tim7Task3_Func(void *p_arg)
 {
-  //printf("Tim7Task3 Run!\r\n");
+  test_tmr = TSch_TmrGet();
+  HAL_Delay(5);
+//  printf("Tim7Task3 Run! at %d\r\n", test_tmr);
   return;
 }
 
 void Tim7Task4_Func(void *p_arg)
 {
-  //printf("Tim7Task4 Run!\r\n");
+  test_tmr = TSch_TmrGet();
+//  printf("Tim7Task4 Run! at %d\r\n", test_tmr);
   return;
 }
 
 void UartTask_Func(void *p_arg)
 {
-  //printf("UartTask Run!\r\n");
+  test_tmr = TSch_TmrGet();
+  printf("UartTask Run! Com is \"%c\" at %d\r\n", (char)uart_test[0], test_tmr);
   return;
 }
 
 void Tim11Task1_Func(void *p_arg)
 {
-  //printf("Tim11Task1 Run!\r\n");
+  test_tmr = TSch_TmrGet();
+  HAL_Delay(10);
+  printf("Tim11Task1 Run!, at %d\r\n", test_tmr);
+  test_tmr = TSch_TmrGetUtCpu(&__TaskIdle);
+  printf("IdleTask CPU Utilization is %d\r\n", (uint8_t)test_tmr);
   return;
 }
 
 void MsgTask1_Func(void *p_arg)
 {
+  test_tmr = TSch_TmrGet();
   TSch_MsgGet(&High_Msg, test_shou, 1);
-  printf("MsgTask1 Run!\r\n");
+  printf("MsgTask1 Run! Msg is \"%c\" at %d\r\n", (char)test_shou[0], test_tmr);
   return;
 }
 
 void MsgTask2_Func(void *p_arg)
 {
-  printf("MsgTask2 Run!\r\n");
+  test_tmr = TSch_TmrGet();
+  TSch_MsgGet(&Low_Msg, test_shou, 1);
+  printf("MsgTask2 Run! Msg is \"%c\" at %d\r\n", (char)test_shou[0], test_tmr);
   return;
 }
 
 void SynTask_Func(void *p_arg)
 {
-  printf("SynTask1 Run!\r\n");
+  test_tmr = TSch_TmrGet();
+  printf("SynTask1 Run! at %d\r\n", test_tmr);
   return;
 }

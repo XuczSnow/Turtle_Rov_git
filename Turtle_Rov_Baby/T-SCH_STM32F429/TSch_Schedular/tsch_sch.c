@@ -37,6 +37,9 @@
 
 #include "tsch_sch.h"
 
+/*任务调度器链表头，暂时未使用*/
+TScheduler_Type *__tscheduler_list = NULL;
+
 /**
   * @brief  时间自适应调度器周期调整函数
   *
@@ -87,6 +90,15 @@ TSchResState_Type TSch_SchCreat(TScheduler_Type *sch, TSchMode_Type mode, TSchTL
     sch->tsch_pmax   = 0;
     sch->tsch_pmin   = TMR_CARRYMAX;
   }
+  
+  if (__tscheduler_list == NULL){
+    __tscheduler_list = sch;
+  }else{
+    TScheduler_Type *psch = __tscheduler_list;
+    while(psch->tsch_next != NULL) psch = psch->tsch_next;
+    psch->tsch_next = sch;
+  }
+ 
   return TSCH_OK;
 }
 
@@ -152,8 +164,6 @@ TSchResState_Type TSch_SchAddTask(TScheduler_Type *sch, TSchTask_Type *task, TSc
     /*有效性检查*/
     if (sch->tsch_mode == MSG_SCH){
       if (task->msg_wait == MSG_NULL && task->syn_funptr == NULL)
-        return TSCH_INVAILD;
-      else if (task->task_prio != sch->task_list->task_prio)
         return TSCH_INVAILD;
     }
     else if (sch->tsch_mode == SYN_SCH && task->syn_funptr == NULL){
@@ -312,12 +322,17 @@ TSchResState_Type TSch_SchRun(TScheduler_Type *sch){
   /*任务运行*/
   if (sch->task_current == NULL && sch->task_current->task_ptr == NULL) return TSCH_INVAILD;
   ptask = sch->task_current;
-  if (ptask->task_state == TASK_CREAT) ptask->tmr_start = TSch_TmrGet();
+  for (uint8_t i=G_TMR_AVG_K;i>0;--i)
+    ptask->tmr_start[i] = ptask->tmr_start[i-1];
+  ptask->tmr_start[0] = TSch_TmrGet();
   start = TSch_TmrGet();
   ptask->task_state = TASK_RUN;
   if (++(ptask->task_cnt) == USR_TASK_CNT_MAX) ptask->task_cnt = 0, ++(ptask->task_ccnt);
   ptask->task_ptr(NULL);
-  ptask->task_state = TASK_READY;
+  if (sch->tsch_mode == TIM_SCH || sch->tsch_mode == ADT_TIM_SCH)
+    ptask->task_state = TASK_READY;
+  else
+    ptask->task_state = TASK_WAIT;
   last = TSch_TmrGet();
   res = TSch_TmrTask(ptask, start, last);
   if (res != TSCH_OK) return res;

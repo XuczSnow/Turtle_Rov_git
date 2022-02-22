@@ -70,6 +70,7 @@ extern TSchMsg_Type      Low_Msg;
 extern TScheduler_Type   Syn_Sch;
 extern TSchTask_Type     EH_SynTask;
 
+extern uint8_t           uart_test[1];
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

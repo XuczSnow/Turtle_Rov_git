@@ -47,6 +47,8 @@
   #define NULL (void *)0                    /*空指针定义*/
 #endif
 
+#define G_TMR_AVG_K           20u
+
 /******************************头文件包含***************************/
 
 #include "stdint.h"

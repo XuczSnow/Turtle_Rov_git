@@ -76,6 +76,8 @@ TSchMsgEle_Type   Low_MsgBuf[LOW_MSG_LEN];
 TScheduler_Type   Syn_Sch;
 TSchTask_Type     EH_SynTask;
 
+uint8_t           uart_test[1];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -150,6 +152,7 @@ int main(void)
   MX_TIM11_Init();
   MX_USART1_UART_Init();
   MX_TIM13_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   EventRecorderInitialize(EventRecordAll, 1U);
   EventRecorderStart();
@@ -158,6 +161,7 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim7);
   HAL_TIM_Base_Start_IT(&htim11);
   HAL_TIM_Base_Start_IT(&htim13);
+  HAL_UART_Receive_DMA(&huart2, uart_test, 1);
 	TSch_Start();
   /* USER CODE END 2 */
 

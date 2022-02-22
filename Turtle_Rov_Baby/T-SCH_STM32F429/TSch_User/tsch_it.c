@@ -37,13 +37,18 @@
   */
 
 #include "main.h"
+#include "usart.h"
 
 #include "tsch_port.h"
 
-TSchMsgEle_Type test[1] = "t";
+TSchMsgEle_Type test_high[1] = "t";
+TSchMsgEle_Type test_low[1] = "l";
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
-  TSch_SchRun(&Uart_Sch);
+  if(huart == &huart2){
+    HAL_UART_Receive_DMA(&huart2, uart_test, 1);
+    TSch_SchRun(&Uart_Sch);
+  }
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
@@ -62,8 +67,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       break;
     }
     case (uint32_t)TIM13:{
-      TSch_MsgPub(&High_Msg, test, 1);
-      TSch_TaskWeak(&EH_SynTask);
+//      TSch_MsgPub(&High_Msg, test_high, 1);
+//      TSch_MsgPub(&Low_Msg, test_low, 1);
+//      TSch_TaskWeak(&EH_SynTask);
       break;
     }
   }
@@ -77,7 +83,7 @@ void EXTI15_10_IRQHandler(void){
   }
   else if (EXTI->PR &= 1<<SYN_EXTI)
   {
-    EXTI->SWIER &= 0<<MSG_EXTI;
+    EXTI->SWIER &= 0<<SYN_EXTI;
     TSch_SchRun(&Syn_Sch);    
   }
 }

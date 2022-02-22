@@ -45,6 +45,7 @@
 
 void TSch_UserIdleTask(void){
   //printf("Idle Task Run!\r\n");
+  HAL_Delay(1);
   return;
 }
 

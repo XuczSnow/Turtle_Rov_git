@@ -41,9 +41,8 @@
 
 /*************************************宏定义声明**********************************/
 #define TMR_ADT_R           10u
-#define TMR_SDT_K           50u
+#define TMR_SDT_K           20u
 
-#define TMR_AVG_K           20u
 #define TMR_TIMEOUT         10000u
 #define TMR_CARRYMAX        UINT32_MAX
 
@@ -56,6 +55,7 @@ TSchTmr_Type TSch_TmrGet(void);
 TSchResState_Type TSch_TmrSet(TSchTmr_Type tmr);
 TSchResState_Type TSch_TmrTask(TSchTask_Type *ptask, TSchTmr_Type start, TSchTmr_Type last);
 TSchResState_Type TSch_TmrAdtTime(TScheduler_Type *sch);
+TSchTmr_Type TSch_TmrGetUtCpu(TSchTask_Type *task);
 
 #endif
 /*************************************头文件结束**********************************/

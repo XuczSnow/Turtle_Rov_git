@@ -70,23 +70,26 @@ TSchResState_Type TSch_MsgGet(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint1
   uint16_t head = msg->msg_head;
   uint16_t tail = msg->msg_tail;
   uint16_t count = msg->msg_count;
-  uint16_t length = msg->msg_mode;
+  uint16_t length = msg->msg_length;
 
-  if (count != head-tail || count != tail+length-head) return TSCH_INVAILD;
+  if (count != head-tail && count != tail+length-head) return TSCH_INVAILD;
 
   switch (msg->msg_mode){
     case MSG_STACK:{
       for (uint16_t i=0;i<len;++i){
-        element[i] = msg->msg[head--];
+        element[i] = msg->msg[--head];
         if (head == 0) return TSCH_EMPTY;
+        -- count;
       }
       break;
     }
     case MSG_QUEUE:{
       for (uint16_t i=0;i<len;++i){
-        element[i] = msg->msg[head--];
-        if (head == 0) head = length;
         if (head == tail) return TSCH_EMPTY;
+        element[i] = msg->msg[tail++];
+        if (tail == length)
+          tail = 0;
+        -- count;
       }
       break;
     }
@@ -94,6 +97,10 @@ TSchResState_Type TSch_MsgGet(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint1
       return TSCH_INVAILD;
     }
   }
+
+  msg->msg_head = head;
+  msg->msg_tail = tail;
+  msg->msg_count = count;
   return TSCH_OK;
 }
 
@@ -119,16 +126,18 @@ TSchResState_Type TSch_MsgPub(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint1
   switch(msg->msg_mode){
     case MSG_STACK:{
       for (uint16_t i=0;i<len;++i){
-        if (head == length-1) return TSCH_FULL;
-        msg->msg[++head] = element[i];
+        if (head == length) return TSCH_FULL;
+        msg->msg[head++] = element[i];
+        ++ count;
       }
       break;
     }
     case MSG_QUEUE:{
        for (uint16_t i=0;i<len;++i){
         if (head == tail-1) return TSCH_FULL;
+        msg->msg[head++] = element[i];
         if (head == length) head = 0;
-        msg->msg[++head] = element[i];
+        ++ count;
       }
       break;
     }
@@ -142,5 +151,9 @@ TSchResState_Type TSch_MsgPub(TSchMsg_Type *msg, TSchMsgEle_Type *element, uint1
     if (msg->task_wait->syn_funptr !=NULL)
       msg->task_wait->syn_funptr(msg->task_wait->task_prio);
   }
+
+  msg->msg_head = head;
+  msg->msg_tail = tail;
+  msg->msg_count = count;
   return TSCH_OK;
 }

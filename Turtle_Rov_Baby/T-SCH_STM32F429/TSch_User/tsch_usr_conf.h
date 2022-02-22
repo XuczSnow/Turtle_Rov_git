@@ -44,7 +44,7 @@
 #define     USR_PRIO_MAX          14u           /*最大优先级数量，默认数字越大，优先级越低*/
 
 #define     USR_SCH_LIST_MAX      100u          /*任务就绪列表长度最大长度*/
-#define     USR_TASK_CNT_MAX      10000u        /*任务计数长度*/
+#define     USR_TASK_CNT_MAX      TMR_CARRYMAX  /*任务计数长度*/
 
 #define     USR_SEM_MAX           32u           /*最大信号量定义*/
 
